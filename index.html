@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Security Meta Tags -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://generativelanguage.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://placehold.co data:; connect-src 'self' https://generativelanguage.googleapis.com;">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <title>Helionenergies - Powering India's Sustainable Future</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Styles for a more polished look */
+        :root {
+            --primary-color: #2a9d8f; /* Teal Green */
+            --secondary-color: #264653; /* Dark Blue/Green */
+            --accent-color: #f4a261; /* Sandy Orange */
+            --text-color: #333;
+            --bg-color: #ffffff;
+            --light-gray: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .font-logo {
+            font-family: 'Lexend Deca', sans-serif;
+        }
+        
+        .cta-button {
+            background-color: var(--accent-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #e76f51; /* Darker Orange */
+        }
+        
+        .primary-button {
+            background-color: var(--primary-color);
+            transition: background-color 0.3s ease;
+        }
+        .primary-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Spinner for loading state */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border-left-color: var(--primary-color);
+            animation: spin 1s ease infinite;
+            display: none; /* Hidden by default */
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lexend+Deca:wght@700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-white">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold font-logo" style="color: var(--primary-color);">Helionenergies</a>
+            <ul class="hidden md:flex items-center space-x-8">
+                <li><a href="#ai-calculator" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">✨ Savings Calculator</a></li>
+                <li><a href="#about" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">About Us</a></li>
+                <li><a href="#blog" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">Blog</a></li>
+                <li><a href="#contact" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">Contact</a></li>
+            </ul>
+            <a href="#contact" class="hidden md:block cta-button text-white font-bold py-2 px-6 rounded-lg">Get a Quote</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="bg-cover bg-center text-white" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2070')">
+            <div class="container mx-auto px-6 text-center py-24 md:py-32">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Powering India's Sustainable Future</h1>
+                <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Helionenergies makes clean, renewable energy accessible and affordable. See how much you could save with our new AI-powered calculator.</p>
+                <a href="#ai-calculator" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">✨ Calculate Your Savings</a>
+            </div>
+        </section>
+        
+        <!-- AI Savings Calculator Section -->
+        <section id="ai-calculator" class="py-20 bg-[var(--light-gray)]">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">✨ AI-Powered Solar Savings Calculator</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Enter your details below and let our AI assistant provide a personalized estimate of your potential solar savings and system requirements.</p>
+                <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label for="monthly-bill" class="block text-sm font-medium text-gray-700">Average Monthly Electricity Bill (in ₹)</label>
+                            <input type="number" id="monthly-bill" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3" placeholder="e.g., 2500">
+                        </div>
+                        <div>
+                            <label for="location" class="block text-sm font-medium text-gray-700">Your City & State</label>
+                            <input type="text" id="location" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3" placeholder="e.g., Visakhapatnam, Andhra Pradesh">
+                        </div>
+                        <button id="calculate-savings-btn" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md flex items-center justify-center">
+                            Calculate Savings
+                        </button>
+                    </div>
+                </div>
+                <div id="calculator-spinner" class="spinner"></div>
+                <div id="calculator-results" class="mt-12 max-w-3xl mx-auto"></div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row-reverse items-center gap-12">
+                    <div class="md:w-1/2">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[var(--secondary-color)]">Our Mission: To Make Clean Energy Simple and Accessible for All</h2>
+                        <div class="space-y-4 text-gray-600">
+                            <p>Helionenergies was born from a single, powerful idea: that the transition to sustainable energy should be a clear and achievable goal for every Indian household and business. We saw a future powered by the sun, but we also saw the complexity—confusing policies, technical jargon, and high costs—that stood in the way.</p>
+                            <p>Our mission is to be your trusted guide on this journey. We are not just a solar company; we are energy consultants dedicated to bringing clarity to the renewable energy landscape. We do the hard work of translating complex government schemes into clear financial benefits and technical specifications into reliable, long-term solutions.</p>
+                            <p class="font-semibold text-[var(--secondary-color)]">Our commitment is to empower you with knowledge, provide honest advice, and deliver the right solution for your specific needs. With Helionenergies, you are not just adopting solar; you are making a smart, informed decision for a brighter, more sustainable future.</p>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="https://images.unsplash.com/photo-1579583764928-0ef6f4d33959?q=80&w=1974" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/2a9d8f/ffffff?text=Helionenergies';"
+                             alt="Energy consultants reviewing plans over a solar panel model" 
+                             class="rounded-lg shadow-xl w-full">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog/News Section -->
+        <section id="blog" class="py-20 bg-[var(--light-gray)]">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[var(--secondary-color)]">Latest Blog & News</h2>
+                <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Stay updated with the latest trends in India's solar industry. Click the button below to get the latest news and insights from the Indian solar sector.</p>
+                <button id="generate-blog-btn" class="cta-button text-white font-bold py-3 px-6 rounded-lg text-lg mb-8">✨ Get Latest News</button>
+                <div id="blog-spinner" class="spinner"></div>
+                <div id="blog-content" class="max-w-2xl mx-auto text-left">
+                    <!-- AI generated content will appear here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">Start Your Solar Journey Today</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Have a question? Fill out the form below for a free, no-obligation consultation, or email us directly at <a href="mailto:helionenergies@outlook.com" class="text-[var(--primary-color)] font-semibold hover:underline">helionenergies@outlook.com</a>.</p>
+                <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
+                    <form id="contact-form" action="https://formspree.io/f/your_form_id" method="POST">
+                        <div class="grid grid-cols-1 gap-6">
+                            <input type="text" name="name" placeholder="Your Name" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
+                            <input type="email" name="email" placeholder="Your Email" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
+                            <textarea id="question-input" name="message" rows="5" placeholder="Type your message here..." required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3"></textarea>
+                            <button type="submit" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[var(--secondary-color)] text-white text-center py-8">
+        <div class="container mx-auto px-6">
+            <p>&copy; 2025 Helionenergies | All Rights Reserved</p>
+            <p>Your Partner in Renewable Energy</p>
+            <p class="mt-2"><a href="mailto:helionenergies@outlook.com" class="hover:text-[var(--accent-color)] transition-colors">helionenergies@outlook.com</a></p>
+        </div>
+    </footer>
+
+    <script type="module">
+        // --- Gemini API Integration ---
+
+        // Get references to the DOM elements
+        const calculateBtn = document.getElementById('calculate-savings-btn');
+        const billInput = document.getElementById('monthly-bill');
+        const locationInput = document.getElementById('location');
+        const calculatorResultsDiv = document.getElementById('calculator-results');
+        const calculatorSpinner = document.getElementById('calculator-spinner');
+
+        const generateBlogBtn = document.getElementById('generate-blog-btn');
+        const blogContentDiv = document.getElementById('blog-content');
+        const blogSpinner = document.getElementById('blog-spinner');
+
+        /**
+         * A helper function to safely create and append a DOM element.
+         * @param {string} tag The HTML tag to create.
+         * @param {string} text The text content for the element.
+         * @param {string[]} classes An array of Tailwind CSS classes.
+         * @param {HTMLElement} parent The parent element to append to.
+         * @returns {HTMLElement} The created element.
+         */
+        function createAndAppend(tag, text, classes = [], parent) {
+            const element = document.createElement(tag);
+            if (text) {
+                element.textContent = text;
+            }
+            if (classes.length > 0) {
+                element.classList.add(...classes);
+            }
+            parent.appendChild(element);
+            return element;
+        }
+
+        // --- Feature 1: AI Savings Calculator ---
+        calculateBtn.addEventListener('click', async () => {
+            const bill = billInput.value;
+            const location = locationInput.value;
+
+            if (!bill || !location) {
+                // In a real app, you'd use a more elegant modal/notification
+                // but alert is fine for this example.
+                const tempAlert = document.createElement('div');
+                tempAlert.textContent = 'Please enter both your monthly bill and location.';
+                tempAlert.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background-color:var(--accent-color);color:white;padding:1rem;border-radius:0.5rem;z-index:100;';
+                document.body.appendChild(tempAlert);
+                setTimeout(() => tempAlert.remove(), 3000);
+                return;
+            }
+
+            calculatorSpinner.style.display = 'block';
+            calculatorResultsDiv.innerHTML = '';
+            calculateBtn.disabled = true;
+            calculateBtn.textContent = 'Calculating...';
+
+            const prompt = `Act as a solar energy expert for India. A potential customer has an average monthly electricity bill of INR ${bill} in ${location}. Based on this, provide a concise solar energy potential analysis.`;
+            
+            const schema = {
+                type: "OBJECT",
+                properties: {
+                    "estimatedSystemSizeKw": { "type": "STRING", "description": "Estimated solar system size in kW, e.g., '3-4 kW'" },
+                    "estimatedUpfrontCostInr": { "type": "STRING", "description": "A rough estimate of the upfront installation cost in INR, e.g., '₹1,80,000 - ₹2,40,000'" },
+                    "estimatedMonthlySavingsInr": { "type": "STRING", "description": "Estimated savings on their electricity bill in INR per month, e.g., '₹2,000 - ₹2,500'" },
+                    "paybackPeriodYears": { "type": "STRING", "description": "Estimated time to recover the investment, e.g., '5-7 years'" },
+                    "subsidyInfo": { "type": "STRING", "description": "A brief, user-friendly explanation of relevant central government subsidies (like PM Surya Ghar) for a residential system in India. Mention the potential subsidy amount." },
+                    "environmentalImpact": { "type": "STRING", "description": "A fun, relatable environmental impact stat, e.g., 'This is like planting 50 trees every year!'" }
+                },
+                 "required": ["estimatedSystemSizeKw", "estimatedUpfrontCostInr", "estimatedMonthlySavingsInr", "paybackPeriodYears", "subsidyInfo", "environmentalImpact"]
+            };
+
+            try {
+                const result = await callGemini(prompt, schema);
+                displayCalculatorResults(JSON.parse(result));
+            } catch (error) {
+                console.error('Error:', error);
+                const errorPara = createAndAppend('p', "Sorry, we couldn't process your request at the moment. Please try again later.", ['text-center', 'text-red-500'], calculatorResultsDiv);
+            } finally {
+                calculatorSpinner.style.display = 'none';
+                calculateBtn.disabled = false;
+                calculateBtn.textContent = 'Calculate Savings';
+            }
+        });
+
+        function displayCalculatorResults(data) {
+            // Clear previous results
+            calculatorResultsDiv.innerHTML = '';
+
+            // Create elements programmatically to prevent XSS
+            const container = createAndAppend('div', null, ['bg-white', 'p-8', 'rounded-lg', 'shadow-lg', 'border-l-4', 'border-[var(--primary-color)]'], calculatorResultsDiv);
+            createAndAppend('h3', 'Your Personalized Solar Estimate', ['text-2xl', 'font-bold', 'text-center', 'mb-6', 'text-[var(--secondary-color)]'], container);
+
+            const grid = createAndAppend('div', null, ['grid', 'grid-cols-1', 'md:grid-cols-2', 'gap-6', 'text-lg'], container);
+
+            function createInfoBox(label, value) {
+                const box = createAndAppend('div', null, ['p-4', 'bg-gray-50', 'rounded-md'], grid);
+                const strong = createAndAppend('strong', `${label}: `, [], box);
+                box.appendChild(document.createTextNode(value));
+            }
+
+            createInfoBox('System Size', data.estimatedSystemSizeKw);
+            createInfoBox('Est. Monthly Savings', data.estimatedMonthlySavingsInr);
+            createInfoBox('Est. Upfront Cost', data.estimatedUpfrontCostInr);
+            createInfoBox('Payback Period', data.paybackPeriodYears);
+            
+            const subsidyContainer = createAndAppend('div', null, ['mt-6', 'pt-6', 'border-t'], container);
+            createAndAppend('h4', 'Government Subsidy Info (PM-Surya Ghar)', ['font-bold', 'text-xl', 'mb-2', 'text-[var(--primary-color)]'], subsidyContainer);
+            createAndAppend('p', data.subsidyInfo, ['text-gray-700'], subsidyContainer);
+
+            createAndAppend('div', `🌍 ${data.environmentalImpact}`, ['mt-6', 'text-center', 'text-xl', 'font-semibold', 'text-green-600', 'bg-green-50', 'p-4', 'rounded-lg'], container);
+        }
+
+        // --- Feature 2: AI-Powered Blog/News ---
+        generateBlogBtn.addEventListener('click', async () => {
+            blogSpinner.style.display = 'block';
+            blogContentDiv.innerHTML = '';
+            generateBlogBtn.disabled = true;
+            generateBlogBtn.textContent = 'Generating...';
+
+            const date = new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const prompt = `Act as a renewable energy journalist in India. Write a short, optimistic, and engaging blog post (about 150 words) for the Helionenergies website. The topic should be a recent positive trend, technology, or policy news in the Indian solar energy sector. Today's date is ${date}. Start with a catchy headline.`;
+
+            try {
+                const result = await callGemini(prompt);
+                displayBlog(result);
+            } catch (error) {
+                console.error('Error:', error);
+                blogContentDiv.innerHTML = '';
+                createAndAppend('p', 'Could not generate an article at this time. Please try again later.', ['text-center', 'text-red-500'], blogContentDiv);
+            } finally {
+                blogSpinner.style.display = 'none';
+                generateBlogBtn.disabled = false;
+                generateBlogBtn.textContent = '✨ Get Another News Update';
+            }
+        });
+
+        function displayBlog(content) {
+            blogContentDiv.innerHTML = '';
+            const container = createAndAppend('div', null, ['bg-white', 'p-8', 'rounded-lg', 'shadow-lg', 'border-t-4', 'border-[var(--accent-color)]'], container);
+            
+            const lines = content.split('\n');
+            const headline = lines.shift() || "News Update"; // Use first line as headline
+            
+            createAndAppend('h3', headline, ['text-2xl', 'font-bold', 'mb-4', 'text-[var(--secondary-color)]'], container);
+
+            const bodyContainer = createAndAppend('div', null, ['space-y-4'], container);
+            lines.forEach(pText => {
+                if (pText.trim() !== '') {
+                    createAndAppend('p', pText, ['text-gray-700', 'leading-relaxed'], bodyContainer);
+                }
+            });
+        }
+
+
+        // --- Reusable Gemini API Call Function ---
+        async function callGemini(prompt, schema = null) {
+            const apiKey = ""; // Leave empty, handled by the environment
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            
+            let payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }]
+            };
+
+            if (schema) {
+                payload.generationConfig = {
+                    responseMimeType: "application/json",
+                    responseSchema: schema
+                };
+            }
+            
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`API call failed with status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            
+            if (result.candidates && result.candidates.length > 0 &&
+                result.candidates[0].content && result.candidates[0].content.parts &&
+                result.candidates[0].content.parts.length > 0) {
+                return result.candidates[0].content.parts[0].text;
+            } else {
+                console.error("Unexpected API response structure:", result);
+                if (result.promptFeedback && result.promptFeedback.blockReason) {
+                    throw new Error(`Request was blocked. Reason: ${result.promptFeedback.blockReason}`);
+                }
+                throw new Error('Content not found in API response.');
+            }
+        }
+    </script>
+
+</body>
+</html>
