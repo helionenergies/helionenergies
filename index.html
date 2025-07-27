@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Security Meta Tags -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://generativelanguage.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://placehold.co data:; connect-src 'self' https://generativelanguage.googleapis.com; form-action 'self' https://formsubmit.co;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://generativelanguage.googleapis.com https://cdn.jsdelivr.net/npm/chart.js; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://placehold.co data:; connect-src 'self' https://generativelanguage.googleapis.com; form-action 'self' https://formsubmit.co;">
     <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
     <title>Helionenergies - Powering India's Sustainable Future</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Custom Styles for a more polished look */
         :root {
@@ -316,7 +317,6 @@
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
                 const location = locationInput.value;
-                // BUG FIX: Changed from > 5 to >= 4 to include shorter city names like 'Delhi' or 'Pune'
                 if (location.length >= 4) { 
                     fetchProviders(location);
                 } else {
@@ -340,7 +340,7 @@
             providerSpinner.style.display = 'block';
             providerSelect.innerHTML = '<option>Loading providers...</option>';
 
-            const prompt = `List the main electricity distribution companies (DISCOMs) for ${location}, India. Return only a simple comma-separated list. For example: TATA Power, Adani Electricity, MSEDCL`;
+            const prompt = `List the main electricity distribution companies (DISCOMs) for the area of ${location}, India. If the exact town/area is not known, list the providers for the surrounding district or the state. Return only a simple comma-separated list. For example: TATA Power, Adani Electricity, MSEDCL`;
             
             try {
                 const result = await callGemini(prompt);
@@ -352,7 +352,6 @@
                     option.textContent = p;
                     providerSelect.appendChild(option);
                 });
-                // Add the "Other" option
                 const otherOption = document.createElement('option');
                 otherOption.value = 'other';
                 otherOption.textContent = 'My provider is not listed';
@@ -394,21 +393,27 @@
 
             const prompt = `Act as a solar energy expert for India with precise, database-level knowledge of state-wise electricity tariffs. A potential customer in ${location}, served by the provider "${provider}", has an average monthly electricity bill of INR ${bill}. 
             Your primary task is to be as accurate as possible.
-            1. Using the exact residential tariff structure for "${provider}" in ${location}, perform a reverse calculation to estimate their approximate monthly electricity consumption in kWh (units). State any minor assumptions made, like "Assuming a standard residential LT connection".
-            2. Based on this precise consumption estimate, provide a concise solar energy potential analysis.`;
+            1. Using the exact residential tariff structure for "${provider}" in ${location}, perform a reverse calculation to estimate their approximate monthly electricity consumption in kWh (units). 
+            2. Based on this consumption, provide a concise solar potential analysis.
+            3. Also, provide a 25-year cumulative savings projection as an array of 25 numbers, assuming a 3% annual increase in grid electricity tariffs.`;
             
             const schema = {
                 type: "OBJECT",
                 properties: {
-                    "estimatedMonthlyConsumptionKwh": { "type": "STRING", "description": "The estimated monthly electricity consumption in kWh, e.g., '350-400 kWh'" },
-                    "estimatedSystemSizeKw": { "type": "STRING", "description": "Recommended solar system size in kW to cover this consumption, e.g., '3 kW'" },
-                    "estimatedUpfrontCostInr": { "type": "STRING", "description": "A rough estimate of the upfront installation cost in INR, e.g., '₹1,80,000 - ₹2,10,000'" },
-                    "estimatedMonthlySavingsInr": { "type": "STRING", "description": "Estimated savings on their electricity bill in INR per month, e.g., '₹2,200 - ₹2,500'" },
-                    "paybackPeriodYears": { "type": "STRING", "description": "Estimated time to recover the investment, e.g., '6-8 years'" },
-                    "subsidyInfo": { "type": "STRING", "description": "A brief, user-friendly explanation of the PM Surya Ghar subsidy applicable to the recommended system size in India." },
-                    "environmentalImpact": { "type": "STRING", "description": "A fun, relatable environmental impact stat, e.g., 'This is like planting 50 trees every year!'" }
+                    "estimatedMonthlyConsumptionKwh": { "type": "STRING" },
+                    "estimatedSystemSizeKw": { "type": "STRING" },
+                    "estimatedUpfrontCostInr": { "type": "STRING" },
+                    "estimatedMonthlySavingsInr": { "type": "STRING" },
+                    "paybackPeriodYears": { "type": "STRING" },
+                    "subsidyInfo": { "type": "STRING" },
+                    "environmentalImpact": { "type": "STRING" },
+                    "savingsProjection": { 
+                        "type": "ARRAY",
+                        "description": "An array of 25 numbers representing the cumulative savings in INR at the end of each year for 25 years.",
+                        "items": { "type": "NUMBER" }
+                    }
                 },
-                 "required": ["estimatedMonthlyConsumptionKwh", "estimatedSystemSizeKw", "estimatedUpfrontCostInr", "estimatedMonthlySavingsInr", "paybackPeriodYears", "subsidyInfo", "environmentalImpact"]
+                 "required": ["estimatedMonthlyConsumptionKwh", "estimatedSystemSizeKw", "estimatedUpfrontCostInr", "estimatedMonthlySavingsInr", "paybackPeriodYears", "subsidyInfo", "environmentalImpact", "savingsProjection"]
             };
 
             try {
@@ -426,6 +431,7 @@
             }
         });
 
+        let savingsChart = null; // To hold the chart instance
         function displayCalculatorResults(data) {
             calculatorResultsDiv.innerHTML = '';
             const container = createAndAppend('div', null, ['bg-white', 'p-6', 'md:p-8', 'rounded-lg', 'shadow-lg', 'border-l-4', 'border-[var(--primary-color)]'], calculatorResultsDiv);
@@ -448,6 +454,34 @@
             const futureGrid = createAndAppend('div', null, ['grid', 'grid-cols-2', 'gap-4', 'p-4', 'bg-gray-50', 'rounded-lg'], future);
             createInfoBox(futureGrid, 'Est. Monthly Savings:', data.estimatedMonthlySavingsInr || 'N/A');
             createInfoBox(futureGrid, 'Payback Period:', data.paybackPeriodYears || 'N/A', 'This is the estimated time it will take for your savings on electricity bills to equal the initial cost of the system.');
+
+            // --- Savings Projection Chart ---
+            if (data.savingsProjection && data.savingsProjection.length === 25) {
+                const chartContainer = createAndAppend('div', null, ['mt-6', 'pt-6', 'border-t'], container);
+                createAndAppend('h4', '25-Year Cumulative Savings Projection', ['font-bold', 'text-xl', 'mb-2', 'text-[var(--primary-color)]'], chartContainer);
+                const canvas = createAndAppend('canvas', null, [], chartContainer);
+                if (savingsChart) {
+                    savingsChart.destroy();
+                }
+                savingsChart = new Chart(canvas, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({ length: 25 }, (_, i) => `Year ${i + 1}`),
+                        datasets: [{
+                            label: 'Cumulative Savings (₹)',
+                            data: data.savingsProjection,
+                            borderColor: 'rgb(42, 157, 143)',
+                            backgroundColor: 'rgba(42, 157, 143, 0.1)',
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: { y: { beginAtZero: true, ticks: { callback: value => `₹${(value/1000)}k` } } }
+                    }
+                });
+            }
 
             const subsidyContainer = createAndAppend('div', null, ['mt-6', 'pt-6', 'border-t'], container);
             createAndAppend('h4', 'Government Subsidy (PM-Surya Ghar)', ['font-bold', 'text-xl', 'mb-2', 'text-[var(--primary-color)]'], subsidyContainer);
