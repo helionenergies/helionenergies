@@ -165,16 +165,11 @@
         <section id="contact" class="py-20">
             <div class="container mx-auto px-6">
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">Start Your Solar Journey Today</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Have a question? Fill out the form below for a free, no-obligation consultation, or email us directly at <a href="mailto:helionenergies@outlook.com" class="text-[var(--primary-color)] font-semibold hover:underline">helionenergies@outlook.com</a>.</p>
-                <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
-                    <form name="contact" method="POST" data-netlify="true">
-                        <div class="grid grid-cols-1 gap-6">
-                            <input type="text" name="name" placeholder="Your Name" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
-                            <input type="email" name="email" placeholder="Your Email" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
-                            <textarea name="message" rows="5" placeholder="Type your message here..." required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3"></textarea>
-                            <button type="submit" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md">Send Message</button>
-                        </div>
-                    </form>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Have a question? Click the button below for a free, no-obligation consultation, or email us directly at <a href="mailto:helionenergies@outlook.com" class="text-[var(--primary-color)] font-semibold hover:underline">helionenergies@outlook.com</a>.</p>
+                <div class="max-w-xl mx-auto text-center">
+                    <a href="YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" class="w-full inline-block primary-button text-white font-bold py-4 px-8 rounded-lg text-lg">
+                        Contact Us for a Free Consultation
+                    </a>
                 </div>
             </div>
         </section>
@@ -386,3 +381,25 @@
 
 </body>
 </html>
+```
+
+### Next Steps:
+
+1.  **Create Your Google Form:**
+    * Go to [forms.google.com](https://forms.google.com).
+    * Create a new form with fields like "Name," "Email," and "Message."
+    * Click the "Send" button in the top right.
+    * Go to the "Link" tab (it looks like a chain link).
+    * Click **"Copy"** to get the public link to your form.
+
+2.  **Update the Website Code:**
+    * In the code above, find this line in the Contact Section (around line 250):
+        `<a href="YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" ...>`
+    * **Replace** `YOUR_GOOGLE_FORM_LINK_HERE` with the actual link you just copied from Google Forms.
+
+3.  **Publish the Final Version:**
+    * Save the updated code as `index.html`.
+    * Upload this new file to your GitHub repository, replacing the old one.
+    * If you are using Netlify, the change will be detected and your site will be updated automatically.
+
+Now, your contact button will work perfectly every ti
