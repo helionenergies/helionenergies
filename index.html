@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Security Meta Tags -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://generativelanguage.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://placehold.co data:; connect-src 'self' https://generativelanguage.googleapis.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://generativelanguage.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://placehold.co data:; connect-src 'self' https://generativelanguage.googleapis.com; form-action 'self' https://formsubmit.co;">
     <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -61,6 +61,13 @@
             display: none; /* Hidden by default */
             margin: 20px auto;
         }
+        
+        .mini-spinner {
+             border: 2px solid rgba(0, 0, 0, 0.1);
+             width: 16px;
+             height: 16px;
+             border-left-color: var(--primary-color);
+        }
 
         @keyframes spin {
             0% {
@@ -69,6 +76,48 @@
             100% {
                 transform: rotate(360deg);
             }
+        }
+        
+        /* Tooltip Styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: var(--secondary-color);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.875rem;
+            font-weight: normal;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--secondary-color) transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
         }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -105,7 +154,7 @@
         <section id="ai-calculator" class="py-20 bg-[var(--light-gray)]">
             <div class="container mx-auto px-6">
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">✨ AI-Powered Solar Savings Calculator</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Enter your details below and let our AI assistant provide a personalized estimate of your potential solar savings and system requirements.</p>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Enter your details below and our AI will estimate your energy usage based on your state's tariffs to provide a more accurate solar recommendation.</p>
                 <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
                     <div class="grid grid-cols-1 gap-6">
                         <div>
@@ -114,7 +163,20 @@
                         </div>
                         <div>
                             <label for="location" class="block text-sm font-medium text-gray-700">Your City & State</label>
-                            <input type="text" id="location" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3" placeholder="e.g., Visakhapatnam, Andhra Pradesh">
+                            <input type="text" id="location" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3" placeholder="e.g., Mumbai, Maharashtra">
+                        </div>
+                        <!-- Provider dropdown - initially hidden -->
+                        <div id="provider-section" class="hidden">
+                            <label for="provider" class="block text-sm font-medium text-gray-700">Confirm Your Electricity Provider</label>
+                            <div class="flex items-center space-x-2 mt-1">
+                                <select id="provider" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3"></select>
+                                <div id="provider-spinner" class="spinner mini-spinner"></div>
+                            </div>
+                        </div>
+                         <!-- Other Provider Input - initially hidden -->
+                        <div id="other-provider-section" class="hidden">
+                             <label for="other-provider" class="block text-sm font-medium text-gray-700">Please specify your provider</label>
+                             <input type="text" id="other-provider" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3" placeholder="e.g., Your Local DISCOM">
                         </div>
                         <button id="calculate-savings-btn" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md flex items-center justify-center">
                             Calculate Savings
@@ -176,7 +238,10 @@
                             
                             <!-- FormSubmit Settings (Hidden) -->
                             <input type="hidden" name="_subject" value="New Contact Form Submission from Helionenergies Website!">
-                            <input type="hidden" name="_captcha" value="false"> <!-- You can remove this to enable the CAPTCHA -->
+                            <input type="hidden" name="_captcha" value="false">
+                            <!-- *** IMPORTANT: This line redirects the user back to your site after submission *** -->
+                            <input type="hidden" name="_next" value="https://helionenergiesindia.github.io/">
+
 
                             <!-- Submit Button -->
                             <button type="submit" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md">Send Message</button>
@@ -203,6 +268,11 @@
         const calculateBtn = document.getElementById('calculate-savings-btn');
         const billInput = document.getElementById('monthly-bill');
         const locationInput = document.getElementById('location');
+        const providerSection = document.getElementById('provider-section');
+        const providerSelect = document.getElementById('provider');
+        const providerSpinner = document.getElementById('provider-spinner');
+        const otherProviderSection = document.getElementById('other-provider-section');
+        const otherProviderInput = document.getElementById('other-provider');
         const calculatorResultsDiv = document.getElementById('calculator-results');
         const calculatorSpinner = document.getElementById('calculator-spinner');
 
@@ -212,36 +282,88 @@
 
         /**
          * A helper function to safely create and append a DOM element.
-         * @param {string} tag The HTML tag to create.
-         * @param {string} text The text content for the element.
-         * @param {string[]} classes An array of Tailwind CSS classes.
-         * @param {HTMLElement} parent The parent element to append to.
-         * @returns {HTMLElement} The created element.
          */
         function createAndAppend(tag, text, classes = [], parent) {
             const element = document.createElement(tag);
-            if (text) {
-                element.textContent = text;
-            }
-            if (classes.length > 0) {
-                element.classList.add(...classes);
-            }
+            if (text) element.textContent = text;
+            if (classes.length > 0) element.classList.add(...classes);
             parent.appendChild(element);
             return element;
         }
+
+        // --- New Feature: AI Provider Detection ---
+        let debounceTimer;
+        locationInput.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const location = locationInput.value;
+                // BUG FIX: Changed from > 5 to >= 4 to include shorter city names like 'Delhi' or 'Pune'
+                if (location.length >= 4) { 
+                    fetchProviders(location);
+                } else {
+                    providerSection.classList.add('hidden');
+                    otherProviderSection.classList.add('hidden');
+                }
+            }, 1000); 
+        });
+
+        providerSelect.addEventListener('change', () => {
+            if (providerSelect.value === 'other') {
+                otherProviderSection.classList.remove('hidden');
+            } else {
+                otherProviderSection.classList.add('hidden');
+            }
+        });
+
+        async function fetchProviders(location) {
+            providerSection.classList.remove('hidden');
+            otherProviderSection.classList.add('hidden');
+            providerSpinner.style.display = 'block';
+            providerSelect.innerHTML = '<option>Loading providers...</option>';
+
+            const prompt = `List the main electricity distribution companies (DISCOMs) for ${location}, India. Return only a simple comma-separated list. For example: TATA Power, Adani Electricity, MSEDCL`;
+            
+            try {
+                const result = await callGemini(prompt);
+                const providers = result.split(',').map(p => p.trim());
+                providerSelect.innerHTML = ''; 
+                providers.forEach(p => {
+                    const option = document.createElement('option');
+                    option.value = p;
+                    option.textContent = p;
+                    providerSelect.appendChild(option);
+                });
+                // Add the "Other" option
+                const otherOption = document.createElement('option');
+                otherOption.value = 'other';
+                otherOption.textContent = 'My provider is not listed';
+                providerSelect.appendChild(otherOption);
+
+            } catch (error) {
+                console.error("Could not fetch providers:", error);
+                providerSelect.innerHTML = '<option value="other">Please specify provider</option>';
+                otherProviderSection.classList.remove('hidden');
+            } finally {
+                providerSpinner.style.display = 'none';
+            }
+        }
+
 
         // --- Feature 1: AI Savings Calculator ---
         calculateBtn.addEventListener('click', async () => {
             const bill = billInput.value;
             const location = locationInput.value;
+            
+            let provider;
+            if (providerSelect.value === 'other') {
+                provider = otherProviderInput.value;
+            } else {
+                provider = providerSelect.value;
+            }
 
-            if (!bill || !location) {
-                // In a real app, you'd use a more elegant modal/notification
-                // but alert is fine for this example.
-                const tempAlert = document.createElement('div');
-                tempAlert.textContent = 'Please enter both your monthly bill and location.';
+            if (!bill || !location || !provider) {
+                const tempAlert = createAndAppend('div', 'Please fill all fields, including your provider.', [], document.body);
                 tempAlert.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background-color:var(--accent-color);color:white;padding:1rem;border-radius:0.5rem;z-index:100;';
-                document.body.appendChild(tempAlert);
                 setTimeout(() => tempAlert.remove(), 3000);
                 return;
             }
@@ -251,27 +373,33 @@
             calculateBtn.disabled = true;
             calculateBtn.textContent = 'Calculating...';
 
-            const prompt = `Act as a solar energy expert for India. A potential customer has an average monthly electricity bill of INR ${bill} in ${location}. Based on this, provide a concise solar energy potential analysis.`;
+            const prompt = `Act as a solar energy expert for India with precise, database-level knowledge of state-wise electricity tariffs. A potential customer in ${location}, served by the provider "${provider}", has an average monthly electricity bill of INR ${bill}. 
+            Your primary task is to be as accurate as possible.
+            1. Using the exact residential tariff structure for "${provider}" in ${location}, perform a reverse calculation to estimate their approximate monthly electricity consumption in kWh (units). State any minor assumptions made, like "Assuming a standard residential LT connection".
+            2. Based on this precise consumption estimate, provide a concise solar energy potential analysis.`;
             
             const schema = {
                 type: "OBJECT",
                 properties: {
-                    "estimatedSystemSizeKw": { "type": "STRING", "description": "Estimated solar system size in kW, e.g., '3-4 kW'" },
-                    "estimatedUpfrontCostInr": { "type": "STRING", "description": "A rough estimate of the upfront installation cost in INR, e.g., '₹1,80,000 - ₹2,40,000'" },
-                    "estimatedMonthlySavingsInr": { "type": "STRING", "description": "Estimated savings on their electricity bill in INR per month, e.g., '₹2,000 - ₹2,500'" },
-                    "paybackPeriodYears": { "type": "STRING", "description": "Estimated time to recover the investment, e.g., '5-7 years'" },
-                    "subsidyInfo": { "type": "STRING", "description": "A brief, user-friendly explanation of relevant central government subsidies (like PM Surya Ghar) for a residential system in India. Mention the potential subsidy amount." },
+                    "estimatedMonthlyConsumptionKwh": { "type": "STRING", "description": "The estimated monthly electricity consumption in kWh, e.g., '350-400 kWh'" },
+                    "estimatedSystemSizeKw": { "type": "STRING", "description": "Recommended solar system size in kW to cover this consumption, e.g., '3 kW'" },
+                    "estimatedUpfrontCostInr": { "type": "STRING", "description": "A rough estimate of the upfront installation cost in INR, e.g., '₹1,80,000 - ₹2,10,000'" },
+                    "estimatedMonthlySavingsInr": { "type": "STRING", "description": "Estimated savings on their electricity bill in INR per month, e.g., '₹2,200 - ₹2,500'" },
+                    "paybackPeriodYears": { "type": "STRING", "description": "Estimated time to recover the investment, e.g., '6-8 years'" },
+                    "subsidyInfo": { "type": "STRING", "description": "A brief, user-friendly explanation of the PM Surya Ghar subsidy applicable to the recommended system size in India." },
                     "environmentalImpact": { "type": "STRING", "description": "A fun, relatable environmental impact stat, e.g., 'This is like planting 50 trees every year!'" }
                 },
-                 "required": ["estimatedSystemSizeKw", "estimatedUpfrontCostInr", "estimatedMonthlySavingsInr", "paybackPeriodYears", "subsidyInfo", "environmentalImpact"]
+                 "required": ["estimatedMonthlyConsumptionKwh", "estimatedSystemSizeKw", "estimatedUpfrontCostInr", "estimatedMonthlySavingsInr", "paybackPeriodYears", "subsidyInfo", "environmentalImpact"]
             };
 
             try {
-                const result = await callGemini(prompt, schema);
-                displayCalculatorResults(JSON.parse(result));
+                const rawResult = await callGemini(prompt, schema);
+                const parsedResult = JSON.parse(rawResult);
+                displayCalculatorResults(parsedResult);
             } catch (error) {
-                console.error('Error:', error);
-                const errorPara = createAndAppend('p', "Sorry, we couldn't process your request at the moment. Please try again later.", ['text-center', 'text-red-500'], calculatorResultsDiv);
+                console.error('API or Parsing Error:', error);
+                calculatorResultsDiv.innerHTML = '';
+                createAndAppend('p', error.message || "Sorry, we couldn't process your request. Please try again later.", ['text-center', 'text-red-500'], calculatorResultsDiv);
             } finally {
                 calculatorSpinner.style.display = 'none';
                 calculateBtn.disabled = false;
@@ -280,31 +408,44 @@
         });
 
         function displayCalculatorResults(data) {
-            // Clear previous results
             calculatorResultsDiv.innerHTML = '';
-
-            // Create elements programmatically to prevent XSS
-            const container = createAndAppend('div', null, ['bg-white', 'p-8', 'rounded-lg', 'shadow-lg', 'border-l-4', 'border-[var(--primary-color)]'], calculatorResultsDiv);
+            const container = createAndAppend('div', null, ['bg-white', 'p-6', 'md:p-8', 'rounded-lg', 'shadow-lg', 'border-l-4', 'border-[var(--primary-color)]'], calculatorResultsDiv);
             createAndAppend('h3', 'Your Personalized Solar Estimate', ['text-2xl', 'font-bold', 'text-center', 'mb-6', 'text-[var(--secondary-color)]'], container);
 
-            const grid = createAndAppend('div', null, ['grid', 'grid-cols-1', 'md:grid-cols-2', 'gap-6', 'text-lg'], container);
-
-            function createInfoBox(label, value) {
-                const box = createAndAppend('div', null, ['p-4', 'bg-gray-50', 'rounded-md'], grid);
-                const strong = createAndAppend('strong', `${label}: `, [], box);
-                box.appendChild(document.createTextNode(value));
-            }
-
-            createInfoBox('System Size', data.estimatedSystemSizeKw);
-            createInfoBox('Est. Monthly Savings', data.estimatedMonthlySavingsInr);
-            createInfoBox('Est. Upfront Cost', data.estimatedUpfrontCostInr);
-            createInfoBox('Payback Period', data.paybackPeriodYears);
+            const currentSituation = createAndAppend('div', null, ['mb-6'], container);
+            createAndAppend('h4', 'Your Current Situation', ['text-xl', 'font-bold', 'mb-3', 'text-[var(--primary-color)]'], currentSituation);
+            const currentGrid = createAndAppend('div', null, ['grid', 'grid-cols-2', 'gap-4', 'p-4', 'bg-gray-50', 'rounded-lg'], currentSituation);
+            createInfoBox(currentGrid, 'Monthly Bill:', `₹ ${billInput.value}`);
+            createInfoBox(currentGrid, 'Est. Consumption:', data.estimatedMonthlyConsumptionKwh || 'N/A');
             
-            const subsidyContainer = createAndAppend('div', null, ['mt-6', 'pt-6', 'border-t'], container);
-            createAndAppend('h4', 'Government Subsidy Info (PM-Surya Ghar)', ['font-bold', 'text-xl', 'mb-2', 'text-[var(--primary-color)]'], subsidyContainer);
-            createAndAppend('p', data.subsidyInfo, ['text-gray-700'], subsidyContainer);
+            const solution = createAndAppend('div', null, ['mb-6'], container);
+            createAndAppend('h4', 'Our Recommended Solar Solution', ['text-xl', 'font-bold', 'mb-3', 'text-[var(--primary-color)]'], solution);
+            const solutionGrid = createAndAppend('div', null, ['grid', 'grid-cols-2', 'gap-4', 'p-4', 'bg-gray-50', 'rounded-lg'], solution);
+            createInfoBox(solutionGrid, 'System Size:', data.estimatedSystemSizeKw || 'N/A', 'A kilowatt (kW) is a measure of power. This is the peak power your solar system can generate at any instant under ideal conditions.');
+            createInfoBox(solutionGrid, 'Est. Upfront Cost:', data.estimatedUpfrontCostInr || 'N/A', 'This is a ballpark figure for the total cost of installation, including panels, inverter, and labor, before any subsidies.');
 
+            const future = createAndAppend('div', null, [], container);
+            createAndAppend('h4', 'Your New Financial Future', ['text-xl', 'font-bold', 'mb-3', 'text-[var(--primary-color)]'], future);
+            const futureGrid = createAndAppend('div', null, ['grid', 'grid-cols-2', 'gap-4', 'p-4', 'bg-gray-50', 'rounded-lg'], future);
+            createInfoBox(futureGrid, 'Est. Monthly Savings:', data.estimatedMonthlySavingsInr || 'N/A');
+            createInfoBox(futureGrid, 'Payback Period:', data.paybackPeriodYears || 'N/A', 'This is the estimated time it will take for your savings on electricity bills to equal the initial cost of the system.');
+
+            const subsidyContainer = createAndAppend('div', null, ['mt-6', 'pt-6', 'border-t'], container);
+            createAndAppend('h4', 'Government Subsidy (PM-Surya Ghar)', ['font-bold', 'text-xl', 'mb-2', 'text-[var(--primary-color)]'], subsidyContainer);
+            createAndAppend('p', data.subsidyInfo, ['text-gray-700'], subsidyContainer);
             createAndAppend('div', `🌍 ${data.environmentalImpact}`, ['mt-6', 'text-center', 'text-xl', 'font-semibold', 'text-green-600', 'bg-green-50', 'p-4', 'rounded-lg'], container);
+            
+            createAndAppend('p', '*All figures are estimates based on the data provided and typical conditions. A detailed site survey is required for a final quote.', ['text-xs', 'text-gray-500', 'text-center', 'mt-6'], container);
+
+            function createInfoBox(parent, label, value, tooltipText = '') {
+                const box = createAndAppend('div', null, ['text-lg'], parent);
+                createAndAppend('strong', label, ['block', 'text-base', 'font-semibold', 'text-gray-600'], box);
+                const valueSpan = createAndAppend('span', value, ['text-[var(--secondary-color)]', 'font-bold'], box);
+                if (tooltipText) {
+                    const tooltip = createAndAppend('div', null, ['tooltip', 'ml-2'], valueSpan);
+                    tooltip.innerHTML = `<span class="text-xs bg-gray-300 text-gray-700 rounded-full px-2 py-1">?</span><span class="tooltiptext">${tooltipText}</span>`;
+                }
+            }
         }
 
         // --- Feature 2: AI-Powered Blog/News ---
@@ -313,10 +454,8 @@
             blogContentDiv.innerHTML = '';
             generateBlogBtn.disabled = true;
             generateBlogBtn.textContent = 'Generating...';
-
             const date = new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             const prompt = `Act as a renewable energy journalist in India. Write a short, optimistic, and engaging blog post (about 150 words) for the Helionenergies website. The topic should be a recent positive trend, technology, or policy news in the Indian solar energy sector. Today's date is ${date}. Start with a catchy headline.`;
-
             try {
                 const result = await callGemini(prompt);
                 displayBlog(result);
@@ -334,12 +473,9 @@
         function displayBlog(content) {
             blogContentDiv.innerHTML = '';
             const container = createAndAppend('div', null, ['bg-white', 'p-8', 'rounded-lg', 'shadow-lg', 'border-t-4', 'border-[var(--accent-color)]'], container);
-            
             const lines = content.split('\n');
-            const headline = lines.shift() || "News Update"; // Use first line as headline
-            
+            const headline = lines.shift() || "News Update";
             createAndAppend('h3', headline, ['text-2xl', 'font-bold', 'mb-4', 'text-[var(--secondary-color)]'], container);
-
             const bodyContainer = createAndAppend('div', null, ['space-y-4'], container);
             lines.forEach(pText => {
                 if (pText.trim() !== '') {
@@ -348,43 +484,32 @@
             });
         }
 
-
         // --- Reusable Gemini API Call Function ---
         async function callGemini(prompt, schema = null) {
             const apiKey = ""; // Leave empty, handled by the environment
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-            
-            let payload = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }]
-            };
-
+            let payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
             if (schema) {
                 payload.generationConfig = {
                     responseMimeType: "application/json",
                     responseSchema: schema
                 };
             }
-            
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-
             if (!response.ok) {
                 throw new Error(`API call failed with status: ${response.status}`);
             }
-
             const result = await response.json();
-            
-            if (result.candidates && result.candidates.length > 0 &&
-                result.candidates[0].content && result.candidates[0].content.parts &&
-                result.candidates[0].content.parts.length > 0) {
+            if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
                 return result.candidates[0].content.parts[0].text;
             } else {
                 console.error("Unexpected API response structure:", result);
                 if (result.promptFeedback && result.promptFeedback.blockReason) {
-                    throw new Error(`Request was blocked. Reason: ${result.promptFeedback.blockReason}`);
+                    throw new Error(`Request blocked by API. Reason: ${result.promptFeedback.blockReason}`);
                 }
                 throw new Error('Content not found in API response.');
             }
