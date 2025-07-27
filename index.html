@@ -167,11 +167,11 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">Start Your Solar Journey Today</h2>
                 <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Have a question? Fill out the form below for a free, no-obligation consultation, or email us directly at <a href="mailto:helionenergies@outlook.com" class="text-[var(--primary-color)] font-semibold hover:underline">helionenergies@outlook.com</a>.</p>
                 <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
-                    <form id="contact-form" action="https://formspree.io/f/your_form_id" method="POST">
+                    <form name="contact" method="POST" data-netlify="true">
                         <div class="grid grid-cols-1 gap-6">
                             <input type="text" name="name" placeholder="Your Name" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
                             <input type="email" name="email" placeholder="Your Email" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
-                            <textarea id="question-input" name="message" rows="5" placeholder="Type your message here..." required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3"></textarea>
+                            <textarea name="message" rows="5" placeholder="Type your message here..." required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3"></textarea>
                             <button type="submit" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md">Send Message</button>
                         </div>
                     </form>
