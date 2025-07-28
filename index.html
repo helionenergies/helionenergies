@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Security Meta Tags -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://generativelanguage.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://placehold.co data:; connect-src 'self' https://generativelanguage.googleapis.com; form-action 'self' https://formsubmit.co;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://placehold.co data:; connect-src 'self'; form-action 'self' https://formsubmit.co;">
     <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
-    <title>Helionenergies - India's Solar Marketplace & Calculator</title>
+    <title>Helionenergies - India's Solar Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
@@ -42,11 +42,11 @@
         <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <a href="#" class="text-3xl font-bold font-logo" style="color: var(--primary-color);">Helionenergies</a>
             <ul class="hidden md:flex items-center space-x-8">
-                <li><a href="#calculator" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">💰 Savings Calculator</a></li>
                 <li><a href="#marketplace" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">🛍️ Marketplace</a></li>
+                <li><a href="#news" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">📡 Live News</a></li>
+                <li><a href="#policies" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">⚖️ Policy Helper</a></li>
                 <li><a href="#about" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">About Us</a></li>
                 <li><a href="#for-vendors" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">For Vendors</a></li>
-                <li><a href="#contact" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">Contact</a></li>
             </ul>
             <a href="#marketplace" class="hidden md:block cta-button text-white font-bold py-2 px-6 rounded-lg">Browse Products</a>
         </nav>
@@ -57,48 +57,16 @@
         <section class="bg-cover bg-center text-white" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2070')">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-24 md:py-32">
                 <h1 class="text-4xl md:text-6xl font-bold mb-4">India's Solar Marketplace.</h1>
-                <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Calculate your savings, browse solar products, and connect with trusted local installers—all in one place.</p>
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <a href="#calculator" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">💰 Calculate Your Savings</a>
-                    <a href="#marketplace" class="primary-button text-white font-bold py-4 px-8 rounded-lg text-lg">🛍️ Browse Marketplace</a>
-                </div>
+                <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Browse solar products, compare prices, and connect with trusted local installers—all in one place.</p>
+                <a href="#marketplace" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">🛍️ Start Browsing</a>
             </div>
         </section>
 
-        <!-- Savings Calculator Section -->
-        <section id="calculator" class="py-24">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">💰 Savings & System Size Calculator</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Don't know what you need? Start here. Enter your electricity bill to get a quick, reliable estimate of the perfect system size for your home.</p>
-                 <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
-                    <div class="grid grid-cols-1 gap-6">
-                        <div>
-                            <label for="monthly-bill" class="block text-sm font-medium text-gray-700">Average Monthly Electricity Bill (in ₹)</label>
-                            <input type="number" id="monthly-bill" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3" placeholder="e.g., 2500">
-                        </div>
-                        <div>
-                            <label for="state-select" class="block text-sm font-medium text-gray-700">Select Your State/UT</label>
-                            <select id="state-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3"></select>
-                        </div>
-                        <div id="provider-section" class="hidden">
-                            <label for="provider-select" class="block text-sm font-medium text-gray-700">Select Your Electricity Provider</label>
-                            <select id="provider-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3"></select>
-                        </div>
-                        <button id="calculate-savings-btn" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md flex items-center justify-center">
-                            Calculate My System Size
-                        </button>
-                    </div>
-                </div>
-                <div id="calculator-spinner" class="spinner"></div>
-                <div id="calculator-results" class="mt-12 max-w-3xl mx-auto"></div>
-            </div>
-        </section>
-        
         <!-- Solar Marketplace Section -->
         <section id="marketplace" class="py-24 bg-[var(--light-gray)]">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">🛍️ Solar Products Marketplace</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Know what you need? Browse our curated selection of top-quality solar equipment.</p>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Find the right equipment for your needs. Select a product to get quotes from installers in your area.</p>
                 
                 <!-- Product Grid -->
                 <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -106,7 +74,7 @@
                 </div>
             </div>
         </section>
-
+        
         <!-- How It Works Section -->
         <section id="how-it-works" class="py-24">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -114,20 +82,60 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
                     <div class="flex flex-col items-center">
                         <div class="bg-[var(--primary-color)] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-4">1</div>
-                        <h3 class="text-xl font-bold mb-2 text-[var(--secondary-color)]">Calculate or Browse</h3>
-                        <p class="text-gray-600">Use our calculator to find your ideal system size, or browse our marketplace to explore specific products.</p>
+                        <h3 class="text-xl font-bold mb-2 text-[var(--secondary-color)]">Browse & Compare</h3>
+                        <p class="text-gray-600">Explore a wide range of solar panels, inverters, and batteries from top brands. Compare specifications and get information.</p>
                     </div>
                     <div class="flex flex-col items-center">
                         <div class="bg-[var(--primary-color)] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-4">2</div>
                         <h3 class="text-xl font-bold mb-2 text-[var(--secondary-color)]">Request Free Quotes</h3>
-                        <p class="text-gray-600">Once you know what you need, request quotes. We'll send your request to our network of verified local installers.</p>
+                        <p class="text-gray-600">Select a product you're interested in and provide your location. We'll find trusted local installers for you.</p>
                     </div>
                     <div class="flex flex-col items-center">
                         <div class="bg-[var(--primary-color)] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-4">3</div>
-                        <h3 class="text-xl font-bold mb-2 text-[var(--secondary-color)]">Compare & Connect</h3>
+                        <h3 class="text-xl font-bold mb-2 text-[var(--secondary-color)]">Connect & Save</h3>
                         <p class="text-gray-600">You'll receive competitive quotes from multiple installers, allowing you to choose the best option for your home and budget.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- AI Policy Helper Section -->
+        <section id="policies" class="py-24 bg-[var(--light-gray)]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">⚖️ Policy Helper</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Solar policies can be confusing. Select a policy below to get a simple, clear explanation of what it means for you.</p>
+                <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label for="policy-select" class="block text-sm font-medium text-gray-700">Select a Policy to Understand</label>
+                            <select id="policy-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
+                                <option value="">-- Choose a policy --</option>
+                                <option value="PM Surya Ghar: Muft Bijli Yojana">PM Surya Ghar: Muft Bijli Yojana</option>
+                                <option value="Net Metering Policy in India">Net Metering Policy</option>
+                                <option value="PM-KUSUM Scheme">PM-KUSUM Scheme</option>
+                            </select>
+                        </div>
+                        <button id="clarify-policy-btn" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md">
+                            Explain This Policy
+                        </button>
+                    </div>
+                </div>
+                <div id="policy-spinner" class="spinner"></div>
+                <div id="policy-results" class="mt-12 max-w-3xl mx-auto"></div>
+            </div>
+        </section>
+
+        <!-- Live Solar News Section -->
+        <section id="news" class="py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">📡 Live Solar News Feed</h2>
+                <p class="text-gray-600 mb-8 max-w-2xl mx-auto">The latest updates on government policies, technology, and trends in the Indian solar sector.</p>
+                <div id="news-spinner" class="spinner"></div>
+                <div id="news-content" class="max-w-2xl mx-auto text-left">
+                </div>
+                <button id="refresh-news-btn" class="mt-8 cta-button text-white font-bold py-3 px-6 rounded-lg text-lg hidden">
+                    Refresh Feed
+                </button>
             </div>
         </section>
 
@@ -179,7 +187,7 @@
                             <input type="email" name="email" placeholder="Your Email" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
                             <textarea name="message" rows="5" placeholder="Your Message (e.g., 'I am an installer interested in partnership.')" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3"></textarea>
                             <input type="hidden" name="_subject" value="New Inquiry from Helionenergies Website!">
-                            <input type="hidden" name="_next" value="https://helionenergiesindia.github.io/">
+                            <input type="hidden" name="_next" id="contact-redirect-url">
                             <button type="submit" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md">Send Message</button>
                         </div>
                     </form>
@@ -198,7 +206,7 @@
             <p class="text-gray-600">To get quotes for <strong id="modal-product-name" class="text-[var(--primary-color)]"></strong>, please provide your details. We'll connect you with local installers.</p>
             <form id="lead-form" action="https://formsubmit.co/helionenergies@outlook.com" method="POST">
                 <input type="hidden" name="_subject" id="lead-subject">
-                <input type="hidden" name="_next" value="https://helionenergiesindia.github.io/?lead-success=true#marketplace">
+                <input type="hidden" name="_next" id="lead-redirect-url">
                 <div class="space-y-4">
                     <input type="text" name="name" placeholder="Your Name" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
                     <input type="email" name="email" placeholder="Your Email" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
@@ -230,109 +238,48 @@
             return element;
         }
 
-        // --- SIMULATED AI RESPONSES (FOR RELIABILITY) ---
-        function getSimulatedCalculation(bill, provider, state) {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    const consumption = Math.round((bill / 7.5) * 1.1); // Simplified estimation
-                    const systemSize = Math.ceil(consumption / 120); // 4 units/day/kW
-                    const result = {
-                        estimatedMonthlyConsumptionKwh: `${consumption - 20}-${consumption + 20} kWh`,
-                        estimatedSystemSizeKw: `${systemSize} kW`,
-                    };
-                    resolve(result);
-                }, 1500);
-            });
-        }
-
-        // --- SAVINGS CALCULATOR ---
-        const calculateBtn = document.getElementById('calculate-savings-btn');
-        const billInput = document.getElementById('monthly-bill');
-        const stateSelect = document.getElementById('state-select');
-        const providerSection = document.getElementById('provider-section');
-        const providerSelect = document.getElementById('provider-select');
-        const calculatorResultsDiv = document.getElementById('calculator-results');
-        const calculatorSpinner = document.getElementById('calculator-spinner');
+        // --- SIMULATED DATA (FOR RELIABILITY) ---
+        const products = [
+            { name: "Waaree 540W Bifacial Solar Panel", image: "https://images.unsplash.com/photo-1545208942-e1c9c9165d57?q=80&w=800", spec: "High-efficiency bifacial panels capture light from both sides." },
+            { name: "Loom Solar 550W Mono PERC Panel", image: "https://images.unsplash.com/photo-1629233832133-2458145971a5?q=80&w=800", spec: "Top-tier monocrystalline cells for excellent performance in low light." },
+            { name: "Adani 530W Monocrystalline Panel", image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9c?q=80&w=800", spec: "Robust design with high power output, made in India." },
+            { name: "SolarEdge 5kW String Inverter", image: "https://images.unsplash.com/photo-1620388250894-32d473269036?q=80&w=800", spec: "Advanced string inverter with module-level monitoring and safety features." },
+            { name: "Enphase IQ7+ Microinverter", image: "https://images.unsplash.com/photo-1558495033-6997a55c8c92?q=80&w=800", spec: "Converts DC to AC at each panel, maximizing output and reliability." },
+            { name: "Luminous 150Ah Solar Battery", image: "https://images.unsplash.com/photo-1617933423532-d586134b6e41?q=80&w=800", spec: "Tall tubular battery designed for long life and deep cycle applications." },
+        ];
         
-        const providersByState = {
-            "Andaman & Nicobar Islands": ["Electricity Department, Andaman & Nicobar"], "Andhra Pradesh": ["APEPDCL", "APSPDCL", "APCPDCL"], "Arunachal Pradesh": ["Department of Power, Arunachal Pradesh"], "Assam": ["Assam Power Distribution Company Ltd (APDCL)"], "Bihar": ["North Bihar Power Distribution Company Ltd (NBPDCL)", "South Bihar Power Distribution Company Ltd (SBPDCL)"], "Chandigarh": ["Electricity Department, Chandigarh"], "Chhattisgarh": ["Chhattisgarh State Power Distribution Co. Ltd (CSPDCL)"], "Dadra & Nagar Haveli and Daman & Diu": ["DNH Power Distribution Corporation Ltd"], "Delhi": ["Tata Power Delhi Distribution Ltd (TPDDL)", "BSES Rajdhani Power Ltd (BRPL)", "BSES Yamuna Power Ltd (BYPL)", "NDMC"], "Goa": ["Electricity Department, Goa"], "Gujarat": ["Dakshin Gujarat Vij Company Ltd (DGVCL)", "Madhya Gujarat Vij Company Ltd (MGVCL)", "Paschim Gujarat Vij Company Ltd (PGVCL)", "Uttar Gujarat Vij Company Ltd (UGVCL)", "Torrent Power (Ahmedabad/Surat)"], "Haryana": ["Dakshin Haryana Bijli Vitran Nigam (DHBVN)", "Uttar Haryana Bijli Vitran Nigam (UHBVN)"], "Himachal Pradesh": ["Himachal Pradesh State Electricity Board Ltd (HPSEBL)"], "Jammu & Kashmir": ["Jammu and Kashmir Power Development Department (JKPDD)"], "Jharkhand": ["Jharkhand Bijli Vitran Nigam Ltd (JBVNL)"], "Karnataka": ["Bangalore Electricity Supply Company Ltd (BESCOM)", "Chamundeshwari Electricity Supply Corporation Ltd (CESC)", "Gulbarga Electricity Supply Company Ltd (GESCOM)", "Hubli Electricity Supply Company Ltd (HESCOM)", "Mangalore Electricity Supply Company Ltd (MESCOM)"], "Kerala": ["Kerala State Electricity Board Ltd (KSEBL)"], "Ladakh": ["Power Development Department, Ladakh"], "Lakshadweep": ["Lakshadweep Electricity Department"], "Madhya Pradesh": ["MP Poorv Kshetra Vidyut Vitaran Co. Ltd (MPPKVVCL)", "MP Madhya Kshetra Vidyut Vitaran Co. Ltd (MPMKVVCL)", "MP Paschim Kshetra Vidyut Vitaran Co. Ltd (MPPKVVCL)"], "Maharashtra": ["Maharashtra State Electricity Distribution Co. Ltd (MSEDCL)", "Adani Electricity Mumbai Ltd", "Tata Power (Mumbai)", "Brihanmumbai Electric Supply and Transport (BEST)"], "Manipur": ["Manipur State Power Distribution Company Ltd (MSPDCL)"], "Meghalaya": ["Meghalaya Power Distribution Corporation Ltd (MePDCL)"], "Mizoram": ["Power & Electricity Department, Mizoram"], "Nagaland": ["Department of Power, Nagaland"], "Odisha": ["TP Central Odisha Distribution Ltd (TPCODL)", "TP Northern Odisha Distribution Ltd (TPNODL)", "TP Southern Odisha Distribution Ltd (TPSODL)", "TP Western Odisha Distribution Ltd (TPWODL)"], "Puducherry": ["Electricity Department, Puducherry"], "Punjab": ["Punjab State Power Corporation Ltd (PSPCL)"], "Rajasthan": ["Jaipur Vidyut Vitran Nigam Ltd (JVVNL)", "Ajmer Vidyut Vitran Nigam Ltd (AVVNL)", "Jodhpur Vidyut Vitran Nigam Ltd (JdVVNL)"], "Sikkim": ["Energy & Power Department, Sikkim"], "Tamil Nadu": ["Tamil Nadu Generation and Distribution Corporation Ltd (TANGEDCO)"], "Telangana": ["Northern Power Distribution Company of Telangana Ltd (TSNPDCL)", "Southern Power Distribution Company of Telangana Ltd (TSSPDCL)"], "Tripura": ["Tripura State Electricity Corporation Ltd (TSECL)"], "Uttar Pradesh": ["Dakshinanchal Vidyut Vitran Nigam Ltd (DVVNL)", "Madhyanchal Vidyut Vitran Nigam Ltd (MVVNL)", "Paschimanchal Vidyut Vitran Nigam Ltd (PVVNL)", "Purvanchal Vidyut Vitran Nigam Ltd (PuVVNL)", "Kanpur Electricity Supply Company (KESCO)"], "Uttarakhand": ["Uttarakhand Power Corporation Ltd (UPCL)"], "West Bengal": ["West Bengal State Electricity Distribution Company Ltd (WBSEDCL)", "CESC Limited (Kolkata)"]
+        const policies = {
+            "PM Surya Ghar: Muft Bijli Yojana": {
+                explanation: "This is a central government scheme for residential households. It provides a significant subsidy to reduce the upfront cost of installing a rooftop solar system, making it more affordable for homeowners. To apply, you must register on the National Portal for Rooftop Solar, choose a registered vendor, and submit your application through the portal.",
+                sources: ["https://pmsuryaghar.gov.in/"]
+            },
+            "Net Metering Policy in India": {
+                explanation: "Net Metering is a billing mechanism that credits solar energy system owners for the electricity they add to the grid. If your system produces more electricity than you consume, the excess is sent to the grid, and your electricity bill is reduced accordingly. The specific rates and regulations vary by state, so it's important to check with your local DISCOM.",
+                sources: ["https://mnre.gov.in/"]
+            },
+            "PM-KUSUM Scheme": {
+                explanation: "The Pradhan Mantri Kisan Urja Suraksha evam Utthaan Mahabhiyan (PM-KUSUM) scheme is for farmers. It aims to provide financial security by encouraging the use of solar power in agriculture. The scheme has three components: setting up small solar power plants on barren land, installing solar-powered agriculture pumps, and solarizing existing grid-connected pumps.",
+                sources: ["https://pmkusum.mnre.gov.in/"]
+            }
         };
 
-        function populateStateDropdown() {
-            const states = Object.keys(providersByState);
-            stateSelect.innerHTML = '<option value="">-- Select Your State --</option>';
-            states.forEach(state => {
-                const option = createAndAppend('option', state, [], stateSelect);
-                option.value = state;
-            });
-        }
+        const news = {
+            newsItem: "India Surpasses 100 GW Renewable Energy Milestone\n\nIn a landmark achievement, India's total installed renewable energy capacity has crossed the 100 Gigawatt (GW) mark. This significant milestone underscores the country's commitment to its ambitious climate goals and its rapid transition towards clean energy sources. The growth has been primarily driven by the solar sector, which has seen exponential expansion due to favorable government policies and decreasing technology costs. This achievement puts India firmly on track to meet its target of 500 GW of non-fossil fuel capacity by 2030.",
+            sourceUrl: "https://mnre.gov.in/"
+        };
 
-        stateSelect.addEventListener('change', () => {
-            const selectedState = stateSelect.value;
-            if (selectedState) {
-                const providers = providersByState[selectedState];
-                providerSelect.innerHTML = '';
-                providers.forEach(provider => {
-                    const option = createAndAppend('option', provider, [], providerSelect);
-                    option.value = provider;
-                });
-                providerSection.classList.remove('hidden');
-            } else {
-                providerSection.classList.add('hidden');
-            }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            displayNews(news.newsItem, news.sourceUrl);
+            const contactRedirectUrlInput = document.getElementById('contact-redirect-url');
+            const leadRedirectUrlInput = document.getElementById('lead-redirect-url');
+            if(contactRedirectUrlInput) contactRedirectUrlInput.value = `${window.location.origin}${window.location.pathname}?contact-success=true#contact`;
+            if(leadRedirectUrlInput) leadRedirectUrlInput.value = `${window.location.origin}${window.location.pathname}?lead-success=true#marketplace`;
         });
 
-        calculateBtn.addEventListener('click', async () => {
-            const bill = billInput.value;
-            const state = stateSelect.value;
-            const provider = providerSelect.value;
-
-            if (!bill || !state || !provider) {
-                alert('Please fill all fields, including your state and provider.');
-                return;
-            }
-
-            calculatorSpinner.style.display = 'block';
-            calculatorResultsDiv.innerHTML = '';
-            calculateBtn.disabled = true;
-            calculateBtn.textContent = 'Calculating...';
-
-            try {
-                const result = await getSimulatedCalculation(bill, provider, state);
-                displayCalculatorResults(result);
-            } catch (error) {
-                console.error('Calculation Error:', error);
-                calculatorResultsDiv.innerHTML = `<p class="text-center text-red-500">Could not calculate savings at this time.</p>`;
-            } finally {
-                calculatorSpinner.style.display = 'none';
-                calculateBtn.disabled = false;
-                calculateBtn.textContent = 'Calculate My System Size';
-            }
-        });
-        
-        function displayCalculatorResults(data) {
-            calculatorResultsDiv.innerHTML = '';
-            const container = createAndAppend('div', null, ['bg-white', 'p-6', 'md:p-8', 'rounded-lg', 'shadow-lg', 'border-l-4', 'border-[var(--primary-color)]', 'text-center'], calculatorResultsDiv);
-            createAndAppend('h3', 'Your Estimated System Size', ['text-2xl', 'font-bold', 'mb-4', 'text-[var(--secondary-color)]'], container);
-            createAndAppend('p', `Based on your bill, you consume approx. ${data.estimatedMonthlyConsumptionKwh}.`, ['text-gray-600', 'mb-4'], container);
-            createAndAppend('p', `We recommend a:`, ['text-lg'], container);
-            createAndAppend('p', data.estimatedSystemSizeKw, ['text-5xl', 'font-bold', 'my-4', 'text-[var(--primary-color)]'], container);
-            
-            const ctaButton = createAndAppend('a', `🛍️ Browse ${data.estimatedSystemSizeKw} Systems in Marketplace`, ['cta-button', 'text-white', 'font-bold', 'py-3', 'px-6', 'rounded-lg', 'inline-block', 'mt-4'], container);
-            ctaButton.href = "#marketplace";
-        }
-
-
-        // --- PRODUCT DATA & MARKETPLACE LOGIC ---
-        const products = [
-            { name: "Waaree 540W Bifacial Solar Panel", category: "Solar Panels", image: "https://placehold.co/600x400/2a9d8f/ffffff?text=Waaree+Panel", spec: "High-efficiency bifacial panels capture light from both sides." },
-            { name: "Loom Solar 550W Mono PERC Panel", category: "Solar Panels", image: "https://placehold.co/600x400/2a9d8f/ffffff?text=Loom+Solar", spec: "Top-tier monocrystalline cells for excellent performance in low light." },
-            { name: "Adani 530W Monocrystalline Panel", category: "Solar Panels", image: "https://placehold.co/600x400/2a9d8f/ffffff?text=Adani+Solar", spec: "Robust design with high power output, made in India." },
-            { name: "SolarEdge 5kW String Inverter", category: "Inverters", image: "https://placehold.co/600x400/264653/ffffff?text=SolarEdge", spec: "Advanced string inverter with module-level monitoring and safety features." },
-            { name: "Enphase IQ7+ Microinverter", category: "Inverters", image: "https://placehold.co/600x400/264653/ffffff?text=Enphase", spec: "Converts DC to AC at each panel, maximizing output and reliability." },
-            { name: "Luminous 150Ah Solar Battery", category: "Batteries", image: "https://placehold.co/600x400/f4a261/ffffff?text=Luminous", spec: "Tall tubular battery designed for long life and deep cycle applications." },
-        ];
-
+        // --- MARKETPLACE LOGIC ---
         const productGrid = document.getElementById('product-grid');
         const leadModal = document.getElementById('lead-modal');
         const closeModalBtn = document.getElementById('close-modal-btn');
@@ -371,10 +318,79 @@
             if (e.target === leadModal) { leadModal.classList.add('hidden'); }
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-             populateStateDropdown();
-             renderProducts();
+        // --- POLICY HELPER LOGIC ---
+        const clarifyPolicyBtn = document.getElementById('clarify-policy-btn');
+        const policySelect = document.getElementById('policy-select');
+        const policyResults = document.getElementById('policy-results');
+
+        clarifyPolicyBtn.addEventListener('click', () => {
+            const selectedPolicy = policySelect.value;
+            if (!selectedPolicy || !policies[selectedPolicy]) {
+                alert('Please select a valid policy.');
+                return;
+            }
+            const policyData = policies[selectedPolicy];
+            displayPolicyClarification(policyData.explanation, selectedPolicy, policyData.sources);
         });
+
+        function displayPolicyClarification(content, policyName, sources) {
+            policyResults.innerHTML = '';
+            const container = createAndAppend('div', null, ['bg-white', 'p-8', 'rounded-lg', 'shadow-lg', 'border-t-4', 'border-[var(--accent-color)]'], policyResults);
+            createAndAppend('h3', `Understanding: ${policyName}`, ['text-2xl', 'font-bold', 'mb-4', 'text-[var(--secondary-color)]'], container);
+            const bodyContainer = createAndAppend('div', null, ['space-y-4'], container);
+            const paragraphs = content.split('\n');
+            paragraphs.forEach(pText => {
+                if (pText.trim() !== '') {
+                    createAndAppend('p', pText, ['text-gray-700', 'leading-relaxed'], bodyContainer);
+                }
+            });
+
+            if (sources && sources.length > 0) {
+                const sourcesContainer = createAndAppend('div', null, ['mt-6', 'pt-4', 'border-t'], container);
+                createAndAppend('h4', 'Official Sources:', ['font-semibold', 'text-gray-800', 'mb-2'], sourcesContainer);
+                const sourceList = createAndAppend('ul', null, ['list-disc', 'list-inside', 'space-y-1'], sourcesContainer);
+                sources.forEach(url => {
+                    const li = createAndAppend('li', null, [], sourceList);
+                    const a = createAndAppend('a', url, ['text-[var(--primary-color)]', 'hover:underline', 'break-all'], li);
+                    a.href = url;
+                    a.target = "_blank";
+                });
+            }
+
+            const disclaimer = createAndAppend('p', 'Disclaimer: This summary is for informational purposes. Please consult the official government sources above for legal or financial advice.', ['text-xs', 'text-gray-500', 'italic', 'mt-6', 'text-center'], container);
+        }
+
+        // --- LIVE NEWS FEED ---
+        const newsContent = document.getElementById('news-content');
+        const refreshNewsBtn = document.getElementById('refresh-news-btn');
+
+        function displayNews(content, sourceUrl) {
+            newsContent.innerHTML = '';
+            const container = createAndAppend('div', null, ['bg-white', 'p-8', 'rounded-lg', 'shadow-lg', 'border-t-4', 'border-[var(--accent-color)]'], newsContent);
+            
+            const lines = content.split('\n');
+            const headline = lines.shift() || "Latest Solar News";
+            
+            createAndAppend('h3', headline, ['text-2xl', 'font-bold', 'mb-2', 'text-[var(--secondary-color)]'], container);
+            createAndAppend('p', `Updated just now`, ['text-sm', 'text-gray-500', 'mb-4'], container);
+
+            const bodyContainer = createAndAppend('div', null, ['space-y-4'], container);
+            lines.forEach(pText => {
+                if (pText.trim() !== '') {
+                    createAndAppend('p', pText, ['text-gray-700', 'leading-relaxed'], bodyContainer);
+                }
+            });
+            
+            if (sourceUrl) {
+                const sourcesContainer = createAndAppend('div', null, ['mt-6', 'pt-4', 'border-t'], container);
+                createAndAppend('h4', 'Source:', ['font-semibold', 'text-gray-800', 'mb-2'], sourcesContainer);
+                const a = createAndAppend('a', sourceUrl, ['text-[var(--primary-color)]', 'hover:underline', 'break-all'], sourcesContainer);
+                a.href = sourceUrl;
+                a.target = "_blank";
+            }
+
+            const disclaimer = createAndAppend('p', 'Disclaimer: This news summary is for informational purposes. Please refer to the primary news source for the full report.', ['text-xs', 'text-gray-500', 'italic', 'mt-6', 'text-center'], container);
+        }
 
     </script>
 
