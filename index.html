@@ -3,20 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Security Meta Tags -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://placehold.co data:; connect-src 'self'; form-action 'self' https://formsubmit.co;">
-    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-
-    <title>Helionenergies - India's Solar Marketplace</title>
+    <title>Helionenergies - Compare Solar Quotes from Vetted Installers</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --primary-color: #2a9d8f; /* Teal Green */
-            --secondary-color: #264653; /* Dark Blue/Green */
-            --accent-color: #f4a261; /* Sandy Orange */
+            --primary-color: #2a9d8f; 
+            --secondary-color: #264653;
+            --accent-color: #f4a261;
             --text-color: #333;
             --bg-color: #ffffff;
             --light-gray: #f8f9fa;
@@ -27,9 +20,10 @@
         .cta-button:hover { background-color: #e76f51; }
         .primary-button { background-color: var(--primary-color); transition: background-color 0.3s ease; }
         .primary-button:hover { background-color: var(--secondary-color); }
-        .modal-overlay { transition: opacity 0.3s ease; }
         .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 24px; height: 24px; border-radius: 50%; border-left-color: var(--primary-color); animation: spin 1s ease infinite; display: none; margin: 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .modal-overlay { transition: opacity 0.3s ease; }
+        .loading-popup-content { transition: opacity 0.5s ease-in-out; }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,15 +34,22 @@
     <!-- Header -->
     <header class="bg-white shadow-md sticky top-0 z-50">
         <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <a href="#" class="text-3xl font-bold font-logo" style="color: var(--primary-color);">Helionenergies</a>
+             <a href="#" class="flex items-center">
+                <svg class="h-8 w-auto" viewBox="0 0 280 60" xmlns="http://www.w3.org/2000/svg">
+                    <text x="0" y="45" font-family="'Lexend Deca', sans-serif" font-size="40" font-weight="bold" fill="var(--secondary-color)">
+                        Heli<tspan fill="var(--accent-color)">o</tspan>nenergies
+                    </text>
+                    <path d="M 98 42 a 1 1 0 0 1 12 0 l -6 10 z" fill="var(--accent-color)" transform="rotate(45 100 40)"/>
+                </svg>
+            </a>
             <ul class="hidden md:flex items-center space-x-8">
-                <li><a href="#marketplace" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">🛍️ Marketplace</a></li>
-                <li><a href="#news" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">📡 Live News</a></li>
-                <li><a href="#policies" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">⚖️ Policy Helper</a></li>
+                <li><a href="#quote-engine" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">Get Quotes</a></li>
+                <li><a href="#reviews" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">Reviews</a></li>
+                <li><a href="#learning-center" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">Learning Center</a></li>
                 <li><a href="#about" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">About Us</a></li>
-                <li><a href="#for-vendors" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">For Vendors</a></li>
+                <li><a href="#for-installers" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">For Installers</a></li>
             </ul>
-            <a href="#marketplace" class="hidden md:block cta-button text-white font-bold py-2 px-6 rounded-lg">Browse Products</a>
+            <a href="#quote-engine" class="hidden md:block cta-button text-white font-bold py-2 px-6 rounded-lg">Get My Free Quotes</a>
         </nav>
     </header>
 
@@ -56,92 +57,100 @@
         <!-- Hero Section -->
         <section class="bg-cover bg-center text-white" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2070')">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-24 md:py-32">
-                <h1 class="text-4xl md:text-6xl font-bold mb-4">India's Solar Marketplace.</h1>
-                <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Browse solar products, compare prices, and connect with trusted local installers—all in one place.</p>
-                <a href="#marketplace" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">🛍️ Start Browsing</a>
-            </div>
-        </section>
-
-        <!-- Solar Marketplace Section -->
-        <section id="marketplace" class="py-24 bg-[var(--light-gray)]">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">🛍️ Solar Products Marketplace</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Find the right equipment for your needs. Select a product to get quotes from installers in your area.</p>
-                
-                <!-- Product Grid -->
-                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Product cards will be dynamically inserted here -->
-                </div>
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Shop for solar with confidence.</h1>
+                <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Compare competitive quotes from our network of trusted, pre-vetted local installers. It's the smart way to go solar.</p>
+                <a href="#quote-engine" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">Get Your Free Quotes Now</a>
             </div>
         </section>
         
-        <!-- How It Works Section -->
-        <section id="how-it-works" class="py-24">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-[var(--secondary-color)]">Go Solar in 3 Simple Steps</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                    <div class="flex flex-col items-center">
-                        <div class="bg-[var(--primary-color)] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-4">1</div>
-                        <h3 class="text-xl font-bold mb-2 text-[var(--secondary-color)]">Browse & Compare</h3>
-                        <p class="text-gray-600">Explore a wide range of solar panels, inverters, and batteries from top brands. Compare specifications and get information.</p>
+        <!-- Quote Engine Section -->
+        <section id="quote-engine" class="py-24 bg-[var(--light-gray)]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">Get Your Personalized Solar Quotes</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Provide a few details, and we'll generate multiple, easy-to-compare quotes from top installers in your area.</p>
+                <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label for="location" class="block text-sm font-medium text-gray-700">1. Where will this system be installed?</label>
+                            <input type="text" id="location" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3" placeholder="Enter your City, State">
+                        </div>
+                        <div>
+                            <label for="monthly-bill" class="block text-sm font-medium text-gray-700">2. What is your average monthly electricity bill?</label>
+                            <input type="number" id="monthly-bill" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3" placeholder="e.g., ₹2500">
+                        </div>
+                         <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">3. Where should we send your quotes?</label>
+                            <input type="email" id="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3" placeholder="Enter your email address">
+                        </div>
+                        <button id="compare-quotes-btn" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md flex items-center justify-center">
+                            Generate My Quotes
+                        </button>
                     </div>
-                    <div class="flex flex-col items-center">
-                        <div class="bg-[var(--primary-color)] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-4">2</div>
-                        <h3 class="text-xl font-bold mb-2 text-[var(--secondary-color)]">Request Free Quotes</h3>
-                        <p class="text-gray-600">Select a product you're interested in and provide your location. We'll find trusted local installers for you.</p>
+                </div>
+                <div id="quote-results" class="mt-12 max-w-6xl mx-auto"></div>
+            </div>
+        </section>
+
+        <!-- Customer Reviews Section -->
+        <section id="reviews" class="py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-[var(--secondary-color)]">What Our Customers Are Saying</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Review 1 -->
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <div class="text-yellow-400 text-2xl mb-4">★★★★★</div>
+                        <p class="text-gray-600 italic mb-4">"Helionenergies made the whole process so simple. I got three quotes in minutes and found a great local installer I never would have found on my own. Highly recommended!"</p>
+                        <p class="font-bold text-right text-[var(--secondary-color)]">- Priya S., Bangalore</p>
                     </div>
-                    <div class="flex flex-col items-center">
-                        <div class="bg-[var(--primary-color)] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-4">3</div>
-                        <h3 class="text-xl font-bold mb-2 text-[var(--secondary-color)]">Connect & Save</h3>
-                        <p class="text-gray-600">You'll receive competitive quotes from multiple installers, allowing you to choose the best option for your home and budget.</p>
+                    <!-- Review 2 -->
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <div class="text-yellow-400 text-2xl mb-4">★★★★★</div>
+                        <p class="text-gray-600 italic mb-4">"I was skeptical at first, but comparing quotes side-by-side saved me almost ₹25,000. The transparency is a game-changer for the solar industry in India."</p>
+                        <p class="font-bold text-right text-[var(--secondary-color)]">- Rajesh K., Pune</p>
+                    </div>
+                    <!-- Review 3 -->
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <div class="text-yellow-400 text-2xl mb-4">★★★★★</div>
+                        <p class="text-gray-600 italic mb-4">"As someone new to solar, their Learning Center was incredibly helpful. I felt confident making a decision after understanding the policies and technology."</p>
+                        <p class="font-bold text-right text-[var(--secondary-color)]">- Anjali M., Delhi</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- AI Policy Helper Section -->
-        <section id="policies" class="py-24 bg-[var(--light-gray)]">
+        <!-- Learning Center Section -->
+        <section id="learning-center" class="py-24 bg-[var(--light-gray)]">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">⚖️ Policy Helper</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Solar policies can be confusing. Select a policy below to get a simple, clear explanation of what it means for you.</p>
-                <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
-                    <div class="grid grid-cols-1 gap-6">
-                        <div>
-                            <label for="policy-select" class="block text-sm font-medium text-gray-700">Select a Policy to Understand</label>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-[var(--secondary-color)]">Solar Learning Center</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Policy Helper -->
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-[var(--primary-color)]">⚖️ Policy Helper</h3>
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <label for="policy-select" class="block text-sm font-medium text-gray-700">Select a policy to understand:</label>
                             <select id="policy-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
                                 <option value="">-- Choose a policy --</option>
                                 <option value="PM Surya Ghar: Muft Bijli Yojana">PM Surya Ghar: Muft Bijli Yojana</option>
                                 <option value="Net Metering Policy in India">Net Metering Policy</option>
                                 <option value="PM-KUSUM Scheme">PM-KUSUM Scheme</option>
                             </select>
+                            <div id="policy-results" class="mt-4 text-sm text-gray-600"></div>
                         </div>
-                        <button id="clarify-policy-btn" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md">
-                            Explain This Policy
-                        </button>
+                    </div>
+                    <!-- News Feed -->
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-[var(--primary-color)]">📡 Live News Feed</h3>
+                        <div id="news-content" class="bg-white p-6 rounded-lg shadow-lg">
+                           <!-- News will be loaded here -->
+                        </div>
                     </div>
                 </div>
-                <div id="policy-spinner" class="spinner"></div>
-                <div id="policy-results" class="mt-12 max-w-3xl mx-auto"></div>
-            </div>
-        </section>
-
-        <!-- Live Solar News Section -->
-        <section id="news" class="py-24">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">📡 Live Solar News Feed</h2>
-                <p class="text-gray-600 mb-8 max-w-2xl mx-auto">The latest updates on government policies, technology, and trends in the Indian solar sector.</p>
-                <div id="news-spinner" class="spinner"></div>
-                <div id="news-content" class="max-w-2xl mx-auto text-left">
-                </div>
-                <button id="refresh-news-btn" class="mt-8 cta-button text-white font-bold py-3 px-6 rounded-lg text-lg hidden">
-                    Refresh Feed
-                </button>
             </div>
         </section>
 
         <!-- About Section -->
-        <section id="about" class="py-24 bg-[var(--light-gray)]">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="about" class="py-24">
+             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
                     <div class="md:order-2">
                         <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[var(--secondary-color)]">Why Choose Helionenergies?</h2>
@@ -157,7 +166,6 @@
                                 <text x="0" y="45" font-family="'Lexend Deca', sans-serif" font-size="40" font-weight="bold" fill="var(--secondary-color)">
                                     Heli<tspan fill="var(--accent-color)">o</tspan>nenergies
                                 </text>
-                                <!-- Simple sun ray integrated into the 'o' -->
                                 <path d="M 98 42 a 1 1 0 0 1 12 0 l -6 10 z" fill="var(--accent-color)" transform="rotate(45 100 40)"/>
                             </svg>
                         </div>
@@ -166,20 +174,20 @@
             </div>
         </section>
 
-        <!-- For Vendors Section -->
-        <section id="for-vendors" class="py-24">
+        <!-- For Installers Section -->
+        <section id="for-installers" class="py-24 bg-[var(--light-gray)]">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[var(--secondary-color)]">Are You a Solar Installer or Supplier?</h2>
-                <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-600">Join the Helionenergies network to connect with qualified, local customers who are ready to install solar. Stop chasing leads and start closing deals.</p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[var(--secondary-color)]">Are You a Solar Installer?</h2>
+                <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-600">Join the Helionenergies network to connect with qualified, local customers who are actively seeking quotes. Stop chasing leads and start winning projects.</p>
                 <a href="#contact" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">Partner With Us</a>
             </div>
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="py-24 bg-[var(--light-gray)]">
+        <section id="contact" class="py-24">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">Get in Touch</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">For customer support or vendor partnership inquiries, please fill out the form below or email us at <a href="mailto:helionenergies@outlook.com" class="text-[var(--primary-color)] font-semibold hover:underline">helionenergies@outlook.com</a>.</p>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">For customer support or installer partnership inquiries, please fill out the form below or email us at <a href="mailto:helionenergies@outlook.com" class="text-[var(--primary-color)] font-semibold hover:underline">helionenergies@outlook.com</a>.</p>
                 <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
                     <form action="https://formsubmit.co/helionenergies@outlook.com" method="POST">
                         <div class="grid grid-cols-1 gap-6">
@@ -195,29 +203,14 @@
             </div>
         </section>
     </main>
-    
-    <!-- Lead Capture Modal -->
-    <div id="lead-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full space-y-4">
-            <div class="flex justify-between items-center">
-                <h3 class="text-2xl font-bold text-[var(--secondary-color)]">Get Quotes for this Product</h3>
-                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-3xl">&times;</button>
-            </div>
-            <p class="text-gray-600">To get quotes for <strong id="modal-product-name" class="text-[var(--primary-color)]"></strong>, please provide your details. We'll connect you with local installers.</p>
-            <form id="lead-form" action="https://formsubmit.co/helionenergies@outlook.com" method="POST">
-                <input type="hidden" name="_subject" id="lead-subject">
-                <input type="hidden" name="_next" id="lead-redirect-url">
-                <div class="space-y-4">
-                    <input type="text" name="name" placeholder="Your Name" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
-                    <input type="email" name="email" placeholder="Your Email" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
-                    <input type="tel" name="phone" placeholder="Your Phone Number" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
-                    <input type="text" name="location" placeholder="Your City & State" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
-                    <button type="submit" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md">Get My Free Quotes</button>
-                </div>
-            </form>
+
+    <!-- Innovative Loading Popup -->
+    <div id="loading-popup" class="modal-overlay fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full text-center space-y-4">
+            <div id="loading-emoji" class="text-5xl"></div>
+            <p id="loading-message" class="text-lg font-semibold text-[var(--secondary-color)] loading-popup-content"></p>
         </div>
     </div>
-
 
     <!-- Footer -->
     <footer class="bg-[var(--secondary-color)] text-white text-center py-8">
@@ -239,94 +232,94 @@
         }
 
         // --- SIMULATED DATA (FOR RELIABILITY) ---
-        const products = [
-            { name: "Waaree 540W Bifacial Solar Panel", image: "https://images.unsplash.com/photo-1545208942-e1c9c9165d57?q=80&w=800", spec: "High-efficiency bifacial panels capture light from both sides." },
-            { name: "Loom Solar 550W Mono PERC Panel", image: "https://images.unsplash.com/photo-1629233832133-2458145971a5?q=80&w=800", spec: "Top-tier monocrystalline cells for excellent performance in low light." },
-            { name: "Adani 530W Monocrystalline Panel", image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9c?q=80&w=800", spec: "Robust design with high power output, made in India." },
-            { name: "SolarEdge 5kW String Inverter", image: "https://images.unsplash.com/photo-1620388250894-32d473269036?q=80&w=800", spec: "Advanced string inverter with module-level monitoring and safety features." },
-            { name: "Enphase IQ7+ Microinverter", image: "https://images.unsplash.com/photo-1558495033-6997a55c8c92?q=80&w=800", spec: "Converts DC to AC at each panel, maximizing output and reliability." },
-            { name: "Luminous 150Ah Solar Battery", image: "https://images.unsplash.com/photo-1617933423532-d586134b6e41?q=80&w=800", spec: "Tall tubular battery designed for long life and deep cycle applications." },
-        ];
-        
         const policies = {
-            "PM Surya Ghar: Muft Bijli Yojana": {
-                explanation: "This is a central government scheme for residential households. It provides a significant subsidy to reduce the upfront cost of installing a rooftop solar system, making it more affordable for homeowners. To apply, you must register on the National Portal for Rooftop Solar, choose a registered vendor, and submit your application through the portal.",
-                sources: ["https://pmsuryaghar.gov.in/"]
-            },
-            "Net Metering Policy in India": {
-                explanation: "Net Metering is a billing mechanism that credits solar energy system owners for the electricity they add to the grid. If your system produces more electricity than you consume, the excess is sent to the grid, and your electricity bill is reduced accordingly. The specific rates and regulations vary by state, so it's important to check with your local DISCOM.",
-                sources: ["https://mnre.gov.in/"]
-            },
-            "PM-KUSUM Scheme": {
-                explanation: "The Pradhan Mantri Kisan Urja Suraksha evam Utthaan Mahabhiyan (PM-KUSUM) scheme is for farmers. It aims to provide financial security by encouraging the use of solar power in agriculture. The scheme has three components: setting up small solar power plants on barren land, installing solar-powered agriculture pumps, and solarizing existing grid-connected pumps.",
-                sources: ["https://pmkusum.mnre.gov.in/"]
-            }
+            "PM Surya Ghar: Muft Bijli Yojana": { explanation: "This central scheme provides subsidies for residential rooftop solar systems. Homeowners can apply on the National Portal to reduce installation costs.", sources: ["https://pmsuryaghar.gov.in/"] },
+            "Net Metering Policy in India": { explanation: "Net metering allows you to send excess solar power to the grid for credits on your electricity bill. Rules vary by state.", sources: ["https://mnre.gov.in/"] },
+            "PM-KUSUM Scheme": { explanation: "This scheme helps farmers install solar pumps and solar power plants on their land, providing a new source of income.", sources: ["https://pmkusum.mnre.gov.in/"] }
         };
-
-        const news = {
-            newsItem: "India Surpasses 100 GW Renewable Energy Milestone\n\nIn a landmark achievement, India's total installed renewable energy capacity has crossed the 100 Gigawatt (GW) mark. This significant milestone underscores the country's commitment to its ambitious climate goals and its rapid transition towards clean energy sources. The growth has been primarily driven by the solar sector, which has seen exponential expansion due to favorable government policies and decreasing technology costs. This achievement puts India firmly on track to meet its target of 500 GW of non-fossil fuel capacity by 2030.",
-            sourceUrl: "https://mnre.gov.in/"
-        };
-
-
-        // --- INITIALIZATION ---
-        document.addEventListener('DOMContentLoaded', () => {
-            renderProducts();
-            displayNews(news.newsItem, news.sourceUrl);
-            const contactRedirectUrlInput = document.getElementById('contact-redirect-url');
-            const leadRedirectUrlInput = document.getElementById('lead-redirect-url');
-            if(contactRedirectUrlInput) contactRedirectUrlInput.value = `${window.location.origin}${window.location.pathname}?contact-success=true#contact`;
-            if(leadRedirectUrlInput) leadRedirectUrlInput.value = `${window.location.origin}${window.location.pathname}?lead-success=true#marketplace`;
-        });
-
-        // --- MARKETPLACE LOGIC ---
-        const productGrid = document.getElementById('product-grid');
-        const leadModal = document.getElementById('lead-modal');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const modalProductName = document.getElementById('modal-product-name');
-        const leadSubjectInput = document.getElementById('lead-subject');
-
-        function renderProducts() {
-            productGrid.innerHTML = '';
-            products.forEach(product => {
-                const card = createAndAppend('div', null, ['bg-white', 'rounded-lg', 'shadow-md', 'overflow-hidden', 'flex', 'flex-col'], productGrid);
-                
-                const img = createAndAppend('img', null, ['w-full', 'h-48', 'object-cover'], card);
-                img.src = product.image;
-                img.alt = product.name;
-
-                const content = createAndAppend('div', null, ['p-6', 'flex-grow', 'flex', 'flex-col'], card);
-                createAndAppend('h3', product.name, ['text-lg', 'font-bold', 'text-[var(--secondary-color)]', 'flex-grow'], content);
-                createAndAppend('p', product.spec, ['text-sm', 'text-gray-600', 'mt-2', 'flex-grow'], content);
-                
-                const button = createAndAppend('button', 'Get Quote from Local Installers', ['mt-6', 'w-full', 'primary-button', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded-md'], content);
-                button.dataset.product = product.name;
+        const news = { newsItem: "India Surpasses 100 GW Renewable Energy Milestone\n\nIndia's installed renewable energy capacity has crossed 100 GW, a major step towards its 2030 climate goals. Solar power continues to be the primary driver of this growth.", sourceUrl: "https://mnre.gov.in/" };
+        
+        function getSimulatedQuotes(location, bill) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    const consumption = Math.round((bill / 7.5) * 1.1);
+                    const systemSize = Math.ceil(consumption / 120);
+                    const basePrice = systemSize * 60000;
+                    const quotes = [
+                        { vendorName: `Surya Power Systems, ${location}`, rating: 4.8, systemSizeKw: `${systemSize} kW`, totalPriceInr: `₹${(basePrice).toLocaleString('en-IN')}`, costPerWatt: `₹${(basePrice / (systemSize * 1000)).toFixed(2)}`, panelBrand: "Waaree", inverterBrand: "SolarEdge" },
+                        { vendorName: `GreenFuture Solar, ${location}`, rating: 4.6, systemSizeKw: `${systemSize} kW`, totalPriceInr: `₹${(basePrice * 0.95).toLocaleString('en-IN')}`, costPerWatt: `₹${((basePrice * 0.95) / (systemSize * 1000)).toFixed(2)}`, panelBrand: "Adani Solar", inverterBrand: "Enphase" },
+                        { vendorName: `Navitas Energy, ${location}`, rating: 4.7, systemSizeKw: `${systemSize} kW`, totalPriceInr: `₹${(basePrice * 1.02).toLocaleString('en-IN')}`, costPerWatt: `₹${((basePrice * 1.02) / (systemSize * 1000)).toFixed(2)}`, panelBrand: "Vikram Solar", inverterBrand: "GoodWe" }
+                    ];
+                    resolve(quotes);
+                }, 2500);
             });
         }
 
-        productGrid.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON' && e.target.dataset.product) {
-                const productName = e.target.dataset.product;
-                modalProductName.textContent = productName;
-                leadSubjectInput.value = `New Lead for ${productName} from Helionenergies!`;
-                leadModal.classList.remove('hidden');
+        // --- QUOTE ENGINE ---
+        const compareBtn = document.getElementById('compare-quotes-btn');
+        const locationInput = document.getElementById('location');
+        const billInput = document.getElementById('monthly-bill');
+        const quoteResultsDiv = document.getElementById('quote-results');
+
+        compareBtn.addEventListener('click', async () => {
+            if (!locationInput.value || !billInput.value) {
+                alert('Please fill all fields to get your quotes.');
+                return;
+            }
+            showLoadingPopup([
+                { emoji: "🗺️", text: `Analyzing ${locationInput.value}...` },
+                { emoji: "🔍", text: "Scanning our vendor network..." },
+                { emoji: "📊", text: "Compiling your quotes..." }
+            ]);
+            quoteResultsDiv.innerHTML = '';
+            compareBtn.disabled = true;
+
+            try {
+                const quotes = await getSimulatedQuotes(locationInput.value, billInput.value);
+                displayQuotes(quotes);
+            } catch (error) {
+                quoteResultsDiv.innerHTML = `<p class="text-center text-red-500">Could not find installers for this location.</p>`;
+            } finally {
+                hideLoadingPopup();
+                compareBtn.disabled = false;
             }
         });
 
-        closeModalBtn.addEventListener('click', () => { leadModal.classList.add('hidden'); });
-        leadModal.addEventListener('click', (e) => {
-            if (e.target === leadModal) { leadModal.classList.add('hidden'); }
-        });
+        function displayQuotes(quotes) {
+            quoteResultsDiv.innerHTML = '';
+            const header = createAndAppend('h3', `Your Solar Quotes for ${locationInput.value}`, ['text-2xl', 'font-bold', 'text-center', 'mb-8', 'text-[var(--secondary-color)]'], quoteResultsDiv);
+            const container = createAndAppend('div', null, ['grid', 'grid-cols-1', 'md:grid-cols-3', 'gap-8'], quoteResultsDiv);
+            
+            quotes.forEach((quote, index) => {
+                const card = createAndAppend('div', null, ['bg-white', 'p-6', 'rounded-lg', 'shadow-lg', 'text-center', 'flex', 'flex-col'], container);
+                createAndAppend('h4', `Installer #${index + 1}`, ['font-bold', 'text-lg', 'text-[var(--secondary-color)]'], card);
+                createAndAppend('p', `Rating: ${'★'.repeat(Math.round(quote.rating))}${'☆'.repeat(5 - Math.round(quote.rating))} (${quote.rating})`, ['text-sm', 'text-gray-500', 'mb-4'], card);
+                
+                const priceDiv = createAndAppend('div', null, ['my-4'], card);
+                createAndAppend('p', quote.totalPriceInr, ['text-4xl', 'font-bold', 'text-[var(--primary-color)]'], priceDiv);
+                createAndAppend('p', `(${quote.costPerWatt} / watt)`, ['text-sm', 'text-gray-600'], priceDiv);
 
-        // --- POLICY HELPER LOGIC ---
-        const clarifyPolicyBtn = document.getElementById('clarify-policy-btn');
+                const specsDiv = createAndAppend('div', null, ['text-left', 'text-sm', 'space-y-2', 'my-4', 'flex-grow'], card);
+                specsDiv.innerHTML = `
+                    <p><strong>System Size:</strong> ${quote.systemSizeKw}</p>
+                    <p><strong>Solar Panels:</strong> ${quote.panelBrand}</p>
+                    <p><strong>Inverter:</strong> ${quote.inverterBrand}</p>
+                `;
+
+                const cta = createAndAppend('button', 'Get Full Details & Contact', ['w-full', 'primary-button', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded-md', 'mt-4'], card);
+                cta.dataset.vendor = quote.vendorName;
+            });
+        }
+
+        // --- POLICY & NEWS ---
         const policySelect = document.getElementById('policy-select');
         const policyResults = document.getElementById('policy-results');
+        const newsContent = document.getElementById('news-content');
 
-        clarifyPolicyBtn.addEventListener('click', () => {
+        policySelect.addEventListener('change', () => {
             const selectedPolicy = policySelect.value;
             if (!selectedPolicy || !policies[selectedPolicy]) {
-                alert('Please select a valid policy.');
+                policyResults.innerHTML = '';
                 return;
             }
             const policyData = policies[selectedPolicy];
@@ -335,62 +328,37 @@
 
         function displayPolicyClarification(content, policyName, sources) {
             policyResults.innerHTML = '';
-            const container = createAndAppend('div', null, ['bg-white', 'p-8', 'rounded-lg', 'shadow-lg', 'border-t-4', 'border-[var(--accent-color)]'], policyResults);
-            createAndAppend('h3', `Understanding: ${policyName}`, ['text-2xl', 'font-bold', 'mb-4', 'text-[var(--secondary-color)]'], container);
-            const bodyContainer = createAndAppend('div', null, ['space-y-4'], container);
-            const paragraphs = content.split('\n');
-            paragraphs.forEach(pText => {
-                if (pText.trim() !== '') {
-                    createAndAppend('p', pText, ['text-gray-700', 'leading-relaxed'], bodyContainer);
-                }
-            });
-
+            const container = createAndAppend('div', null, ['bg-white', 'p-6', 'rounded-lg', 'shadow-inner', 'border', 'border-gray-200'], policyResults);
+            createAndAppend('h4', `Understanding: ${policyName}`, ['text-lg', 'font-bold', 'mb-2', 'text-[var(--secondary-color)]'], container);
+            createAndAppend('p', content, ['text-gray-700', 'leading-relaxed'], container);
             if (sources && sources.length > 0) {
-                const sourcesContainer = createAndAppend('div', null, ['mt-6', 'pt-4', 'border-t'], container);
-                createAndAppend('h4', 'Official Sources:', ['font-semibold', 'text-gray-800', 'mb-2'], sourcesContainer);
-                const sourceList = createAndAppend('ul', null, ['list-disc', 'list-inside', 'space-y-1'], sourcesContainer);
-                sources.forEach(url => {
-                    const li = createAndAppend('li', null, [], sourceList);
-                    const a = createAndAppend('a', url, ['text-[var(--primary-color)]', 'hover:underline', 'break-all'], li);
-                    a.href = url;
-                    a.target = "_blank";
-                });
+                const sourcesContainer = createAndAppend('div', null, ['mt-4', 'pt-4', 'border-t'], container);
+                createAndAppend('h5', 'Official Source:', ['font-semibold', 'text-gray-800', 'mb-1'], sourcesContainer);
+                const a = createAndAppend('a', sources[0], ['text-[var(--primary-color)]', 'hover:underline', 'break-all'], sourcesContainer);
+                a.href = sources[0];
+                a.target = "_blank";
             }
-
-            const disclaimer = createAndAppend('p', 'Disclaimer: This summary is for informational purposes. Please consult the official government sources above for legal or financial advice.', ['text-xs', 'text-gray-500', 'italic', 'mt-6', 'text-center'], container);
         }
-
-        // --- LIVE NEWS FEED ---
-        const newsContent = document.getElementById('news-content');
-        const refreshNewsBtn = document.getElementById('refresh-news-btn');
 
         function displayNews(content, sourceUrl) {
             newsContent.innerHTML = '';
-            const container = createAndAppend('div', null, ['bg-white', 'p-8', 'rounded-lg', 'shadow-lg', 'border-t-4', 'border-[var(--accent-color)]'], newsContent);
-            
-            const lines = content.split('\n');
+            const container = createAndAppend('div', null, ['bg-white', 'p-6', 'rounded-lg', 'shadow-inner', 'border', 'border-gray-200'], newsContent);
+            const lines = content.split('\n\n');
             const headline = lines.shift() || "Latest Solar News";
-            
-            createAndAppend('h3', headline, ['text-2xl', 'font-bold', 'mb-2', 'text-[var(--secondary-color)]'], container);
-            createAndAppend('p', `Updated just now`, ['text-sm', 'text-gray-500', 'mb-4'], container);
-
-            const bodyContainer = createAndAppend('div', null, ['space-y-4'], container);
-            lines.forEach(pText => {
-                if (pText.trim() !== '') {
-                    createAndAppend('p', pText, ['text-gray-700', 'leading-relaxed'], bodyContainer);
-                }
-            });
-            
+            createAndAppend('h4', headline, ['text-lg', 'font-bold', 'mb-2', 'text-[var(--secondary-color)]'], container);
+            createAndAppend('p', lines.join(' '), ['text-gray-700', 'leading-relaxed'], container);
             if (sourceUrl) {
-                const sourcesContainer = createAndAppend('div', null, ['mt-6', 'pt-4', 'border-t'], container);
-                createAndAppend('h4', 'Source:', ['font-semibold', 'text-gray-800', 'mb-2'], sourcesContainer);
-                const a = createAndAppend('a', sourceUrl, ['text-[var(--primary-color)]', 'hover:underline', 'break-all'], sourcesContainer);
+                const a = createAndAppend('a', 'Read more...', ['text-[var(--primary-color)]', 'hover:underline', 'font-semibold', 'mt-2', 'inline-block'], container);
                 a.href = sourceUrl;
                 a.target = "_blank";
             }
-
-            const disclaimer = createAndAppend('p', 'Disclaimer: This news summary is for informational purposes. Please refer to the primary news source for the full report.', ['text-xs', 'text-gray-500', 'italic', 'mt-6', 'text-center'], container);
         }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            displayNews(news.newsItem, news.sourceUrl);
+            const contactRedirectUrlInput = document.getElementById('contact-redirect-url');
+            if(contactRedirectUrlInput) contactRedirectUrlInput.value = `${window.location.origin}${window.location.pathname}?contact-success=true#contact`;
+        });
 
     </script>
 
