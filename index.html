@@ -10,7 +10,7 @@
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
-    <title>Helionenergies - Compare Solar Quotes from Local Installers</title>
+    <title>Helionenergies - India's Solar Marketplace & Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
@@ -27,10 +27,9 @@
         .cta-button:hover { background-color: #e76f51; }
         .primary-button { background-color: var(--primary-color); transition: background-color 0.3s ease; }
         .primary-button:hover { background-color: var(--secondary-color); }
+        .modal-overlay { transition: opacity 0.3s ease; }
         .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 24px; height: 24px; border-radius: 50%; border-left-color: var(--primary-color); animation: spin 1s ease infinite; display: none; margin: 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .modal-overlay { transition: opacity 0.3s ease; }
-        .loading-popup-content { transition: opacity 0.5s ease-in-out; }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,143 +39,137 @@
 
     <!-- Header -->
     <header class="bg-white shadow-md sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <a href="#" class="text-3xl font-bold font-logo" style="color: var(--primary-color);">Helionenergies</a>
             <ul class="hidden md:flex items-center space-x-8">
-                <li><a href="#marketplace" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">📊 Compare Quotes</a></li>
-                <li><a href="#policies" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">⚖️ Policy Helper</a></li>
-                <li><a href="#news" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">📡 Live News</a></li>
+                <li><a href="#calculator" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">💰 Savings Calculator</a></li>
+                <li><a href="#marketplace" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">🛍️ Marketplace</a></li>
                 <li><a href="#about" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">About Us</a></li>
                 <li><a href="#for-vendors" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">For Vendors</a></li>
                 <li><a href="#contact" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">Contact</a></li>
             </ul>
-            <a href="#contact" class="hidden md:block cta-button text-white font-bold py-2 px-6 rounded-lg">Get in Touch</a>
+            <a href="#marketplace" class="hidden md:block cta-button text-white font-bold py-2 px-6 rounded-lg">Browse Products</a>
         </nav>
     </header>
 
     <main>
         <!-- Hero Section -->
         <section class="bg-cover bg-center text-white" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2070')">
-            <div class="container mx-auto px-6 text-center py-24 md:py-32">
-                <h1 class="text-4xl md:text-6xl font-bold mb-4">The Smart Way to Go Solar in India</h1>
-                <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Get a free, anonymous comparison of quotes from local installers. Pay a small fee only when you're ready to see the full details and connect.</p>
-                <a href="#marketplace" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">📊 Get Your Free Comparison Now</a>
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-24 md:py-32">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">India's Solar Marketplace.</h1>
+                <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Calculate your savings, browse solar products, and connect with trusted local installers—all in one place.</p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="#calculator" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">💰 Calculate Your Savings</a>
+                    <a href="#marketplace" class="primary-button text-white font-bold py-4 px-8 rounded-lg text-lg">🛍️ Browse Marketplace</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Savings Calculator Section -->
+        <section id="calculator" class="py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">💰 Savings & System Size Calculator</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Don't know what you need? Start here. Enter your electricity bill to get a quick, reliable estimate of the perfect system size for your home.</p>
+                 <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label for="monthly-bill" class="block text-sm font-medium text-gray-700">Average Monthly Electricity Bill (in ₹)</label>
+                            <input type="number" id="monthly-bill" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3" placeholder="e.g., 2500">
+                        </div>
+                        <div>
+                            <label for="state-select" class="block text-sm font-medium text-gray-700">Select Your State/UT</label>
+                            <select id="state-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3"></select>
+                        </div>
+                        <div id="provider-section" class="hidden">
+                            <label for="provider-select" class="block text-sm font-medium text-gray-700">Select Your Electricity Provider</label>
+                            <select id="provider-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3"></select>
+                        </div>
+                        <button id="calculate-savings-btn" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md flex items-center justify-center">
+                            Calculate My System Size
+                        </button>
+                    </div>
+                </div>
+                <div id="calculator-spinner" class="spinner"></div>
+                <div id="calculator-results" class="mt-12 max-w-3xl mx-auto"></div>
             </div>
         </section>
         
-        <!-- AI Solar Marketplace Section -->
-        <section id="marketplace" class="py-20 bg-[var(--light-gray)]">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">📊 Solar Marketplace & Quote Comparison</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Ready to install? Tell us your needs, and our AI will generate instant, competitive quotes from local vendors in your area.</p>
-                <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
-                    <div class="grid grid-cols-1 gap-6">
-                        <div>
-                            <label for="location-marketplace" class="block text-sm font-medium text-gray-700">Project Location (City, State)</label>
-                            <input type="text" id="location-marketplace" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3" placeholder="e.g., Pune, Maharashtra">
-                        </div>
-                        <div>
-                            <label for="system-size" class="block text-sm font-medium text-gray-700">Desired System Size (kW)</label>
-                            <select id="system-size" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
-                                <option>3 kW</option>
-                                <option>5 kW</option>
-                                <option>10 kW</option>
-                                <option>15 kW</option>
-                                <option>25 kW</option>
-                                <option>50 kW+</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="panel-type" class="block text-sm font-medium text-gray-700">Preferred Panel Type</label>
-                            <select id="panel-type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
-                                <option>Any (Best Value)</option>
-                                <option>Monocrystalline (High Efficiency)</option>
-                                <option>Polycrystalline (Cost-Effective)</option>
-                            </select>
-                        </div>
-                        <button id="compare-quotes-btn" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md flex items-center justify-center">
-                            Compare Quotes
-                        </button>
-                    </div>
+        <!-- Solar Marketplace Section -->
+        <section id="marketplace" class="py-24 bg-[var(--light-gray)]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">🛍️ Solar Products Marketplace</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Know what you need? Browse our curated selection of top-quality solar equipment.</p>
+                
+                <!-- Product Grid -->
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Product cards will be dynamically inserted here -->
                 </div>
-                <div id="marketplace-results" class="mt-12 max-w-5xl mx-auto"></div>
             </div>
         </section>
 
-        <!-- AI Policy Helper Section -->
-        <section id="policies" class="py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">⚖️ Policy Helper</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Solar policies can be confusing. Select a policy below to get a simple, clear explanation of what it means for you.</p>
-                <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
-                    <div class="grid grid-cols-1 gap-6">
-                        <div>
-                            <label for="policy-select" class="block text-sm font-medium text-gray-700">Select a Policy to Understand</label>
-                            <select id="policy-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
-                                <option value="">-- Choose a policy --</option>
-                                <option value="PM Surya Ghar: Muft Bijli Yojana">PM Surya Ghar: Muft Bijli Yojana</option>
-                                <option value="Net Metering Policy in India">Net Metering Policy</option>
-                                <option value="PM-KUSUM Scheme">PM-KUSUM Scheme</option>
-                                <option value="State Solar Policy (General)">State Solar Policies (General Overview)</option>
-                            </select>
-                        </div>
-                        <button id="clarify-policy-btn" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md">
-                            Explain This Policy
-                        </button>
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-[var(--secondary-color)]">Go Solar in 3 Simple Steps</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div class="flex flex-col items-center">
+                        <div class="bg-[var(--primary-color)] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-4">1</div>
+                        <h3 class="text-xl font-bold mb-2 text-[var(--secondary-color)]">Calculate or Browse</h3>
+                        <p class="text-gray-600">Use our calculator to find your ideal system size, or browse our marketplace to explore specific products.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-[var(--primary-color)] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-4">2</div>
+                        <h3 class="text-xl font-bold mb-2 text-[var(--secondary-color)]">Request Free Quotes</h3>
+                        <p class="text-gray-600">Once you know what you need, request quotes. We'll send your request to our network of verified local installers.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-[var(--primary-color)] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-4">3</div>
+                        <h3 class="text-xl font-bold mb-2 text-[var(--secondary-color)]">Compare & Connect</h3>
+                        <p class="text-gray-600">You'll receive competitive quotes from multiple installers, allowing you to choose the best option for your home and budget.</p>
                     </div>
                 </div>
-                <div id="policy-results" class="mt-12 max-w-3xl mx-auto"></div>
-            </div>
-        </section>
-
-        <!-- Live Solar News Section -->
-        <section id="news" class="py-20 bg-[var(--light-gray)]">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">📡 Live Solar News Feed</h2>
-                <p class="text-gray-600 mb-8 max-w-2xl mx-auto">The latest updates on government policies, technology, and trends in the Indian solar sector.</p>
-                <div id="news-content" class="max-w-2xl mx-auto text-left">
-                    <!-- AI generated news will appear here -->
-                </div>
-                <button id="refresh-news-btn" class="mt-8 cta-button text-white font-bold py-3 px-6 rounded-lg text-lg hidden">
-                    Refresh Feed
-                </button>
             </div>
         </section>
 
         <!-- About Section -->
-        <section id="about" class="py-20">
-            <div class="container mx-auto px-6">
-                <div class="flex flex-col md:flex-row-reverse items-center gap-12">
-                    <div class="md:w-1/2">
-                        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[var(--secondary-color)]">Our Mission: Transparency and Choice in Solar</h2>
-                        <div class="space-y-4 text-gray-600">
-                            <p>Helionenergies was founded to solve a simple problem: going solar in India is too complicated. Customers face a confusing landscape of vendors, prices, and technologies. We decided to build a better way.</p>
-                            <p>Our mission is to bring transparency to the solar industry. We are not a solar installer; we are a neutral marketplace that connects you with a network of pre-vetted, trusted local installers. Our platform empowers you to compare competitive quotes side-by-side, ensuring you get the best possible value for your investment.</p>
-                            <p class="font-semibold text-[var(--secondary-color)]">We believe that an informed customer makes the best decision. Our commitment is to provide the tools and data you need to choose the right solar solution with confidence.</p>
+        <section id="about" class="py-24 bg-[var(--light-gray)]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
+                    <div class="md:order-2">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[var(--secondary-color)]">Why Choose Helionenergies?</h2>
+                        <div class="space-y-6 text-gray-600">
+                            <p>Finding the right solar installer can be overwhelming. How do you know if you're getting a fair price? Who can you trust? Helionenergies was created to solve this problem.</p>
+                            <p>We are a technology platform that simplifies the process of going solar. Instead of you spending weeks calling multiple vendors, our smart system does the work for you. We provide instant, anonymous quotes from our network of pre-verified local installers, so you can compare your options transparently.</p>
+                            <p class="font-semibold text-[var(--secondary-color)]">Our mission is to empower you with clear, unbiased information, so you can save time, save money, and choose the right solar solution with complete confidence.</p>
                         </div>
                     </div>
-                    <div class="md:w-1/2">
-                        <img src="https://images.unsplash.com/photo-1579583764928-0ef6f4d33959?q=80&w=1974" 
-                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/2a9d8f/ffffff?text=Helionenergies';"
-                             alt="Energy consultants reviewing plans over a solar panel model" 
-                             class="rounded-lg shadow-xl w-full">
+                    <div class="md:order-1 flex items-center justify-center p-8">
+                        <div class="text-center">
+                             <svg class="w-auto h-24 mx-auto" viewBox="0 0 280 60" xmlns="http://www.w3.org/2000/svg">
+                                <text x="0" y="45" font-family="'Lexend Deca', sans-serif" font-size="40" font-weight="bold" fill="var(--secondary-color)">
+                                    Heli<tspan fill="var(--accent-color)">o</tspan>nenergies
+                                </text>
+                                <!-- Simple sun ray integrated into the 'o' -->
+                                <path d="M 98 42 a 1 1 0 0 1 12 0 l -6 10 z" fill="var(--accent-color)" transform="rotate(45 100 40)"/>
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- For Vendors Section -->
-        <section id="for-vendors" class="py-20 bg-[var(--light-gray)]">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[var(--secondary-color)]">Are You a Solar Installer?</h2>
+        <section id="for-vendors" class="py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[var(--secondary-color)]">Are You a Solar Installer or Supplier?</h2>
                 <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-600">Join the Helionenergies network to connect with qualified, local customers who are ready to install solar. Stop chasing leads and start closing deals.</p>
                 <a href="#contact" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">Partner With Us</a>
             </div>
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="py-20">
-            <div class="container mx-auto px-6">
+        <section id="contact" class="py-24 bg-[var(--light-gray)]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">Get in Touch</h2>
                 <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">For customer support or vendor partnership inquiries, please fill out the form below or email us at <a href="mailto:helionenergies@outlook.com" class="text-[var(--primary-color)] font-semibold hover:underline">helionenergies@outlook.com</a>.</p>
                 <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
@@ -195,30 +188,32 @@
         </section>
     </main>
     
-    <!-- Payment/Unlock Modal -->
-    <div id="unlock-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full space-y-4 text-center">
-            <div class="flex justify-end">
+    <!-- Lead Capture Modal -->
+    <div id="lead-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-2xl font-bold text-[var(--secondary-color)]">Get Quotes for this Product</h3>
                 <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-3xl">&times;</button>
             </div>
-            <h3 class="text-2xl font-bold text-[var(--secondary-color)]">Unlock Full Vendor Details</h3>
-            <p class="text-gray-600">For a one-time fee of <strong class="text-[var(--primary-color)]">₹199</strong>, you will get instant access to the full, detailed quotes, including vendor names and contact information.</p>
-            <button id="proceed-to-pay-btn" class="w-full cta-button text-white font-bold py-3 px-4 rounded-md">Proceed to Pay ₹199</button>
-        </div>
-    </div>
-
-    <!-- Innovative Loading Popup -->
-    <div id="loading-popup" class="modal-overlay fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-50">
-        <div class="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full text-center space-y-4">
-            <div id="loading-emoji" class="text-5xl"></div>
-            <p id="loading-message" class="text-lg font-semibold text-[var(--secondary-color)] loading-popup-content"></p>
+            <p class="text-gray-600">To get quotes for <strong id="modal-product-name" class="text-[var(--primary-color)]"></strong>, please provide your details. We'll connect you with local installers.</p>
+            <form id="lead-form" action="https://formsubmit.co/helionenergies@outlook.com" method="POST">
+                <input type="hidden" name="_subject" id="lead-subject">
+                <input type="hidden" name="_next" value="https://helionenergiesindia.github.io/?lead-success=true#marketplace">
+                <div class="space-y-4">
+                    <input type="text" name="name" placeholder="Your Name" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
+                    <input type="email" name="email" placeholder="Your Email" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
+                    <input type="tel" name="phone" placeholder="Your Phone Number" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
+                    <input type="text" name="location" placeholder="Your City & State" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
+                    <button type="submit" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md">Get My Free Quotes</button>
+                </div>
+            </form>
         </div>
     </div>
 
 
     <!-- Footer -->
     <footer class="bg-[var(--secondary-color)] text-white text-center py-8">
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <p>&copy; 2025 Helionenergies | All Rights Reserved</p>
             <p>Your Partner in Renewable Energy</p>
             <p class="mt-2"><a href="mailto:helionenergies@outlook.com" class="hover:text-[var(--accent-color)] transition-colors">helionenergies@outlook.com</a></p>
@@ -226,40 +221,7 @@
     </footer>
 
     <script type="module">
-        // --- SHARED ELEMENTS & FUNCTIONS ---
-        const loadingPopup = document.getElementById('loading-popup');
-        const loadingMessage = document.getElementById('loading-message');
-        const loadingEmoji = document.getElementById('loading-emoji');
-        let messageInterval;
-
-        function showLoadingPopup(messages) {
-            let messageIndex = 0;
-            
-            function updateMessage() {
-                const { emoji, text } = messages[messageIndex];
-                loadingEmoji.style.opacity = 0;
-                loadingMessage.style.opacity = 0;
-                
-                setTimeout(() => {
-                    loadingEmoji.textContent = emoji;
-                    loadingMessage.textContent = text;
-                    loadingEmoji.style.opacity = 1;
-                    loadingMessage.style.opacity = 1;
-                }, 300);
-
-                messageIndex = (messageIndex + 1) % messages.length;
-            }
-
-            loadingPopup.classList.remove('hidden');
-            updateMessage(); // Show the first message immediately
-            messageInterval = setInterval(updateMessage, 2500);
-        }
-
-        function hideLoadingPopup() {
-            clearInterval(messageInterval);
-            loadingPopup.classList.add('hidden');
-        }
-
+        // --- SHARED FUNCTIONS ---
         function createAndAppend(tag, text, classes = [], parent) {
             const element = document.createElement(tag);
             if (text) element.textContent = text;
@@ -268,279 +230,151 @@
             return element;
         }
 
-        async function callGemini(prompt, schema = null) {
-            const apiKey = ""; // Leave empty
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-            let payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
-            if (schema) {
-                payload.generationConfig = { responseMimeType: "application/json", responseSchema: schema };
-            }
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            if (!response.ok) {
-                throw new Error(`API call failed with status: ${response.status}`);
-            }
-            const result = await response.json();
-            if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
-                return result.candidates[0].content.parts[0].text;
-            } else {
-                console.error("Unexpected API response structure:", result);
-                if (result.promptFeedback && result.promptFeedback.blockReason) {
-                    throw new Error(`Request blocked by API. Reason: ${result.promptFeedback.blockReason}`);
-                }
-                throw new Error('Content not found in API response.');
-            }
-        }
-
-        // --- MARKETPLACE QUOTE COMPARISON ---
-        const compareBtn = document.getElementById('compare-quotes-btn');
-        const locationMarketplaceInput = document.getElementById('location-marketplace');
-        const systemSizeSelect = document.getElementById('system-size');
-        const panelTypeSelect = document.getElementById('panel-type');
-        const marketplaceResultsDiv = document.getElementById('marketplace-results');
-        const unlockModal = document.getElementById('unlock-modal');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const proceedToPayBtn = document.getElementById('proceed-to-pay-btn');
-        let currentQuotes = []; 
-
-        compareBtn.addEventListener('click', async () => {
-            const location = locationMarketplaceInput.value;
-            const systemSize = systemSizeSelect.value;
-            const panelType = panelTypeSelect.value;
-
-            if (!location) {
-                alert('Please enter your project location.');
-                return;
-            }
-            
-            showLoadingPopup([
-                { emoji: "🗺️", text: `Analyzing ${location}...` },
-                { emoji: "🔍", text: "Scanning our vendor network..." },
-                { emoji: "📊", text: "Compiling the best quotes..." },
-                { emoji: "✅", text: "Finalizing your report..." }
-            ]);
-            marketplaceResultsDiv.innerHTML = '';
-            compareBtn.disabled = true;
-
-            const prompt = `Act as a solar marketplace data engine for India. A user in "${location}" wants quotes for a "${systemSize}" solar system using "${panelType}" panels. Generate a list of 3 realistic, distinct, and fictional local solar vendors for that area. Provide a detailed quote for each.`;
-            
-            const schema = {
-                type: "ARRAY",
-                items: {
-                    type: "OBJECT",
-                    properties: {
-                        "vendorName": { "type": "STRING" }, "rating": { "type": "NUMBER" }, "totalPriceInr": { "type": "STRING" }, "panelBrand": { "type": "STRING" }, "inverterBrand": { "type": "STRING" }, "keyFeature": { "type": "STRING" }
-                    },
-                    required: ["vendorName", "rating", "totalPriceInr", "panelBrand", "inverterBrand", "keyFeature"]
-                }
-            };
-
-            try {
-                const rawResult = await callGemini(prompt, schema);
-                currentQuotes = JSON.parse(rawResult); 
-                displayQuotes(currentQuotes, true); 
-            } catch (error) {
-                console.error('API or Parsing Error:', error);
-                marketplaceResultsDiv.innerHTML = `<p class="text-center text-red-500">Sorry, we couldn't find vendors for your area at this time. Please try a different location.</p>`;
-            } finally {
-                hideLoadingPopup();
-                compareBtn.disabled = false;
-            }
-        });
-
-        function displayQuotes(quotes, isAnonymous) {
-            marketplaceResultsDiv.innerHTML = '';
-            const container = createAndAppend('div', null, ['bg-white', 'p-6', 'rounded-lg', 'shadow-lg'], marketplaceResultsDiv);
-            const headerText = isAnonymous ? `Top 3 Anonymous Quotes in ${locationMarketplaceInput.value}` : `Full Report: Top 3 Quotes in ${locationMarketplaceInput.value}`;
-            const header = createAndAppend('h3', headerText, ['text-2xl', 'font-bold', 'text-center', 'mb-6', 'text-[var(--secondary-color)]'], container);
-            const tableContainer = createAndAppend('div', null, ['overflow-x-auto'], container);
-            const table = createAndAppend('table', null, ['w-full', 'text-left', 'border-collapse'], tableContainer);
-            table.innerHTML = `
-                <thead><tr class="bg-gray-100">
-                    <th class="p-4 border-b">Vendor</th><th class="p-4 border-b">Rating</th><th class="p-4 border-b">Equipment</th><th class="p-4 border-b text-right">Price Estimate</th><th class="p-4 border-b"></th>
-                </tr></thead><tbody></tbody>`;
-            const tbody = table.querySelector('tbody');
-            
-            quotes.forEach((quote, index) => {
-                const row = tbody.insertRow();
-                row.className = 'hover:bg-gray-50';
-                const vendorName = isAnonymous ? `Local Vendor #${index + 1}` : quote.vendorName;
-                const priceHtml = isAnonymous 
-                    ? `<span class="text-gray-500 italic">Locked</span>`
-                    : `<span class="font-bold text-lg text-[var(--primary-color)]">${quote.totalPriceInr}</span>`;
-                const buttonHtml = isAnonymous 
-                    ? `<button class="unlock-btn primary-button text-white font-bold py-2 px-4 rounded-md text-sm">Unlock Price & Details</button>`
-                    : `<a href="#contact" class="primary-button text-white font-bold py-2 px-4 rounded-md text-sm">Contact Now</a>`;
-
-                row.innerHTML = `
-                    <td class="p-4 border-b">
-                        <div class="font-semibold">${vendorName}</div>
-                        <div class="text-sm text-gray-500">${quote.keyFeature}</div>
-                    </td>
-                    <td class="p-4 border-b text-yellow-500 font-bold">${'★'.repeat(Math.round(quote.rating))}${'☆'.repeat(5 - Math.round(quote.rating))} ${quote.rating}/5</td>
-                    <td class="p-4 border-b text-sm"><strong>Panels:</strong> ${quote.panelBrand}<br><strong>Inverter:</strong> ${quote.inverterBrand}</td>
-                    <td class="p-4 border-b text-right">${priceHtml}</td>
-                    <td class="p-4 border-b text-right">${buttonHtml}</td>
-                `;
+        // --- SIMULATED AI RESPONSES (FOR RELIABILITY) ---
+        function getSimulatedCalculation(bill, provider, state) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    const consumption = Math.round((bill / 7.5) * 1.1); // Simplified estimation
+                    const systemSize = Math.ceil(consumption / 120); // 4 units/day/kW
+                    const result = {
+                        estimatedMonthlyConsumptionKwh: `${consumption - 20}-${consumption + 20} kWh`,
+                        estimatedSystemSizeKw: `${systemSize} kW`,
+                    };
+                    resolve(result);
+                }, 1500);
             });
         }
 
-        marketplaceResultsDiv.addEventListener('click', (e) => {
-            if (e.target.classList.contains('unlock-btn')) {
-                unlockModal.classList.remove('hidden');
-            }
-        });
+        // --- SAVINGS CALCULATOR ---
+        const calculateBtn = document.getElementById('calculate-savings-btn');
+        const billInput = document.getElementById('monthly-bill');
+        const stateSelect = document.getElementById('state-select');
+        const providerSection = document.getElementById('provider-section');
+        const providerSelect = document.getElementById('provider-select');
+        const calculatorResultsDiv = document.getElementById('calculator-results');
+        const calculatorSpinner = document.getElementById('calculator-spinner');
+        
+        const providersByState = {
+            "Andaman & Nicobar Islands": ["Electricity Department, Andaman & Nicobar"], "Andhra Pradesh": ["APEPDCL", "APSPDCL", "APCPDCL"], "Arunachal Pradesh": ["Department of Power, Arunachal Pradesh"], "Assam": ["Assam Power Distribution Company Ltd (APDCL)"], "Bihar": ["North Bihar Power Distribution Company Ltd (NBPDCL)", "South Bihar Power Distribution Company Ltd (SBPDCL)"], "Chandigarh": ["Electricity Department, Chandigarh"], "Chhattisgarh": ["Chhattisgarh State Power Distribution Co. Ltd (CSPDCL)"], "Dadra & Nagar Haveli and Daman & Diu": ["DNH Power Distribution Corporation Ltd"], "Delhi": ["Tata Power Delhi Distribution Ltd (TPDDL)", "BSES Rajdhani Power Ltd (BRPL)", "BSES Yamuna Power Ltd (BYPL)", "NDMC"], "Goa": ["Electricity Department, Goa"], "Gujarat": ["Dakshin Gujarat Vij Company Ltd (DGVCL)", "Madhya Gujarat Vij Company Ltd (MGVCL)", "Paschim Gujarat Vij Company Ltd (PGVCL)", "Uttar Gujarat Vij Company Ltd (UGVCL)", "Torrent Power (Ahmedabad/Surat)"], "Haryana": ["Dakshin Haryana Bijli Vitran Nigam (DHBVN)", "Uttar Haryana Bijli Vitran Nigam (UHBVN)"], "Himachal Pradesh": ["Himachal Pradesh State Electricity Board Ltd (HPSEBL)"], "Jammu & Kashmir": ["Jammu and Kashmir Power Development Department (JKPDD)"], "Jharkhand": ["Jharkhand Bijli Vitran Nigam Ltd (JBVNL)"], "Karnataka": ["Bangalore Electricity Supply Company Ltd (BESCOM)", "Chamundeshwari Electricity Supply Corporation Ltd (CESC)", "Gulbarga Electricity Supply Company Ltd (GESCOM)", "Hubli Electricity Supply Company Ltd (HESCOM)", "Mangalore Electricity Supply Company Ltd (MESCOM)"], "Kerala": ["Kerala State Electricity Board Ltd (KSEBL)"], "Ladakh": ["Power Development Department, Ladakh"], "Lakshadweep": ["Lakshadweep Electricity Department"], "Madhya Pradesh": ["MP Poorv Kshetra Vidyut Vitaran Co. Ltd (MPPKVVCL)", "MP Madhya Kshetra Vidyut Vitaran Co. Ltd (MPMKVVCL)", "MP Paschim Kshetra Vidyut Vitaran Co. Ltd (MPPKVVCL)"], "Maharashtra": ["Maharashtra State Electricity Distribution Co. Ltd (MSEDCL)", "Adani Electricity Mumbai Ltd", "Tata Power (Mumbai)", "Brihanmumbai Electric Supply and Transport (BEST)"], "Manipur": ["Manipur State Power Distribution Company Ltd (MSPDCL)"], "Meghalaya": ["Meghalaya Power Distribution Corporation Ltd (MePDCL)"], "Mizoram": ["Power & Electricity Department, Mizoram"], "Nagaland": ["Department of Power, Nagaland"], "Odisha": ["TP Central Odisha Distribution Ltd (TPCODL)", "TP Northern Odisha Distribution Ltd (TPNODL)", "TP Southern Odisha Distribution Ltd (TPSODL)", "TP Western Odisha Distribution Ltd (TPWODL)"], "Puducherry": ["Electricity Department, Puducherry"], "Punjab": ["Punjab State Power Corporation Ltd (PSPCL)"], "Rajasthan": ["Jaipur Vidyut Vitran Nigam Ltd (JVVNL)", "Ajmer Vidyut Vitran Nigam Ltd (AVVNL)", "Jodhpur Vidyut Vitran Nigam Ltd (JdVVNL)"], "Sikkim": ["Energy & Power Department, Sikkim"], "Tamil Nadu": ["Tamil Nadu Generation and Distribution Corporation Ltd (TANGEDCO)"], "Telangana": ["Northern Power Distribution Company of Telangana Ltd (TSNPDCL)", "Southern Power Distribution Company of Telangana Ltd (TSSPDCL)"], "Tripura": ["Tripura State Electricity Corporation Ltd (TSECL)"], "Uttar Pradesh": ["Dakshinanchal Vidyut Vitran Nigam Ltd (DVVNL)", "Madhyanchal Vidyut Vitran Nigam Ltd (MVVNL)", "Paschimanchal Vidyut Vitran Nigam Ltd (PVVNL)", "Purvanchal Vidyut Vitran Nigam Ltd (PuVVNL)", "Kanpur Electricity Supply Company (KESCO)"], "Uttarakhand": ["Uttarakhand Power Corporation Ltd (UPCL)"], "West Bengal": ["West Bengal State Electricity Distribution Company Ltd (WBSEDCL)", "CESC Limited (Kolkata)"]
+        };
 
-        closeModalBtn.addEventListener('click', () => { unlockModal.classList.add('hidden'); });
-        proceedToPayBtn.addEventListener('click', () => {
-            unlockModal.classList.add('hidden');
-            displayQuotes(currentQuotes, false); 
-        });
-        unlockModal.addEventListener('click', (e) => {
-            if (e.target === unlockModal) { unlockModal.classList.add('hidden'); }
-        });
-
-        // --- AI POLICY HELPER ---
-        const clarifyPolicyBtn = document.getElementById('clarify-policy-btn');
-        const policySelect = document.getElementById('policy-select');
-        const policyResults = document.getElementById('policy-results');
-
-        clarifyPolicyBtn.addEventListener('click', async () => {
-            const selectedPolicy = policySelect.value;
-            if (!selectedPolicy) {
-                alert('Please select a policy to explain.');
-                return;
-            }
-
-            showLoadingPopup([
-                { emoji: "📜", text: `Accessing info on ${selectedPolicy}...` },
-                { emoji: "🧠", text: "Simplifying the legal jargon..." },
-                { emoji: "✍️", text: "Preparing your summary..." }
-            ]);
-            policyResults.innerHTML = '';
-            clarifyPolicyBtn.disabled = true;
-
-            const prompt = `Act as a policy expert for the Indian solar sector. Explain the "${selectedPolicy}" in simple, clear terms for a homeowner or small business owner. Focus on three key points: 1. Who is it for? 2. What are the main benefits? 3. How can someone apply or take advantage of it? Also, provide up to two official government URLs as sources.`;
-            
-            const schema = {
-                type: "OBJECT",
-                properties: {
-                    "explanation": { "type": "STRING" },
-                    "sources": { "type": "ARRAY", "items": { "type": "STRING" } }
-                },
-                required: ["explanation", "sources"]
-            };
-
-            try {
-                const rawResult = await callGemini(prompt, schema);
-                const result = JSON.parse(rawResult);
-                displayPolicyClarification(result.explanation, selectedPolicy, result.sources);
-            } catch (error) {
-                console.error("Could not clarify policy:", error);
-                policyResults.innerHTML = `<p class="text-center text-red-500">Sorry, we couldn't get details on this policy right now.</p>`;
-            } finally {
-                hideLoadingPopup();
-                clarifyPolicyBtn.disabled = false;
-            }
-        });
-
-        function displayPolicyClarification(content, policyName, sources) {
-            policyResults.innerHTML = '';
-            const container = createAndAppend('div', null, ['bg-white', 'p-8', 'rounded-lg', 'shadow-lg', 'border-t-4', 'border-[var(--accent-color)]'], policyResults);
-            createAndAppend('h3', `Understanding: ${policyName}`, ['text-2xl', 'font-bold', 'mb-4', 'text-[var(--secondary-color)]'], container);
-            const bodyContainer = createAndAppend('div', null, ['space-y-4'], container);
-            const paragraphs = content.split('\n');
-            paragraphs.forEach(pText => {
-                if (pText.trim() !== '') {
-                    createAndAppend('p', pText, ['text-gray-700', 'leading-relaxed'], bodyContainer);
-                }
+        function populateStateDropdown() {
+            const states = Object.keys(providersByState);
+            stateSelect.innerHTML = '<option value="">-- Select Your State --</option>';
+            states.forEach(state => {
+                const option = createAndAppend('option', state, [], stateSelect);
+                option.value = state;
             });
+        }
 
-            if (sources && sources.length > 0) {
-                const sourcesContainer = createAndAppend('div', null, ['mt-6', 'pt-4', 'border-t'], container);
-                createAndAppend('h4', 'Official Sources:', ['font-semibold', 'text-gray-800', 'mb-2'], sourcesContainer);
-                const sourceList = createAndAppend('ul', null, ['list-disc', 'list-inside', 'space-y-1'], sourcesContainer);
-                sources.forEach(url => {
-                    const li = createAndAppend('li', null, [], sourceList);
-                    const a = createAndAppend('a', url, ['text-[var(--primary-color)]', 'hover:underline', 'break-all'], li);
-                    a.href = url;
-                    a.target = "_blank";
+        stateSelect.addEventListener('change', () => {
+            const selectedState = stateSelect.value;
+            if (selectedState) {
+                const providers = providersByState[selectedState];
+                providerSelect.innerHTML = '';
+                providers.forEach(provider => {
+                    const option = createAndAppend('option', provider, [], providerSelect);
+                    option.value = provider;
                 });
+                providerSection.classList.remove('hidden');
+            } else {
+                providerSection.classList.add('hidden');
+            }
+        });
+
+        calculateBtn.addEventListener('click', async () => {
+            const bill = billInput.value;
+            const state = stateSelect.value;
+            const provider = providerSelect.value;
+
+            if (!bill || !state || !provider) {
+                alert('Please fill all fields, including your state and provider.');
+                return;
             }
 
-            const disclaimer = createAndAppend('p', 'Disclaimer: This AI-generated explanation is for informational purposes. Please consult the official government sources above for legal or financial advice.', ['text-xs', 'text-gray-500', 'italic', 'mt-6', 'text-center'], container);
-        }
-
-        // --- LIVE NEWS FEED ---
-        const newsContent = document.getElementById('news-content');
-        const refreshNewsBtn = document.getElementById('refresh-news-btn');
-
-        async function fetchNews() {
-            showLoadingPopup([
-                { emoji: "📡", text: "Scanning the latest solar news..." },
-                { emoji: "📰", text: "Identifying top stories..." },
-                { emoji: "✨", text: "Compiling your news brief..." }
-            ]);
-            newsContent.innerHTML = '';
-            refreshNewsBtn.classList.add('hidden');
-            
-            const prompt = `Act as a news wire service for the Indian renewable energy sector. Provide the single most important and recent news update (e.g., a major policy announcement, technology breakthrough, or significant investment). Format it with a clear headline, a timestamp, and a concise summary of about 100-150 words. Also, provide the URL of the primary news source.`;
-
-            const schema = {
-                type: "OBJECT",
-                properties: {
-                    "newsItem": { "type": "STRING" },
-                    "sourceUrl": { "type": "STRING" }
-                },
-                required: ["newsItem", "sourceUrl"]
-            };
+            calculatorSpinner.style.display = 'block';
+            calculatorResultsDiv.innerHTML = '';
+            calculateBtn.disabled = true;
+            calculateBtn.textContent = 'Calculating...';
 
             try {
-                const rawResult = await callGemini(prompt, schema);
-                const result = JSON.parse(rawResult);
-                displayNews(result.newsItem, result.sourceUrl);
+                const result = await getSimulatedCalculation(bill, provider, state);
+                displayCalculatorResults(result);
             } catch (error) {
-                console.error("Could not fetch news:", error);
-                newsContent.innerHTML = `<p class="text-center text-red-500">Could not load news feed. Please try refreshing.</p>`;
+                console.error('Calculation Error:', error);
+                calculatorResultsDiv.innerHTML = `<p class="text-center text-red-500">Could not calculate savings at this time.</p>`;
             } finally {
-                hideLoadingPopup();
-                refreshNewsBtn.classList.remove('hidden');
+                calculatorSpinner.style.display = 'none';
+                calculateBtn.disabled = false;
+                calculateBtn.textContent = 'Calculate My System Size';
             }
+        });
+        
+        function displayCalculatorResults(data) {
+            calculatorResultsDiv.innerHTML = '';
+            const container = createAndAppend('div', null, ['bg-white', 'p-6', 'md:p-8', 'rounded-lg', 'shadow-lg', 'border-l-4', 'border-[var(--primary-color)]', 'text-center'], calculatorResultsDiv);
+            createAndAppend('h3', 'Your Estimated System Size', ['text-2xl', 'font-bold', 'mb-4', 'text-[var(--secondary-color)]'], container);
+            createAndAppend('p', `Based on your bill, you consume approx. ${data.estimatedMonthlyConsumptionKwh}.`, ['text-gray-600', 'mb-4'], container);
+            createAndAppend('p', `We recommend a:`, ['text-lg'], container);
+            createAndAppend('p', data.estimatedSystemSizeKw, ['text-5xl', 'font-bold', 'my-4', 'text-[var(--primary-color)]'], container);
+            
+            const ctaButton = createAndAppend('a', `🛍️ Browse ${data.estimatedSystemSizeKw} Systems in Marketplace`, ['cta-button', 'text-white', 'font-bold', 'py-3', 'px-6', 'rounded-lg', 'inline-block', 'mt-4'], container);
+            ctaButton.href = "#marketplace";
         }
 
-        function displayNews(content, sourceUrl) {
-            newsContent.innerHTML = '';
-            const container = createAndAppend('div', null, ['bg-white', 'p-8', 'rounded-lg', 'shadow-lg', 'border-t-4', 'border-[var(--accent-color)]'], newsContent);
-            
-            const lines = content.split('\n');
-            const headline = lines.shift() || "Latest Solar News";
-            
-            createAndAppend('h3', headline, ['text-2xl', 'font-bold', 'mb-2', 'text-[var(--secondary-color)]'], container);
-            createAndAppend('p', `Updated just now`, ['text-sm', 'text-gray-500', 'mb-4'], container);
 
-            const bodyContainer = createAndAppend('div', null, ['space-y-4'], container);
-            lines.forEach(pText => {
-                if (pText.trim() !== '') {
-                    createAndAppend('p', pText, ['text-gray-700', 'leading-relaxed'], bodyContainer);
-                }
+        // --- PRODUCT DATA & MARKETPLACE LOGIC ---
+        const products = [
+            { name: "Waaree 540W Bifacial Solar Panel", category: "Solar Panels", image: "https://placehold.co/600x400/2a9d8f/ffffff?text=Waaree+Panel", spec: "High-efficiency bifacial panels capture light from both sides." },
+            { name: "Loom Solar 550W Mono PERC Panel", category: "Solar Panels", image: "https://placehold.co/600x400/2a9d8f/ffffff?text=Loom+Solar", spec: "Top-tier monocrystalline cells for excellent performance in low light." },
+            { name: "Adani 530W Monocrystalline Panel", category: "Solar Panels", image: "https://placehold.co/600x400/2a9d8f/ffffff?text=Adani+Solar", spec: "Robust design with high power output, made in India." },
+            { name: "SolarEdge 5kW String Inverter", category: "Inverters", image: "https://placehold.co/600x400/264653/ffffff?text=SolarEdge", spec: "Advanced string inverter with module-level monitoring and safety features." },
+            { name: "Enphase IQ7+ Microinverter", category: "Inverters", image: "https://placehold.co/600x400/264653/ffffff?text=Enphase", spec: "Converts DC to AC at each panel, maximizing output and reliability." },
+            { name: "Luminous 150Ah Solar Battery", category: "Batteries", image: "https://placehold.co/600x400/f4a261/ffffff?text=Luminous", spec: "Tall tubular battery designed for long life and deep cycle applications." },
+        ];
+
+        const productGrid = document.getElementById('product-grid');
+        const leadModal = document.getElementById('lead-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalProductName = document.getElementById('modal-product-name');
+        const leadSubjectInput = document.getElementById('lead-subject');
+
+        function renderProducts() {
+            productGrid.innerHTML = '';
+            products.forEach(product => {
+                const card = createAndAppend('div', null, ['bg-white', 'rounded-lg', 'shadow-md', 'overflow-hidden', 'flex', 'flex-col'], productGrid);
+                
+                const img = createAndAppend('img', null, ['w-full', 'h-48', 'object-cover'], card);
+                img.src = product.image;
+                img.alt = product.name;
+
+                const content = createAndAppend('div', null, ['p-6', 'flex-grow', 'flex', 'flex-col'], card);
+                createAndAppend('h3', product.name, ['text-lg', 'font-bold', 'text-[var(--secondary-color)]', 'flex-grow'], content);
+                createAndAppend('p', product.spec, ['text-sm', 'text-gray-600', 'mt-2', 'flex-grow'], content);
+                
+                const button = createAndAppend('button', 'Get Quote from Local Installers', ['mt-6', 'w-full', 'primary-button', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded-md'], content);
+                button.dataset.product = product.name;
             });
-            
-            if (sourceUrl) {
-                const sourcesContainer = createAndAppend('div', null, ['mt-6', 'pt-4', 'border-t'], container);
-                createAndAppend('h4', 'Source:', ['font-semibold', 'text-gray-800', 'mb-2'], sourcesContainer);
-                const a = createAndAppend('a', sourceUrl, ['text-[var(--primary-color)]', 'hover:underline', 'break-all'], sourcesContainer);
-                a.href = sourceUrl;
-                a.target = "_blank";
-            }
-
-            const disclaimer = createAndAppend('p', 'Disclaimer: This news summary is AI-generated. Please refer to the primary news source for the full report.', ['text-xs', 'text-gray-500', 'italic', 'mt-6', 'text-center'], container);
         }
 
-        refreshNewsBtn.addEventListener('click', fetchNews);
-        document.addEventListener('DOMContentLoaded', fetchNews); // Fetch news on page load
+        productGrid.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON' && e.target.dataset.product) {
+                const productName = e.target.dataset.product;
+                modalProductName.textContent = productName;
+                leadSubjectInput.value = `New Lead for ${productName} from Helionenergies!`;
+                leadModal.classList.remove('hidden');
+            }
+        });
+
+        closeModalBtn.addEventListener('click', () => { leadModal.classList.add('hidden'); });
+        leadModal.addEventListener('click', (e) => {
+            if (e.target === leadModal) { leadModal.classList.add('hidden'); }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+             populateStateDropdown();
+             renderProducts();
+        });
 
     </script>
 
