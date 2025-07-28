@@ -30,12 +30,12 @@ const seedFirestore = async () => {
         if (snapshot.empty) {
             console.log("No products found, seeding database...");
             const mockProducts = [
-                { name: 'SunPower Equinox 400W Panel', type: 'Solar Panel', price: 299.99, rating: 4.9, location: 'Mumbai, MH', description: 'High-efficiency monocrystalline solar panel, perfect for residential rooftops.', vendor: { name: 'BrightSolar Solutions', contact: 'contact@brightsolar.com', phone: '9876543210' } },
-                { name: 'Tesla Powerwall 2', type: 'Battery Storage', price: 8500, rating: 4.8, location: 'Bangalore, KA', description: 'A rechargeable lithium-ion battery stationary energy storage product.', vendor: { name: 'Tesla Energy India', contact: 'powerwall@tesla.in', phone: '8765432109' } },
-                { name: 'Luminous Solar Inverter NXG+ 1850', type: 'Inverter', price: 150.00, rating: 4.6, location: 'Delhi, DL', description: 'Pure Sine Wave solar inverter with built-in charge controller.', vendor: { name: 'Luminous Power', contact: 'sales@luminousindia.com', phone: '7654321098' } },
-                { name: 'Residential Solar Consultation', type: 'Service', price: 50, rating: 5.0, location: 'Chennai, TN', description: 'Complete site assessment and system design for your home.', vendor: { name: 'GreenGrid Consultants', contact: 'info@greengrid.com', phone: '6543210987' } },
-                { name: 'Commercial Rooftop Installation', type: 'Service', price: 25000, rating: 4.9, location: 'Pune, MH', description: 'End-to-end installation service for businesses and commercial properties.', vendor: { name: 'MegaWatt Installers', contact: 'projects@megawatt.com', phone: '9012345678' } },
-                { name: 'Solar Water Heater - 200L', type: 'Water Heater', price: 350, rating: 4.5, location: 'Hyderabad, TS', description: 'Efficient solar water heating solution for a family of four.', vendor: { name: 'SunWarm Systems', contact: 'support@sunwarm.net', phone: '8901234567' } },
+                { name: 'SunPower Equinox 400W Panel', type: 'Solar Panel', rating: 4.9, location: 'Mumbai, MH', description: 'High-efficiency monocrystalline solar panel, perfect for residential rooftops.', vendor: { name: 'BrightSolar Solutions', contact: 'contact@brightsolar.com', phone: '9876543210' } },
+                { name: 'Tesla Powerwall 2', type: 'Battery Storage', rating: 4.8, location: 'Bangalore, KA', description: 'A rechargeable lithium-ion battery stationary energy storage product.', vendor: { name: 'Tesla Energy India', contact: 'powerwall@tesla.in', phone: '8765432109' } },
+                { name: 'Luminous Solar Inverter NXG+ 1850', type: 'Inverter', rating: 4.6, location: 'Delhi, DL', description: 'Pure Sine Wave solar inverter with built-in charge controller.', vendor: { name: 'Luminous Power', contact: 'sales@luminousindia.com', phone: '7654321098' } },
+                { name: 'Residential Solar Consultation', type: 'Service', rating: 5.0, location: 'Chennai, TN', description: 'Complete site assessment and system design for your home.', vendor: { name: 'GreenGrid Consultants', contact: 'info@greengrid.com', phone: '6543210987' } },
+                { name: 'Commercial Rooftop Installation', type: 'Service', rating: 4.9, location: 'Pune, MH', description: 'End-to-end installation service for businesses and commercial properties.', vendor: { name: 'MegaWatt Installers', contact: 'projects@megawatt.com', phone: '9012345678' } },
+                { name: 'Solar Water Heater - 200L', type: 'Water Heater', rating: 4.5, location: 'Hyderabad, TS', description: 'Efficient solar water heating solution for a family of four.', vendor: { name: 'SunWarm Systems', contact: 'support@sunwarm.net', phone: '8901234567' } },
             ];
             for (const product of mockProducts) {
                 await addDoc(productsCollectionRef, product);
@@ -111,7 +111,7 @@ export default function App() {
         <div className="bg-slate-50 min-h-screen font-sans text-slate-800">
             <Header navigateTo={navigateTo} isMobileMenuOpen={isMobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
             <main className="pt-20">
-                {isAuthReady ? renderPage() : <LoadingSpinner />}
+                {isAuthReady ? renderPage() : <SolarLoadingSpinner />}
             </main>
             <Footer navigateTo={navigateTo} />
         </div>
@@ -202,11 +202,89 @@ const Footer = ({ navigateTo }) => {
     );
 };
 
-const LoadingSpinner = () => (
-    <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-500"></div>
-    </div>
-);
+const SolarLoadingSpinner = () => {
+    return (
+        <div className="flex flex-col justify-center items-center h-64 space-y-4" aria-label="Loading animation">
+            <div className="relative w-40 h-40">
+                {/* Sun with rotating rays */}
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-10 h-10">
+                    <div className="w-full h-full bg-yellow-400 rounded-full animate-pulse"></div>
+                    <div className="absolute inset-0 animate-spin-slow">
+                        {[...Array(8)].map((_, i) => (
+                            <div
+                                key={i}
+                                className="absolute top-1/2 left-1/2 w-1 h-20 origin-center -translate-y-1/2"
+                                style={{ transform: `rotate(${i * 45}deg) translateY(-20px)` }}
+                            >
+                                <div className="w-full h-1/2 bg-yellow-400/70 rounded-full"></div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Solar Panel */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-28 h-10 bg-slate-800 p-1 rounded grid grid-cols-6 gap-px">
+                     {[...Array(12)].map((_, i) => (
+                        <div key={i} className="bg-blue-900/80 panel-cell"></div>
+                    ))}
+                </div>
+
+                {/* Sun Ray Particles */}
+                {[...Array(5)].map((_, i) => (
+                    <div
+                        key={i}
+                        className="absolute top-12 left-1/2 w-1 h-1 bg-yellow-300 rounded-full ray"
+                        style={{ 
+                            animationDelay: `${i * 0.4}s`,
+                            // Randomize horizontal position for a more natural look
+                            transform: `translateX(${(Math.random() - 0.5) * 60}px)`
+                        }}
+                    ></div>
+                ))}
+            </div>
+            <p className="text-slate-600 font-medium text-lg animate-pulse">Powering up...</p>
+            <style>{`
+                @keyframes spin-slow {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+                .animate-spin-slow {
+                    animation: spin-slow 10s linear infinite;
+                }
+                
+                @keyframes fall-and-fade {
+                    0% {
+                        transform: translateY(0px) scale(1);
+                        opacity: 1;
+                    }
+                    80% {
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translateY(60px) scale(0.5);
+                        opacity: 0;
+                    }
+                }
+                .ray {
+                    animation: fall-and-fade 2s linear infinite;
+                }
+
+                @keyframes panel-glow {
+                    0%, 100% { background-color: rgba(30, 58, 138, 0.8); } /* bg-blue-900/80 */
+                    50% { background-color: rgba(59, 130, 246, 0.9); } /* bg-blue-500/90 */
+                }
+                .panel-cell {
+                    animation: panel-glow 2s ease-in-out infinite;
+                }
+                .panel-cell:nth-child(2n) { animation-delay: 0.2s; }
+                .panel-cell:nth-child(3n) { animation-delay: 0.4s; }
+                .panel-cell:nth-child(4n) { animation-delay: 0.6s; }
+                .panel-cell:nth-child(5n) { animation-delay: 0.8s; }
+                .panel-cell:nth-child(6n) { animation-delay: 1s; }
+            `}</style>
+        </div>
+    );
+};
 
 // --- Page Components ---
 
@@ -402,7 +480,7 @@ const MarketplacePage = () => {
         setSelectedProduct(null);
     };
 
-    if (loading) return <LoadingSpinner />;
+    if (loading) return <SolarLoadingSpinner />;
     if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
 
     return (
@@ -439,10 +517,6 @@ const ProductCard = ({ product, onViewDetails }) => {
                         <Star size={16} className="mr-1" fill="currentColor" />
                         {product.rating.toFixed(1)}
                     </div>
-                </div>
-                
-                <div className="text-3xl font-extrabold text-slate-800 mb-4">
-                    ${product.price.toLocaleString()}
                 </div>
             </div>
             <div className="p-6 bg-slate-50">
