@@ -30,6 +30,7 @@
         .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 24px; height: 24px; border-radius: 50%; border-left-color: var(--primary-color); animation: spin 1s ease infinite; display: none; margin: 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .modal-overlay { transition: opacity 0.3s ease; }
+        .loading-popup-content { transition: opacity 0.5s ease-in-out; }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,9 +43,9 @@
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-3xl font-bold font-logo" style="color: var(--primary-color);">Helionenergies</a>
             <ul class="hidden md:flex items-center space-x-8">
-                <li><a href="#marketplace" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">☀️ Compare Quotes</a></li>
-                <li><a href="#policies" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">📜 Policy Helper</a></li>
-                <li><a href="#news" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">📰 Live News</a></li>
+                <li><a href="#marketplace" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">📊 Compare Quotes</a></li>
+                <li><a href="#policies" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">⚖️ Policy Helper</a></li>
+                <li><a href="#news" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">📡 Live News</a></li>
                 <li><a href="#about" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">About Us</a></li>
                 <li><a href="#for-vendors" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">For Vendors</a></li>
                 <li><a href="#contact" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">Contact</a></li>
@@ -59,14 +60,14 @@
             <div class="container mx-auto px-6 text-center py-24 md:py-32">
                 <h1 class="text-4xl md:text-6xl font-bold mb-4">The Smart Way to Go Solar in India</h1>
                 <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Get a free, anonymous comparison of quotes from local installers. Pay a small fee only when you're ready to see the full details and connect.</p>
-                <a href="#marketplace" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">☀️ Get Your Free Comparison Now</a>
+                <a href="#marketplace" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">📊 Get Your Free Comparison Now</a>
             </div>
         </section>
         
         <!-- AI Solar Marketplace Section -->
         <section id="marketplace" class="py-20 bg-[var(--light-gray)]">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">Solar Marketplace & Quote Comparison</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">📊 Solar Marketplace & Quote Comparison</h2>
                 <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Ready to install? Tell us your needs, and our AI will generate instant, competitive quotes from local vendors in your area.</p>
                 <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
                     <div class="grid grid-cols-1 gap-6">
@@ -98,7 +99,6 @@
                         </button>
                     </div>
                 </div>
-                <div id="marketplace-spinner" class="spinner"></div>
                 <div id="marketplace-results" class="mt-12 max-w-5xl mx-auto"></div>
             </div>
         </section>
@@ -106,7 +106,7 @@
         <!-- AI Policy Helper Section -->
         <section id="policies" class="py-20">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">📜 Policy Helper</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">⚖️ Policy Helper</h2>
                 <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Solar policies can be confusing. Select a policy below to get a simple, clear explanation of what it means for you.</p>
                 <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
                     <div class="grid grid-cols-1 gap-6">
@@ -125,7 +125,6 @@
                         </button>
                     </div>
                 </div>
-                <div id="policy-spinner" class="spinner"></div>
                 <div id="policy-results" class="mt-12 max-w-3xl mx-auto"></div>
             </div>
         </section>
@@ -133,9 +132,8 @@
         <!-- Live Solar News Section -->
         <section id="news" class="py-20 bg-[var(--light-gray)]">
             <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[var(--secondary-color)]">📰 Live Solar News Feed</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">📡 Live Solar News Feed</h2>
                 <p class="text-gray-600 mb-8 max-w-2xl mx-auto">The latest updates on government policies, technology, and trends in the Indian solar sector.</p>
-                <div id="news-spinner" class="spinner"></div>
                 <div id="news-content" class="max-w-2xl mx-auto text-left">
                     <!-- AI generated news will appear here -->
                 </div>
@@ -209,6 +207,14 @@
         </div>
     </div>
 
+    <!-- Innovative Loading Popup -->
+    <div id="loading-popup" class="modal-overlay fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full text-center space-y-4">
+            <div id="loading-emoji" class="text-5xl"></div>
+            <p id="loading-message" class="text-lg font-semibold text-[var(--secondary-color)] loading-popup-content"></p>
+        </div>
+    </div>
+
 
     <!-- Footer -->
     <footer class="bg-[var(--secondary-color)] text-white text-center py-8">
@@ -220,7 +226,40 @@
     </footer>
 
     <script type="module">
-        // --- SHARED FUNCTIONS ---
+        // --- SHARED ELEMENTS & FUNCTIONS ---
+        const loadingPopup = document.getElementById('loading-popup');
+        const loadingMessage = document.getElementById('loading-message');
+        const loadingEmoji = document.getElementById('loading-emoji');
+        let messageInterval;
+
+        function showLoadingPopup(messages) {
+            let messageIndex = 0;
+            
+            function updateMessage() {
+                const { emoji, text } = messages[messageIndex];
+                loadingEmoji.style.opacity = 0;
+                loadingMessage.style.opacity = 0;
+                
+                setTimeout(() => {
+                    loadingEmoji.textContent = emoji;
+                    loadingMessage.textContent = text;
+                    loadingEmoji.style.opacity = 1;
+                    loadingMessage.style.opacity = 1;
+                }, 300);
+
+                messageIndex = (messageIndex + 1) % messages.length;
+            }
+
+            loadingPopup.classList.remove('hidden');
+            updateMessage(); // Show the first message immediately
+            messageInterval = setInterval(updateMessage, 2500);
+        }
+
+        function hideLoadingPopup() {
+            clearInterval(messageInterval);
+            loadingPopup.classList.add('hidden');
+        }
+
         function createAndAppend(tag, text, classes = [], parent) {
             const element = document.createElement(tag);
             if (text) element.textContent = text;
@@ -262,7 +301,6 @@
         const systemSizeSelect = document.getElementById('system-size');
         const panelTypeSelect = document.getElementById('panel-type');
         const marketplaceResultsDiv = document.getElementById('marketplace-results');
-        const marketplaceSpinner = document.getElementById('marketplace-spinner');
         const unlockModal = document.getElementById('unlock-modal');
         const closeModalBtn = document.getElementById('close-modal-btn');
         const proceedToPayBtn = document.getElementById('proceed-to-pay-btn');
@@ -277,11 +315,15 @@
                 alert('Please enter your project location.');
                 return;
             }
-
-            marketplaceSpinner.style.display = 'block';
+            
+            showLoadingPopup([
+                { emoji: "🗺️", text: `Analyzing ${location}...` },
+                { emoji: "🔍", text: "Scanning our vendor network..." },
+                { emoji: "📊", text: "Compiling the best quotes..." },
+                { emoji: "✅", text: "Finalizing your report..." }
+            ]);
             marketplaceResultsDiv.innerHTML = '';
             compareBtn.disabled = true;
-            compareBtn.textContent = 'Finding Vendors...';
 
             const prompt = `Act as a solar marketplace data engine for India. A user in "${location}" wants quotes for a "${systemSize}" solar system using "${panelType}" panels. Generate a list of 3 realistic, distinct, and fictional local solar vendors for that area. Provide a detailed quote for each.`;
             
@@ -304,9 +346,8 @@
                 console.error('API or Parsing Error:', error);
                 marketplaceResultsDiv.innerHTML = `<p class="text-center text-red-500">Sorry, we couldn't find vendors for your area at this time. Please try a different location.</p>`;
             } finally {
-                marketplaceSpinner.style.display = 'none';
+                hideLoadingPopup();
                 compareBtn.disabled = false;
-                compareBtn.textContent = 'Compare Quotes';
             }
         });
 
@@ -319,7 +360,7 @@
             const table = createAndAppend('table', null, ['w-full', 'text-left', 'border-collapse'], tableContainer);
             table.innerHTML = `
                 <thead><tr class="bg-gray-100">
-                    <th class="p-4 border-b">Vendor</th><th class="p-4 border-b">Rating</th><th class="p-4 border-b">Equipment</th><th class="p-4 border-b text-right">Total Price</th><th class="p-4 border-b"></th>
+                    <th class="p-4 border-b">Vendor</th><th class="p-4 border-b">Rating</th><th class="p-4 border-b">Equipment</th><th class="p-4 border-b text-right">Price Estimate</th><th class="p-4 border-b"></th>
                 </tr></thead><tbody></tbody>`;
             const tbody = table.querySelector('tbody');
             
@@ -327,8 +368,11 @@
                 const row = tbody.insertRow();
                 row.className = 'hover:bg-gray-50';
                 const vendorName = isAnonymous ? `Local Vendor #${index + 1}` : quote.vendorName;
+                const priceHtml = isAnonymous 
+                    ? `<span class="text-gray-500 italic">Locked</span>`
+                    : `<span class="font-bold text-lg text-[var(--primary-color)]">${quote.totalPriceInr}</span>`;
                 const buttonHtml = isAnonymous 
-                    ? `<button class="unlock-btn primary-button text-white font-bold py-2 px-4 rounded-md text-sm">Unlock Details</button>`
+                    ? `<button class="unlock-btn primary-button text-white font-bold py-2 px-4 rounded-md text-sm">Unlock Price & Details</button>`
                     : `<a href="#contact" class="primary-button text-white font-bold py-2 px-4 rounded-md text-sm">Contact Now</a>`;
 
                 row.innerHTML = `
@@ -338,7 +382,7 @@
                     </td>
                     <td class="p-4 border-b text-yellow-500 font-bold">${'★'.repeat(Math.round(quote.rating))}${'☆'.repeat(5 - Math.round(quote.rating))} ${quote.rating}/5</td>
                     <td class="p-4 border-b text-sm"><strong>Panels:</strong> ${quote.panelBrand}<br><strong>Inverter:</strong> ${quote.inverterBrand}</td>
-                    <td class="p-4 border-b text-right font-bold text-lg text-[var(--primary-color)]">${quote.totalPriceInr}</td>
+                    <td class="p-4 border-b text-right">${priceHtml}</td>
                     <td class="p-4 border-b text-right">${buttonHtml}</td>
                 `;
             });
@@ -362,7 +406,6 @@
         // --- AI POLICY HELPER ---
         const clarifyPolicyBtn = document.getElementById('clarify-policy-btn');
         const policySelect = document.getElementById('policy-select');
-        const policySpinner = document.getElementById('policy-spinner');
         const policyResults = document.getElementById('policy-results');
 
         clarifyPolicyBtn.addEventListener('click', async () => {
@@ -372,27 +415,39 @@
                 return;
             }
 
-            policySpinner.style.display = 'block';
+            showLoadingPopup([
+                { emoji: "📜", text: `Accessing info on ${selectedPolicy}...` },
+                { emoji: "🧠", text: "Simplifying the legal jargon..." },
+                { emoji: "✍️", text: "Preparing your summary..." }
+            ]);
             policyResults.innerHTML = '';
             clarifyPolicyBtn.disabled = true;
-            clarifyPolicyBtn.textContent = 'Explaining...';
 
-            const prompt = `Act as a policy expert for the Indian solar sector. Explain the "${selectedPolicy}" in simple, clear terms for a homeowner or small business owner. Focus on three key points: 1. Who is it for? 2. What are the main benefits? 3. How can someone apply or take advantage of it?`;
+            const prompt = `Act as a policy expert for the Indian solar sector. Explain the "${selectedPolicy}" in simple, clear terms for a homeowner or small business owner. Focus on three key points: 1. Who is it for? 2. What are the main benefits? 3. How can someone apply or take advantage of it? Also, provide up to two official government URLs as sources.`;
             
+            const schema = {
+                type: "OBJECT",
+                properties: {
+                    "explanation": { "type": "STRING" },
+                    "sources": { "type": "ARRAY", "items": { "type": "STRING" } }
+                },
+                required: ["explanation", "sources"]
+            };
+
             try {
-                const result = await callGemini(prompt);
-                displayPolicyClarification(result, selectedPolicy);
+                const rawResult = await callGemini(prompt, schema);
+                const result = JSON.parse(rawResult);
+                displayPolicyClarification(result.explanation, selectedPolicy, result.sources);
             } catch (error) {
                 console.error("Could not clarify policy:", error);
                 policyResults.innerHTML = `<p class="text-center text-red-500">Sorry, we couldn't get details on this policy right now.</p>`;
             } finally {
-                policySpinner.style.display = 'none';
+                hideLoadingPopup();
                 clarifyPolicyBtn.disabled = false;
-                clarifyPolicyBtn.textContent = 'Explain This Policy';
             }
         });
 
-        function displayPolicyClarification(content, policyName) {
+        function displayPolicyClarification(content, policyName, sources) {
             policyResults.innerHTML = '';
             const container = createAndAppend('div', null, ['bg-white', 'p-8', 'rounded-lg', 'shadow-lg', 'border-t-4', 'border-[var(--accent-color)]'], policyResults);
             createAndAppend('h3', `Understanding: ${policyName}`, ['text-2xl', 'font-bold', 'mb-4', 'text-[var(--secondary-color)]'], container);
@@ -403,34 +458,60 @@
                     createAndAppend('p', pText, ['text-gray-700', 'leading-relaxed'], bodyContainer);
                 }
             });
-            const disclaimer = createAndAppend('p', 'Disclaimer: This explanation is for informational purposes. AI can make mistakes. Please consult official government sources for legal or financial advice.', ['text-xs', 'text-gray-500', 'italic', 'mt-6', 'text-center'], container);
+
+            if (sources && sources.length > 0) {
+                const sourcesContainer = createAndAppend('div', null, ['mt-6', 'pt-4', 'border-t'], container);
+                createAndAppend('h4', 'Official Sources:', ['font-semibold', 'text-gray-800', 'mb-2'], sourcesContainer);
+                const sourceList = createAndAppend('ul', null, ['list-disc', 'list-inside', 'space-y-1'], sourcesContainer);
+                sources.forEach(url => {
+                    const li = createAndAppend('li', null, [], sourceList);
+                    const a = createAndAppend('a', url, ['text-[var(--primary-color)]', 'hover:underline', 'break-all'], li);
+                    a.href = url;
+                    a.target = "_blank";
+                });
+            }
+
+            const disclaimer = createAndAppend('p', 'Disclaimer: This AI-generated explanation is for informational purposes. Please consult the official government sources above for legal or financial advice.', ['text-xs', 'text-gray-500', 'italic', 'mt-6', 'text-center'], container);
         }
 
         // --- LIVE NEWS FEED ---
-        const newsSpinner = document.getElementById('news-spinner');
         const newsContent = document.getElementById('news-content');
         const refreshNewsBtn = document.getElementById('refresh-news-btn');
 
         async function fetchNews() {
-            newsSpinner.style.display = 'block';
+            showLoadingPopup([
+                { emoji: "📡", text: "Scanning the latest solar news..." },
+                { emoji: "📰", text: "Identifying top stories..." },
+                { emoji: "✨", text: "Compiling your news brief..." }
+            ]);
             newsContent.innerHTML = '';
             refreshNewsBtn.classList.add('hidden');
             
-            const prompt = `Act as a news wire service for the Indian renewable energy sector. Provide the single most important and recent news update (e.g., a major policy announcement, technology breakthrough, or significant investment). Format it with a clear headline, a timestamp, and a concise summary of about 100-150 words.`;
+            const prompt = `Act as a news wire service for the Indian renewable energy sector. Provide the single most important and recent news update (e.g., a major policy announcement, technology breakthrough, or significant investment). Format it with a clear headline, a timestamp, and a concise summary of about 100-150 words. Also, provide the URL of the primary news source.`;
+
+            const schema = {
+                type: "OBJECT",
+                properties: {
+                    "newsItem": { "type": "STRING" },
+                    "sourceUrl": { "type": "STRING" }
+                },
+                required: ["newsItem", "sourceUrl"]
+            };
 
             try {
-                const result = await callGemini(prompt);
-                displayNews(result);
+                const rawResult = await callGemini(prompt, schema);
+                const result = JSON.parse(rawResult);
+                displayNews(result.newsItem, result.sourceUrl);
             } catch (error) {
                 console.error("Could not fetch news:", error);
                 newsContent.innerHTML = `<p class="text-center text-red-500">Could not load news feed. Please try refreshing.</p>`;
             } finally {
-                newsSpinner.style.display = 'none';
+                hideLoadingPopup();
                 refreshNewsBtn.classList.remove('hidden');
             }
         }
 
-        function displayNews(content) {
+        function displayNews(content, sourceUrl) {
             newsContent.innerHTML = '';
             const container = createAndAppend('div', null, ['bg-white', 'p-8', 'rounded-lg', 'shadow-lg', 'border-t-4', 'border-[var(--accent-color)]'], newsContent);
             
@@ -446,7 +527,16 @@
                     createAndAppend('p', pText, ['text-gray-700', 'leading-relaxed'], bodyContainer);
                 }
             });
-            const disclaimer = createAndAppend('p', 'Disclaimer: This news summary is for informational purposes. AI can make mistakes. Please refer to primary news sources for detailed and verified reports.', ['text-xs', 'text-gray-500', 'italic', 'mt-6', 'text-center'], container);
+            
+            if (sourceUrl) {
+                const sourcesContainer = createAndAppend('div', null, ['mt-6', 'pt-4', 'border-t'], container);
+                createAndAppend('h4', 'Source:', ['font-semibold', 'text-gray-800', 'mb-2'], sourcesContainer);
+                const a = createAndAppend('a', sourceUrl, ['text-[var(--primary-color)]', 'hover:underline', 'break-all'], sourcesContainer);
+                a.href = sourceUrl;
+                a.target = "_blank";
+            }
+
+            const disclaimer = createAndAppend('p', 'Disclaimer: This news summary is AI-generated. Please refer to the primary news source for the full report.', ['text-xs', 'text-gray-500', 'italic', 'mt-6', 'text-center'], container);
         }
 
         refreshNewsBtn.addEventListener('click', fetchNews);
