@@ -1,1 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helionenergies - India's Solar Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-color: #2a9d8f; /* Teal Green */
+            --secondary-color: #264653; /* Dark Blue/Green */
+            --accent-color: #f4a261; /* Sandy Orange */
+            --text-color: #333;
+            --bg-color: #ffffff;
+            --light-gray: #f8f9fa;
+        }
+        body { font-family: 'Inter', sans-serif; color: var(--text-color); background-color: var(--bg-color); scroll-behavior: smooth; }
+        .font-logo { font-family: 'Lexend Deca', sans-serif; }
+        .cta-button { background-color: var(--accent-color); transition: background-color 0.3s ease; }
+        .cta-button:hover { background-color: #e76f51; }
+        .primary-button { background-color: var(--primary-color); transition: background-color 0.3s ease; }
+        .primary-button:hover { background-color: var(--secondary-color); }
+        .modal-overlay { transition: opacity 0.3s ease; }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lexend+Deca:wght@700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-white">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center">
+                <svg class="h-8 w-auto" viewBox="0 0 280 60" xmlns="http://www.w3.org/2000/svg">
+                    <text x="0" y="45" font-family="'Lexend Deca', sans-serif" font-size="40" font-weight="bold" fill="var(--secondary-color)">
+                        Heli<tspan fill="var(--accent-color)">o</tspan>nenergies
+                    </text>
+                    <path d="M 98 42 a 1 1 0 0 1 12 0 l -6 10 z" fill="var(--accent-color)" transform="rotate(45 100 40)"/>
+                </svg>
+            </a>
+            <ul class="hidden md:flex items-center space-x-8">
+                <li><a href="#marketplace" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">🛍️ Marketplace</a></li>
+                <li><a href="#solar-101" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">💡 Solar 101</a></li>
+                <li><a href="#about" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">About Us</a></li>
+                <li><a href="#for-vendors" class="text-gray-700 hover:text-[var(--primary-color)] font-semibold">For Vendors</a></li>
+            </ul>
+            <a href="#contact" class="hidden md:block cta-button text-white font-bold py-2 px-6 rounded-lg">Get in Touch</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="bg-cover bg-center text-white" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2070')">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-24 md:py-32">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">India's Solar Marketplace.</h1>
+                <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Browse solar products, compare prices, and connect with trusted local installers—all in one place.</p>
+                <a href="#marketplace" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">🛍️ Start Browsing</a>
+            </div>
+        </section>
+
+        <!-- Solar Marketplace Section -->
+        <section id="marketplace" class="py-24 bg-[var(--light-gray)]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">🛍️ Solar Products Marketplace</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Find the right equipment for your needs. Select a product to get quotes from installers in your area.</p>
+                
+                <!-- Product Grid -->
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Product cards will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Solar 101 Awareness Section -->
+        <section id="solar-101" class="py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">💡 Solar 101: Your Guide to Going Solar</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">New to solar? Here’s a quick guide to help you understand the basics and benefits.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <!-- How Solar Works -->
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-[var(--primary-color)]">How Solar Power Works</h3>
+                        <ol class="list-decimal list-inside space-y-3 text-gray-700">
+                            <li><strong>Sunlight Hits Panels:</strong> Solar panels on your rooftop absorb sunlight with photovoltaic (PV) cells.</li>
+                            <li><strong>DC Electricity is Created:</strong> The PV cells convert the sunlight into direct current (DC) electricity.</li>
+                            <li><strong>Inverter Converts Electricity:</strong> A solar inverter converts the DC electricity into alternating current (AC) electricity, which is the type used in your home.</li>
+                            <li><strong>Power Your Home:</strong> The AC electricity flows into your home's electrical panel to power your lights and appliances.</li>
+                            <li><strong>Excess Power Goes to Grid:</strong> Any excess electricity you produce is sent back to the grid, and thanks to net metering, you get credits on your bill.</li>
+                        </ol>
+                    </div>
+                    <!-- Key Benefits -->
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-[var(--primary-color)]">Key Benefits of Solar</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-3">✔️</span>
+                                <div><strong class="text-gray-800">Reduce Electricity Bills:</strong> Drastically lower or even eliminate your monthly electricity costs.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-3">✔️</span>
+                                <div><strong class="text-gray-800">Increase Property Value:</strong> Homes with solar installations are often valued and sell higher.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-3">✔️</span>
+                                <div><strong class="text-gray-800">Earn from Surplus Energy:</strong> Sell excess power back to the grid and earn an income through net metering policies.</div>
+                            </li>
+                             <li class="flex items-start">
+                                <span class="text-green-500 mr-3">✔️</span>
+                                <div><strong class="text-gray-800">Hedge Against Inflation:</strong> Lock in your energy costs and protect yourself from future increases in electricity tariffs.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24 bg-[var(--light-gray)]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
+                    <div class="md:order-2">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[var(--secondary-color)]">Why Choose Helionenergies?</h2>
+                        <div class="space-y-6 text-gray-600">
+                            <p>Finding the right solar installer can be overwhelming. How do you know if you're getting a fair price? Who can you trust? Helionenergies was created to solve this problem.</p>
+                            <p>We are a technology platform that simplifies the process of going solar. Instead of you spending weeks calling multiple vendors, our smart system does the work for you. We provide instant, anonymous quotes from our network of pre-verified local installers, so you can compare your options transparently.</p>
+                            <p class="font-semibold text-[var(--secondary-color)]">Our mission is to empower you with clear, unbiased information, so you can save time, save money, and choose the right solar solution with complete confidence.</p>
+                        </div>
+                    </div>
+                    <div class="md:order-1 flex items-center justify-center p-8">
+                        <div class="text-center">
+                             <svg class="w-auto h-24 mx-auto" viewBox="0 0 280 60" xmlns="http://www.w3.org/2000/svg">
+                                <text x="0" y="45" font-family="'Lexend Deca', sans-serif" font-size="40" font-weight="bold" fill="var(--secondary-color)">
+                                    Heli<tspan fill="var(--accent-color)">o</tspan>nenergies
+                                </text>
+                                <!-- Simple sun ray integrated into the 'o' -->
+                                <path d="M 98 42 a 1 1 0 0 1 12 0 l -6 10 z" fill="var(--accent-color)" transform="rotate(45 100 40)"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- For Vendors Section -->
+        <section id="for-vendors" class="py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[var(--secondary-color)]">Are You a Solar Installer or Supplier?</h2>
+                <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-600">Join the Helionenergies network to connect with qualified, local customers who are ready to install solar. Stop chasing leads and start closing deals.</p>
+                <a href="#contact" class="cta-button text-white font-bold py-4 px-8 rounded-lg text-lg">Partner With Us</a>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 bg-[var(--light-gray)]">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-[var(--secondary-color)]">Get in Touch</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">For customer support or vendor partnership inquiries, please fill out the form below or email us at <a href="mailto:helionenergies@outlook.com" class="text-[var(--primary-color)] font-semibold hover:underline">helionenergies@outlook.com</a>.</p>
+                <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
+                    <form action="https://formsubmit.co/helionenergies@outlook.com" method="POST">
+                        <div class="grid grid-cols-1 gap-6">
+                            <input type="text" name="name" placeholder="Your Name" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
+                            <input type="email" name="email" placeholder="Your Email" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3">
+                            <textarea name="message" rows="5" placeholder="Your Message (e.g., 'I am an installer interested in partnership.')" required class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] sm:text-sm p-3"></textarea>
+                            <input type="hidden" name="_subject" value="New Inquiry from Helionenergies Website!">
+                            <input type="hidden" name="_next" id="contact-redirect-url">
+                            <button type="submit" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Lead Capture Modal -->
+    <div id="lead-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-2xl font-bold text-[var(--secondary-color)]">Get Quotes for this Product</h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-3xl">&times;</button>
+            </div>
+            <p class="text-gray-600">To get quotes for <strong id="modal-product-name" class="text-[var(--primary-color)]"></strong>, please provide your details. We'll connect you with local installers.</p>
+            <form id="lead-form" action="https://formsubmit.co/helionenergies@outlook.com" method="POST">
+                <input type="hidden" name="_subject" id="lead-subject">
+                <input type="hidden" name="_next" id="lead-redirect-url">
+                <div class="space-y-4">
+                    <input type="text" name="name" placeholder="Your Name" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
+                    <input type="email" name="email" placeholder="Your Email" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
+                    <input type="tel" name="phone" placeholder="Your Phone Number" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
+                    <input type="text" name="location" placeholder="Your City & State" required class="block w-full rounded-md border-gray-300 shadow-sm p-3">
+                    <button type="submit" class="w-full primary-button text-white font-bold py-3 px-4 rounded-md">Get My Free Quotes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="bg-[var(--secondary-color)] text-white text-center py-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <p>&copy; 2025 Helionenergies | All Rights Reserved</p>
+            <p>Your Partner in Renewable Energy</p>
+            <p class="mt-2"><a href="mailto:helionenergies@outlook.com" class="hover:text-[var(--accent-color)] transition-colors">helionenergies@outlook.com</a></p>
+        </div>
+    </footer>
+
+    <script type="module">
+        // --- SHARED FUNCTIONS ---
+        function createAndAppend(tag, text, classes = [], parent) {
+            const element = document.createElement(tag);
+            if (text) element.textContent = text;
+            if (classes.length > 0) element.classList.add(...classes);
+            parent.appendChild(element);
+            return element;
+        }
+
+        // --- PRODUCT DATA (SIMULATED) ---
+        const products = [
+            { name: "Waaree 540W Bifacial Solar Panel", image: "https://images.unsplash.com/photo-1545208942-e1c9c9165d57?q=80&w=800", spec: "High-efficiency bifacial panels capture light from both sides." },
+            { name: "Loom Solar 550W Mono PERC Panel", image: "https://images.unsplash.com/photo-1629233832133-2458145971a5?q=80&w=800", spec: "Top-tier monocrystalline cells for excellent performance in low light." },
+            { name: "Adani 530W Monocrystalline Panel", image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9c?q=80&w=800", spec: "Robust design with high power output, made in India." },
+            { name: "SolarEdge 5kW String Inverter", image: "https://images.unsplash.com/photo-1620388250894-32d473269036?q=80&w=800", spec: "Advanced string inverter with module-level monitoring and safety features." },
+            { name: "Enphase IQ7+ Microinverter", image: "https://images.unsplash.com/photo-1558495033-6997a55c8c92?q=80&w=800", spec: "Converts DC to AC at each panel, maximizing output and reliability." },
+            { name: "Luminous 150Ah Solar Battery", image: "https://images.unsplash.com/photo-1617933423532-d586134b6e41?q=80&w=800", spec: "Tall tubular battery designed for long life and deep cycle applications." },
+        ];
+
+        // --- MARKETPLACE LOGIC ---
+        const productGrid = document.getElementById('product-grid');
+        const leadModal = document.getElementById('lead-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalProductName = document.getElementById('modal-product-name');
+        const leadSubjectInput = document.getElementById('lead-subject');
+
+        function renderProducts() {
+            productGrid.innerHTML = '';
+            products.forEach(product => {
+                const card = createAndAppend('div', null, ['bg-white', 'rounded-lg', 'shadow-md', 'overflow-hidden', 'flex', 'flex-col'], productGrid);
+                
+                const img = createAndAppend('img', null, ['w-full', 'h-48', 'object-cover'], card);
+                img.src = product.image;
+                img.alt = product.name;
+
+                const content = createAndAppend('div', null, ['p-6', 'flex-grow', 'flex', 'flex-col'], card);
+                createAndAppend('h3', product.name, ['text-lg', 'font-bold', 'text-[var(--secondary-color)]', 'flex-grow'], content);
+                createAndAppend('p', product.spec, ['text-sm', 'text-gray-600', 'mt-2', 'flex-grow'], content);
+                
+                const button = createAndAppend('button', 'Get Quote from Local Installers', ['mt-6', 'w-full', 'primary-button', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded-md'], content);
+                button.dataset.product = product.name;
+            });
+        }
+
+        productGrid.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON' && e.target.dataset.product) {
+                const productName = e.target.dataset.product;
+                modalProductName.textContent = productName;
+                leadSubjectInput.value = `New Lead for ${productName} from Helionenergies!`;
+                leadModal.classList.remove('hidden');
+            }
+        });
+
+        closeModalBtn.addEventListener('click', () => { leadModal.classList.add('hidden'); });
+        leadModal.addEventListener('click', (e) => {
+            if (e.target === leadModal) { leadModal.classList.add('hidden'); }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+             renderProducts();
+             const contactRedirectUrlInput = document.getElementById('contact-redirect-url');
+             const leadRedirectUrlInput = document.getElementById('lead-redirect-url');
+             if(contactRedirectUrlInput) contactRedirectUrlInput.value = `${window.location.origin}${window.location.pathname}?contact-success=true#contact`;
+             if(leadRedirectUrlInput) leadRedirectUrlInput.value = `${window.location.origin}${window.location.pathname}?lead-success=true#marketplace`;
+        });
+
+    </script>
+
+</body>
+</html>
 
