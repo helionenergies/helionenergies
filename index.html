@@ -5,7 +5,6 @@ import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken }
 import { Sun, Zap, Wind, ShieldCheck, Info, Briefcase, Mail, ChevronDown, ChevronUp, Star, MapPin, Phone, User, DollarSign, Menu, X, BarChart, Send, Eye, Target, Heart } from 'lucide-react';
 
 // --- Firebase Configuration ---
-// This configuration is a placeholder. In a real environment, these values would be provided.
 const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : JSON.stringify({
   apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_AUTH_DOMAIN",
@@ -15,16 +14,15 @@ const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __f
   appId: "YOUR_APP_ID"
 }));
 
+// --- App ID for Firestore Path ---
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'helionenergies-prod';
+
 // --- Firebase Initialization ---
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// --- App ID for Firestore Path ---
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'helionenergies-prod';
-
 // --- Mock Data Seeder ---
-// This function adds initial data to Firestore if the collection is empty.
 const seedFirestore = async () => {
     try {
         const productsCollectionRef = collection(db, `/artifacts/${appId}/public/data/products`);
@@ -48,65 +46,48 @@ const seedFirestore = async () => {
         }
     } catch (error) {
         console.error("Error seeding Firestore:", error);
-        // Re-throw the error to be caught by the caller
         throw error;
     }
 };
-
 
 // --- Main App Component ---
 export default function App() {
     const [page, setPage] = useState('home');
     const [isAuthReady, setIsAuthReady] = useState(false);
-    const [userId, setUserId] = useState(null);
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    // Effect for handling authentication and initial data seeding
     useEffect(() => {
-        const initializeAppAndAuth = async () => {
-            try {
-                // The onAuthStateChanged listener is the best way to get the current user.
-                const unsubscribe = onAuthStateChanged(auth, async (user) => {
-                    // Unsubscribe immediately once we have a user to avoid re-running this logic.
-                    unsubscribe(); 
-                    
-                    let currentUser = user;
-                    
-                    // If there's no user, we need to sign in.
-                    if (!currentUser) {
-                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                            console.log("Signing in with custom token...");
-                            const userCredential = await signInWithCustomToken(auth, __initial_auth_token);
-                            currentUser = userCredential.user;
-                        } else {
-                            console.log("Signing in anonymously...");
-                            const userCredential = await signInAnonymously(auth);
-                            currentUser = userCredential.user;
-                        }
-                    }
-
-                    if (currentUser) {
-                        setUserId(currentUser.uid);
-                        console.log("Authentication successful. User ID:", currentUser.uid);
-
-                        // Now that authentication is confirmed, seed the database.
-                        await seedFirestore();
-
-                        // Finally, mark the app as ready to render.
-                        setIsAuthReady(true);
-                        console.log("App is now ready.");
+        const initAuth = onAuthStateChanged(auth, async (user) => {
+            let currentUser = user;
+            if (!currentUser) {
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        const userCredential = await signInWithCustomToken(auth, __initial_auth_token);
+                        currentUser = userCredential.user;
                     } else {
-                        throw new Error("Authentication failed, user object is null.");
+                        const userCredential = await signInAnonymously(auth);
+                        currentUser = userCredential.user;
                     }
-                });
-            } catch (error) {
-                console.error("Fatal error during app initialization:", error);
-                // Handle initialization failure, maybe show an error message.
+                } catch (error) {
+                    console.error("Authentication failed:", error);
+                    return; // Stop execution if auth fails
+                }
             }
-        };
 
-        initializeAppAndAuth();
-    }, []); // Run only once on component mount.
+            if (currentUser) {
+                console.log("User authenticated:", currentUser.uid);
+                try {
+                    await seedFirestore();
+                    setIsAuthReady(true);
+                    console.log("App is ready.");
+                } catch (dbError) {
+                    console.error("Database operation failed after auth:", dbError);
+                }
+            }
+        });
+
+        return () => initAuth(); // Cleanup subscription
+    }, []);
 
     const navigateTo = (newPage) => {
         setPage(newPage);
