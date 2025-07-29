@@ -1,864 +1,751 @@
-import React, { useState, useEffect } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, doc, setDoc, addDoc } from 'firebase/firestore';
-import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
-import { Sun, Zap, Wind, ShieldCheck, Info, Briefcase, Mail, ChevronDown, ChevronUp, Star, MapPin, Phone, User, DollarSign, Menu, X, BarChart, Send, Eye, Target, Heart, CheckCircle } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-// --- Firebase Configuration ---
-const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : JSON.stringify({
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-}));
+    <!-- SEO Meta Tags -->
+    <title>Helionenergies | Your Solar Marketplace</title>
+    <meta name="description" content="Discover, compare, and connect with top-rated solar installers and products. Get personalized quotes and start your journey to clean, affordable energy with Helionenergies." />
+    <meta name="keywords" content="solar panels, renewable energy, solar marketplace, solar quotes, solar installers, clean energy, Helionenergies" />
+    <meta name="author" content="Helionenergies" />
 
-// --- App ID for Firestore Path ---
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'helionenergies-prod';
+    <!-- Favicon -->
+    <link rel="icon" href="https://img.icons8.com/plasticine/100/sun.png" type="image/png">
 
-// --- Firebase Initialization ---
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-// --- Mock Data Seeder ---
-const seedFirestore = async () => {
-    try {
-        const productsCollectionRef = collection(db, `/artifacts/${appId}/public/data/products`);
-        const snapshot = await getDocs(productsCollectionRef);
-        if (snapshot.empty) {
-            console.log("No products found, seeding database...");
-            const mockProducts = [
-                { name: 'SunPower Equinox 400W Panel', type: 'Solar Panel', rating: 4.9, location: 'Mumbai, MH', description: 'High-efficiency monocrystalline solar panel, perfect for residential rooftops.', vendor: { name: 'BrightSolar Solutions', contact: 'contact@brightsolar.com', phone: '9876543210' } },
-                { name: 'Tesla Powerwall 2', type: 'Battery Storage', rating: 4.8, location: 'Bangalore, KA', description: 'A rechargeable lithium-ion battery stationary energy storage product.', vendor: { name: 'Tesla Energy India', contact: 'powerwall@tesla.in', phone: '8765432109' } },
-                { name: 'Luminous Solar Inverter NXG+ 1850', type: 'Inverter', rating: 4.6, location: 'Delhi, DL', description: 'Pure Sine Wave solar inverter with built-in charge controller.', vendor: { name: 'Luminous Power', contact: 'sales@luminousindia.com', phone: '7654321098' } },
-                { name: 'Residential Solar Consultation', type: 'Service', rating: 5.0, location: 'Chennai, TN', description: 'Complete site assessment and system design for your home.', vendor: { name: 'GreenGrid Consultants', contact: 'info@greengrid.com', phone: '6543210987' } },
-                { name: 'Commercial Rooftop Installation', type: 'Service', rating: 4.9, location: 'Pune, MH', description: 'End-to-end installation service for businesses and commercial properties.', vendor: { name: 'MegaWatt Installers', contact: 'projects@megawatt.com', phone: '9012345678' } },
-                { name: 'Solar Water Heater - 200L', type: 'Water Heater', rating: 4.5, location: 'Hyderabad, TS', description: 'Efficient solar water heating solution for a family of four.', vendor: { name: 'SunWarm Systems', contact: 'support@sunwarm.net', phone: '8901234567' } },
-            ];
-            for (const product of mockProducts) {
-                await addDoc(productsCollectionRef, product);
-            }
-            console.log("Database seeded successfully.");
-        } else {
-            console.log("Products collection already has data. Skipping seed.");
+    <!-- React Libraries -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Babel for JSX compilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide-react@latest/dist/lucide-react.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"></script>
+
+    <style>
+        /* Custom styles for the themed loader */
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
-    } catch (error) {
-        console.error("Error seeding Firestore:", error);
-        throw error;
-    }
-};
+        .animate-spin-slow {
+            animation: spin-slow 10s linear infinite;
+        }
+        
+        @keyframes fall-and-fade {
+            0% { transform: translateY(0px) scale(1); opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(60px) scale(0.5); opacity: 0; }
+        }
+        .ray {
+            animation: fall-and-fade 2s linear infinite;
+        }
 
-// --- Main App Component ---
-export default function App() {
-    const [page, setPage] = useState('home');
-    const [isAuthReady, setIsAuthReady] = useState(false);
-    const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+        @keyframes panel-glow {
+            0%, 100% { background-color: rgba(30, 58, 138, 0.8); }
+            50% { background-color: rgba(59, 130, 246, 0.9); }
+        }
+        .panel-cell {
+            animation: panel-glow 2s ease-in-out infinite;
+        }
+        .panel-cell:nth-child(2n) { animation-delay: 0.2s; }
+        .panel-cell:nth-child(3n) { animation-delay: 0.4s; }
+        .panel-cell:nth-child(4n) { animation-delay: 0.6s; }
+        .panel-cell:nth-child(5n) { animation-delay: 0.8s; }
+        .panel-cell:nth-child(6n) { animation-delay: 1s; }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <div id="root"></div>
 
-    useEffect(() => {
-        const initAuth = onAuthStateChanged(auth, async (user) => {
-            let currentUser = user;
-            if (!currentUser) {
+    <script type="text/babel">
+        // --- React Application Code ---
+        
+            const { useState, useEffect } = React;
+            const { initializeApp } = firebase;
+            const { getFirestore, collection, getDocs, addDoc } = firebase.firestore;
+            const { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } = firebase.auth;
+            const { Sun, Zap, Wind, ShieldCheck, Info, Briefcase, Mail, ChevronDown, ChevronUp, Star, MapPin, Phone, User, DollarSign, Menu, X, BarChart, Send, Eye, Target, Heart, CheckCircle } = lucideReact;
+
+            // --- Firebase Configuration ---
+            const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : JSON.stringify({
+                apiKey: "YOUR_API_KEY",
+                authDomain: "YOUR_AUTH_DOMAIN",
+                projectId: "YOUR_PROJECT_ID",
+                storageBucket: "YOUR_STORAGE_BUCKET",
+                messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+                appId: "YOUR_APP_ID"
+            }));
+
+            // --- App ID for Firestore Path ---
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'helionenergies-prod';
+
+            // --- Firebase Initialization ---
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            const auth = getAuth(app);
+
+            // --- Mock Data Seeder ---
+            const seedFirestore = async () => {
                 try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        const userCredential = await signInWithCustomToken(auth, __initial_auth_token);
-                        currentUser = userCredential.user;
+                    const productsCollectionRef = collection(db, `/artifacts/${appId}/public/data/products`);
+                    const snapshot = await getDocs(productsCollectionRef);
+                    if (snapshot.empty) {
+                        console.log("No products found, seeding database...");
+                        const mockProducts = [
+                            { name: 'SunPower Equinox 400W Panel', type: 'Solar Panel', rating: 4.9, location: 'Mumbai, MH', description: 'High-efficiency monocrystalline solar panel, perfect for residential rooftops.', vendor: { name: 'BrightSolar Solutions', contact: 'contact@brightsolar.com', phone: '9876543210' } },
+                            { name: 'Tesla Powerwall 2', type: 'Battery Storage', rating: 4.8, location: 'Bangalore, KA', description: 'A rechargeable lithium-ion battery stationary energy storage product.', vendor: { name: 'Tesla Energy India', contact: 'powerwall@tesla.in', phone: '8765432109' } },
+                            { name: 'Luminous Solar Inverter NXG+ 1850', type: 'Inverter', rating: 4.6, location: 'Delhi, DL', description: 'Pure Sine Wave solar inverter with built-in charge controller.', vendor: { name: 'Luminous Power', contact: 'sales@luminousindia.com', phone: '7654321098' } },
+                            { name: 'Residential Solar Consultation', type: 'Service', rating: 5.0, location: 'Chennai, TN', description: 'Complete site assessment and system design for your home.', vendor: { name: 'GreenGrid Consultants', contact: 'info@greengrid.com', phone: '6543210987' } },
+                            { name: 'Commercial Rooftop Installation', type: 'Service', rating: 4.9, location: 'Pune, MH', description: 'End-to-end installation service for businesses and commercial properties.', vendor: { name: 'MegaWatt Installers', contact: 'projects@megawatt.com', phone: '9012345678' } },
+                            { name: 'Solar Water Heater - 200L', type: 'Water Heater', rating: 4.5, location: 'Hyderabad, TS', description: 'Efficient solar water heating solution for a family of four.', vendor: { name: 'SunWarm Systems', contact: 'support@sunwarm.net', phone: '8901234567' } },
+                        ];
+                        for (const product of mockProducts) {
+                            await addDoc(productsCollectionRef, product);
+                        }
+                        console.log("Database seeded successfully.");
                     } else {
-                        const userCredential = await signInAnonymously(auth);
-                        currentUser = userCredential.user;
+                        console.log("Products collection already has data. Skipping seed.");
                     }
                 } catch (error) {
-                    console.error("Authentication failed:", error);
-                    return;
+                    console.error("Error seeding Firestore:", error);
+                    throw error;
                 }
+            };
+
+            // --- Main App Component ---
+            function App() {
+                const [page, setPage] = useState('home');
+                const [isAuthReady, setIsAuthReady] = useState(false);
+                const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+                useEffect(() => {
+                    const initAuth = onAuthStateChanged(auth, async (user) => {
+                        let currentUser = user;
+                        if (!currentUser) {
+                            try {
+                                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                                    const userCredential = await signInWithCustomToken(auth, __initial_auth_token);
+                                    currentUser = userCredential.user;
+                                } else {
+                                    const userCredential = await signInAnonymously(auth);
+                                    currentUser = userCredential.user;
+                                }
+                            } catch (error) {
+                                console.error("Authentication failed:", error);
+                                return;
+                            }
+                        }
+
+                        if (currentUser) {
+                            console.log("User authenticated:", currentUser.uid);
+                            try {
+                                await seedFirestore();
+                                setIsAuthReady(true);
+                                console.log("App is ready.");
+                            } catch (dbError) {
+                                console.error("Database operation failed after auth:", dbError);
+                            }
+                        }
+                    });
+
+                    return () => initAuth();
+                }, []);
+
+                const navigateTo = (newPage) => {
+                    setPage(newPage);
+                    setMobileMenuOpen(false);
+                    window.scrollTo(0, 0);
+                };
+
+                const renderPage = () => {
+                    switch (page) {
+                        case 'home': return <HomePage navigateTo={navigateTo} />;
+                        case 'marketplace': return <MarketplacePage />;
+                        case 'about': return <AboutPage />;
+                        case 'vendors': return <ForVendorsPage />;
+                        case 'solar101': return <Solar101Page />;
+                        case 'contact': return <ContactPage />;
+                        default: return <HomePage navigateTo={navigateTo} />;
+                    }
+                };
+
+                return (
+                    <div className="bg-slate-50 min-h-screen font-sans text-slate-800">
+                        <Header navigateTo={navigateTo} isMobileMenuOpen={isMobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
+                        <main className="pt-20">
+                            {isAuthReady ? renderPage() : <SolarLoadingSpinner />}
+                        </main>
+                        <Footer navigateTo={navigateTo} />
+                    </div>
+                );
             }
 
-            if (currentUser) {
-                console.log("User authenticated:", currentUser.uid);
-                try {
-                    await seedFirestore();
-                    setIsAuthReady(true);
-                    console.log("App is ready.");
-                } catch (dbError) {
-                    console.error("Database operation failed after auth:", dbError);
-                }
-            }
-        });
+            // --- UI Components ---
 
-        return () => initAuth();
-    }, []);
+            const Header = ({ navigateTo, isMobileMenuOpen, setMobileMenuOpen }) => {
+                const navLinks = [
+                    { name: 'Marketplace', page: 'marketplace' },
+                    { name: 'Solar 101', page: 'solar101' },
+                    { name: 'For Vendors', page: 'vendors' },
+                    { name: 'About Us', page: 'about' },
+                    { name: 'Contact', page: 'contact' },
+                ];
 
-    const navigateTo = (newPage) => {
-        setPage(newPage);
-        setMobileMenuOpen(false);
-        window.scrollTo(0, 0);
-    };
-
-    const renderPage = () => {
-        switch (page) {
-            case 'home': return <HomePage navigateTo={navigateTo} />;
-            case 'marketplace': return <MarketplacePage />;
-            case 'about': return <AboutPage />;
-            case 'vendors': return <ForVendorsPage />;
-            case 'solar101': return <Solar101Page />;
-            case 'contact': return <ContactPage />;
-            default: return <HomePage navigateTo={navigateTo} />;
-        }
-    };
-
-    return (
-        <div className="bg-slate-50 min-h-screen font-sans text-slate-800">
-            <Header navigateTo={navigateTo} isMobileMenuOpen={isMobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
-            <main className="pt-20">
-                {isAuthReady ? renderPage() : <SolarLoadingSpinner />}
-            </main>
-            <Footer navigateTo={navigateTo} />
-        </div>
-    );
-}
-
-// --- UI Components ---
-
-const Header = ({ navigateTo, isMobileMenuOpen, setMobileMenuOpen }) => {
-    const navLinks = [
-        { name: 'Marketplace', page: 'marketplace' },
-        { name: 'Solar 101', page: 'solar101' },
-        { name: 'For Vendors', page: 'vendors' },
-        { name: 'About Us', page: 'about' },
-        { name: 'Contact', page: 'contact' },
-    ];
-
-    return (
-        <header className="bg-white/80 backdrop-blur-lg shadow-sm fixed top-0 left-0 right-0 z-50">
-            <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-                <div 
-                    className="text-2xl font-bold text-green-600 cursor-pointer"
-                    onClick={() => navigateTo('home')}
-                >
-                    Helion<span className="text-slate-800">energies</span>
-                </div>
-                <nav className="hidden md:flex items-center space-x-6">
-                    {navLinks.map(link => (
-                        <button key={link.page} onClick={() => navigateTo(link.page)} className="text-slate-600 hover:text-green-600 transition-colors duration-300 font-medium">
-                            {link.name}
-                        </button>
-                    ))}
-                </nav>
-                <div className="md:hidden">
-                    <button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)} className="text-slate-600 hover:text-green-600">
-                        {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-                    </button>
-                </div>
-            </div>
-            {isMobileMenuOpen && (
-                <div className="md:hidden bg-white shadow-lg">
-                    <nav className="flex flex-col items-center space-y-4 p-4">
-                        {navLinks.map(link => (
-                            <button key={link.page} onClick={() => navigateTo(link.page)} className="text-slate-600 hover:text-green-600 transition-colors duration-300 font-medium py-2 w-full text-center">
-                                {link.name}
-                            </button>
-                        ))}
-                    </nav>
-                </div>
-            )}
-        </header>
-    );
-};
-
-const Footer = ({ navigateTo }) => {
-    return (
-        <footer className="bg-slate-800 text-slate-300 mt-16">
-            <div className="container mx-auto px-6 py-8">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 className="text-xl font-bold text-white mb-4">Helion<span className="text-green-400">energies</span></h3>
-                        <p className="text-sm text-slate-400">Your trusted partner in the renewable energy transition.</p>
-                    </div>
-                    <div>
-                        <h4 className="font-semibold text-white mb-3">Quick Links</h4>
-                        <ul className="space-y-2">
-                            <li><button onClick={() => navigateTo('marketplace')} className="hover:text-green-400 text-sm">Marketplace</button></li>
-                            <li><button onClick={() => navigateTo('about')} className="hover:text-green-400 text-sm">About Us</button></li>
-                            <li><button onClick={() => navigateTo('solar101')} className="hover:text-green-400 text-sm">Solar 101</button></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 className="font-semibold text-white mb-3">Partners</h4>
-                        <ul className="space-y-2">
-                            <li><button onClick={() => navigateTo('vendors')} className="hover:text-green-400 text-sm">For Vendors</button></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 className="font-semibold text-white mb-3">Connect</h4>
-                        <a href="mailto:helionenergies@outlook.com" className="text-sm text-slate-400 hover:text-green-400 transition-colors">helionenergies@outlook.com</a>
-                    </div>
-                </div>
-                <div className="mt-8 pt-6 border-t border-slate-700 text-center text-sm text-slate-500">
-                    <p>&copy; {new Date().getFullYear()} Helionenergies. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
-    );
-};
-
-const SolarLoadingSpinner = () => {
-    return (
-        <div className="flex flex-col justify-center items-center h-64 space-y-4" aria-label="Loading animation">
-            <div className="relative w-40 h-40">
-                {/* Sun with rotating rays */}
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-10 h-10">
-                    <div className="w-full h-full bg-yellow-400 rounded-full animate-pulse"></div>
-                    <div className="absolute inset-0 animate-spin-slow">
-                        {[...Array(8)].map((_, i) => (
-                            <div
-                                key={i}
-                                className="absolute top-1/2 left-1/2 w-1 h-20 origin-center -translate-y-1/2"
-                                style={{ transform: `rotate(${i * 45}deg) translateY(-20px)` }}
+                return (
+                    <header className="bg-white/80 backdrop-blur-lg shadow-sm fixed top-0 left-0 right-0 z-50">
+                        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+                            <div 
+                                className="text-2xl font-bold text-green-600 cursor-pointer"
+                                onClick={() => navigateTo('home')}
                             >
-                                <div className="w-full h-1/2 bg-yellow-400/70 rounded-full"></div>
+                                Helion<span className="text-slate-800">energies</span>
                             </div>
-                        ))}
+                            <nav className="hidden md:flex items-center space-x-6">
+                                {navLinks.map(link => (
+                                    <button key={link.page} onClick={() => navigateTo(link.page)} className="text-slate-600 hover:text-green-600 transition-colors duration-300 font-medium">
+                                        {link.name}
+                                    </button>
+                                ))}
+                            </nav>
+                            <div className="md:hidden">
+                                <button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)} className="text-slate-600 hover:text-green-600">
+                                    {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                                </button>
+                            </div>
+                        </div>
+                        {isMobileMenuOpen && (
+                            <div className="md:hidden bg-white shadow-lg">
+                                <nav className="flex flex-col items-center space-y-4 p-4">
+                                    {navLinks.map(link => (
+                                        <button key={link.page} onClick={() => navigateTo(link.page)} className="text-slate-600 hover:text-green-600 transition-colors duration-300 font-medium py-2 w-full text-center">
+                                            {link.name}
+                                        </button>
+                                    ))}
+                                </nav>
+                            </div>
+                        )}
+                    </header>
+                );
+            };
+
+            const Footer = ({ navigateTo }) => {
+                return (
+                    <footer className="bg-slate-800 text-slate-300 mt-16">
+                        <div className="container mx-auto px-6 py-8">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                                <div>
+                                    <h3 className="text-xl font-bold text-white mb-4">Helion<span className="text-green-400">energies</span></h3>
+                                    <p className="text-sm text-slate-400">Your trusted partner in the renewable energy transition.</p>
+                                </div>
+                                <div>
+                                    <h4 className="font-semibold text-white mb-3">Quick Links</h4>
+                                    <ul className="space-y-2">
+                                        <li><button onClick={() => navigateTo('marketplace')} className="hover:text-green-400 text-sm">Marketplace</button></li>
+                                        <li><button onClick={() => navigateTo('about')} className="hover:text-green-400 text-sm">About Us</button></li>
+                                        <li><button onClick={() => navigateTo('solar101')} className="hover:text-green-400 text-sm">Solar 101</button></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 className="font-semibold text-white mb-3">Partners</h4>
+                                    <ul className="space-y-2">
+                                        <li><button onClick={() => navigateTo('vendors')} className="hover:text-green-400 text-sm">For Vendors</button></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 className="font-semibold text-white mb-3">Connect</h4>
+                                    <a href="mailto:helionenergies@outlook.com" className="text-sm text-slate-400 hover:text-green-400 transition-colors">helionenergies@outlook.com</a>
+                                </div>
+                            </div>
+                            <div className="mt-8 pt-6 border-t border-slate-700 text-center text-sm text-slate-500">
+                                <p>&copy; {new Date().getFullYear()} Helionenergies. All rights reserved.</p>
+                            </div>
+                        </div>
+                    </footer>
+                );
+            };
+
+            const SolarLoadingSpinner = () => {
+                return (
+                    <div className="flex flex-col justify-center items-center h-64 space-y-4" aria-label="Loading animation">
+                        <div className="relative w-40 h-40">
+                            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-10 h-10">
+                                <div className="w-full h-full bg-yellow-400 rounded-full animate-pulse"></div>
+                                <div className="absolute inset-0 animate-spin-slow">
+                                    {[...Array(8)].map((_, i) => (
+                                        <div key={i} className="absolute top-1/2 left-1/2 w-1 h-20 origin-center -translate-y-1/2" style={{ transform: `rotate(${i * 45}deg) translateY(-20px)` }}>
+                                            <div className="w-full h-1/2 bg-yellow-400/70 rounded-full"></div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-28 h-10 bg-slate-800 p-1 rounded grid grid-cols-6 gap-px">
+                                 {[...Array(12)].map((_, i) => <div key={i} className="bg-blue-900/80 panel-cell"></div>)}
+                            </div>
+                            {[...Array(5)].map((_, i) => (
+                                <div key={i} className="absolute top-12 left-1/2 w-1 h-1 bg-yellow-300 rounded-full ray" style={{ animationDelay: `${i * 0.4}s`, transform: `translateX(${(Math.random() - 0.5) * 60}px)` }}></div>
+                            ))}
+                        </div>
+                        <p className="text-slate-600 font-medium text-lg animate-pulse">Powering up...</p>
                     </div>
-                </div>
+                );
+            };
 
-                {/* Solar Panel */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-28 h-10 bg-slate-800 p-1 rounded grid grid-cols-6 gap-px">
-                     {[...Array(12)].map((_, i) => (
-                        <div key={i} className="bg-blue-900/80 panel-cell"></div>
-                    ))}
-                </div>
-
-                {/* Sun Ray Particles */}
-                {[...Array(5)].map((_, i) => (
-                    <div
-                        key={i}
-                        className="absolute top-12 left-1/2 w-1 h-1 bg-yellow-300 rounded-full ray"
-                        style={{ 
-                            animationDelay: `${i * 0.4}s`,
-                            transform: `translateX(${(Math.random() - 0.5) * 60}px)`
-                        }}
-                    ></div>
-                ))}
-            </div>
-            <p className="text-slate-600 font-medium text-lg animate-pulse">Powering up...</p>
-            <style>{`
-                @keyframes spin-slow {
-                    from { transform: rotate(0deg); }
-                    to { transform: rotate(360deg); }
-                }
-                .animate-spin-slow {
-                    animation: spin-slow 10s linear infinite;
-                }
-                
-                @keyframes fall-and-fade {
-                    0% {
-                        transform: translateY(0px) scale(1);
-                        opacity: 1;
-                    }
-                    80% {
-                        opacity: 1;
-                    }
-                    100% {
-                        transform: translateY(60px) scale(0.5);
-                        opacity: 0;
-                    }
-                }
-                .ray {
-                    animation: fall-and-fade 2s linear infinite;
-                }
-
-                @keyframes panel-glow {
-                    0%, 100% { background-color: rgba(30, 58, 138, 0.8); }
-                    50% { background-color: rgba(59, 130, 246, 0.9); }
-                }
-                .panel-cell {
-                    animation: panel-glow 2s ease-in-out infinite;
-                }
-                .panel-cell:nth-child(2n) { animation-delay: 0.2s; }
-                .panel-cell:nth-child(3n) { animation-delay: 0.4s; }
-                .panel-cell:nth-child(4n) { animation-delay: 0.6s; }
-                .panel-cell:nth-child(5n) { animation-delay: 0.8s; }
-                .panel-cell:nth-child(6n) { animation-delay: 1s; }
-            `}</style>
-        </div>
-    );
-};
-
-const ConfirmationModal = ({ message, onClose }) => (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4">
-        <div className="bg-white rounded-lg shadow-2xl max-w-sm w-full text-center p-8">
-            <CheckCircle size={48} className="mx-auto text-green-500 mb-4" />
-            <h2 className="text-2xl font-bold mb-2">Success!</h2>
-            <p className="text-slate-600 mb-6">{message}</p>
-            <button onClick={onClose} className="bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700 transition-colors">
-                Close
-            </button>
-        </div>
-    </div>
-);
-
-// --- Page Components ---
-
-const HomePage = ({ navigateTo }) => {
-    const [status, setStatus] = useState({ submitting: false, success: false, error: null });
-
-    const handleQuoteSubmit = async (e) => {
-        e.preventDefault();
-        setStatus({ submitting: true, success: false, error: null });
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
-
-        try {
-            const inquiriesCollectionRef = collection(db, `/artifacts/${appId}/public/data/inquiries`);
-            await addDoc(inquiriesCollectionRef, { ...data, type: 'Quote Request', createdAt: new Date() });
-            setStatus({ submitting: false, success: true, error: null });
-            e.target.reset();
-        } catch (error) {
-            console.error("Error submitting quote request:", error);
-            setStatus({ submitting: false, success: false, error: "Submission failed. Please try again." });
-        }
-    };
-
-    const reviews = [
-        {
-            quote: "The entire process was seamless. Helionenergies connected us with a fantastic local installer, and we couldn't be happier with our new solar panels. Our electricity bill has been cut by 80%!",
-            name: "Priya S.",
-            location: "Bangalore, KA",
-            rating: 5
-        },
-        {
-            quote: "I was hesitant about the cost, but the marketplace made it easy to compare quotes. I found a system that fit my budget perfectly. The transparency is a game-changer.",
-            name: "Amit R.",
-            location: "Pune, MH",
-            rating: 5
-        },
-        {
-            quote: "Finally, a company that makes solar simple. The Solar 101 guide answered all my questions, and the platform was incredibly user-friendly. Highly recommended!",
-            name: "Sunita K.",
-            location: "Delhi, DL",
-            rating: 5
-        }
-    ];
-
-    return (
-        <div>
-            {status.success && <ConfirmationModal message="Thank you for your request! We have received your details and will be in touch with your personalized quotes shortly." onClose={() => setStatus({ submitting: false, success: false, error: null })} />}
-            
-            {/* Hero Section */}
-            <section className="bg-green-600 text-white">
-                <div className="container mx-auto px-6 py-20 md:py-32 text-center">
-                    <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4">Power Your Future with Solar</h1>
-                    <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto text-green-100">Discover, compare, and connect with top solar providers and products in our trusted marketplace.</p>
-                    <div>
-                        <button 
-                            onClick={() => navigateTo('marketplace')}
-                            className="bg-white text-green-600 font-bold py-3 px-8 rounded-full text-lg hover:bg-green-100 transition-all duration-300 transform hover:scale-105"
-                        >
-                            Explore the Marketplace
+            const ConfirmationModal = ({ message, onClose }) => (
+                <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4">
+                    <div className="bg-white rounded-lg shadow-2xl max-w-sm w-full text-center p-8">
+                        <CheckCircle size={48} className="mx-auto text-green-500 mb-4" />
+                        <h2 className="text-2xl font-bold mb-2">Success!</h2>
+                        <p className="text-slate-600 mb-6">{message}</p>
+                        <button onClick={onClose} className="bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700 transition-colors">
+                            Close
                         </button>
                     </div>
                 </div>
-            </section>
+            );
 
-            {/* Get Quotes Section */}
-            <section id="get-quotes" className="py-16 bg-white">
-                <div className="container mx-auto px-6">
-                    <div className="max-w-3xl mx-auto text-center">
-                        <h2 className="text-3xl font-bold mb-2">Get Your Personalized Solar Quotes</h2>
-                        <p className="text-slate-600 mb-8">Provide a few details, and we'll generate multiple, easy-to-compare quotes from top installers in your area.</p>
-                        <div className="bg-slate-50 p-8 rounded-xl shadow-lg">
-                            <form onSubmit={handleQuoteSubmit} className="space-y-6">
-                                <div className="text-left">
-                                    <label htmlFor="location" className="font-semibold">1. Where will this system be installed?</label>
-                                    <div className="relative mt-2">
-                                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                                        <input type="text" id="location" name="Installation Location" placeholder="Enter your city or postal code" required className="w-full p-3 pl-10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
+            // --- Page Components ---
+
+            const HomePage = ({ navigateTo }) => {
+                const [status, setStatus] = useState({ submitting: false, success: false, error: null });
+
+                const handleQuoteSubmit = async (e) => {
+                    e.preventDefault();
+                    setStatus({ submitting: true, success: false, error: null });
+                    const formData = new FormData(e.target);
+                    const data = Object.fromEntries(formData.entries());
+
+                    try {
+                        const inquiriesCollectionRef = collection(db, `/artifacts/${appId}/public/data/inquiries`);
+                        await addDoc(inquiriesCollectionRef, { ...data, type: 'Quote Request', createdAt: new Date() });
+                        setStatus({ submitting: false, success: true, error: null });
+                        e.target.reset();
+                    } catch (error) {
+                        console.error("Error submitting quote request:", error);
+                        setStatus({ submitting: false, success: false, error: "Submission failed. Please try again." });
+                    }
+                };
+
+                const reviews = [
+                    { quote: "The entire process was seamless. Helionenergies connected us with a fantastic local installer, and we couldn't be happier with our new solar panels. Our electricity bill has been cut by 80%!", name: "Priya S.", location: "Bangalore, KA", rating: 5 },
+                    { quote: "I was hesitant about the cost, but the marketplace made it easy to compare quotes. I found a system that fit my budget perfectly. The transparency is a game-changer.", name: "Amit R.", location: "Pune, MH", rating: 5 },
+                    { quote: "Finally, a company that makes solar simple. The Solar 101 guide answered all my questions, and the platform was incredibly user-friendly. Highly recommended!", name: "Sunita K.", location: "Delhi, DL", rating: 5 }
+                ];
+
+                return (
+                    <div>
+                        {status.success && <ConfirmationModal message="Thank you for your request! We have received your details and will be in touch with your personalized quotes shortly." onClose={() => setStatus({ submitting: false, success: false, error: null })} />}
+                        
+                        <section className="bg-green-600 text-white">
+                            <div className="container mx-auto px-6 py-20 md:py-32 text-center">
+                                <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4">Power Your Future with Solar</h1>
+                                <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto text-green-100">Discover, compare, and connect with top solar providers and products in our trusted marketplace.</p>
+                                <div>
+                                    <button onClick={() => navigateTo('marketplace')} className="bg-white text-green-600 font-bold py-3 px-8 rounded-full text-lg hover:bg-green-100 transition-all duration-300 transform hover:scale-105">
+                                        Explore the Marketplace
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="get-quotes" className="py-16 bg-white">
+                            <div className="container mx-auto px-6">
+                                <div className="max-w-3xl mx-auto text-center">
+                                    <h2 className="text-3xl font-bold mb-2">Get Your Personalized Solar Quotes</h2>
+                                    <p className="text-slate-600 mb-8">Provide a few details, and we'll generate multiple, easy-to-compare quotes from top installers in your area.</p>
+                                    <div className="bg-slate-50 p-8 rounded-xl shadow-lg">
+                                        <form onSubmit={handleQuoteSubmit} className="space-y-6">
+                                            <div className="text-left">
+                                                <label htmlFor="location" className="font-semibold">1. Where will this system be installed?</label>
+                                                <div className="relative mt-2">
+                                                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                                                    <input type="text" id="location" name="Installation Location" placeholder="Enter your city or postal code" required className="w-full p-3 pl-10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
+                                                </div>
+                                            </div>
+                                            <div className="text-left">
+                                                <label htmlFor="bill" className="font-semibold">2. What is your average monthly electricity bill?</label>
+                                                 <div className="relative mt-2">
+                                                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                                                    <input type="number" id="bill" name="Average Monthly Bill" placeholder="e.g., 150" required className="w-full p-3 pl-10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
+                                                </div>
+                                            </div>
+                                            <div className="text-left">
+                                                <label htmlFor="email" className="font-semibold">3. Where should we send your quotes?</label>
+                                                 <div className="relative mt-2">
+                                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                                                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required className="w-full p-3 pl-10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
+                                                </div>
+                                            </div>
+                                            <button type="submit" disabled={status.submitting} className="w-full bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-green-700 transition-colors duration-300 flex items-center justify-center disabled:bg-slate-400">
+                                                {status.submitting ? 'Submitting...' : <><Send size={20} className="mr-2" /> Generate My Quotes</>}
+                                            </button>
+                                            {status.error && <p className="text-red-500 text-sm mt-2">{status.error}</p>}
+                                        </form>
                                     </div>
                                 </div>
-                                <div className="text-left">
-                                    <label htmlFor="bill" className="font-semibold">2. What is your average monthly electricity bill?</label>
-                                     <div className="relative mt-2">
-                                        <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                                        <input type="number" id="bill" name="Average Monthly Bill" placeholder="e.g., 150" required className="w-full p-3 pl-10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
+                            </div>
+                        </section>
+
+                        <section className="py-16">
+                            <div className="container mx-auto px-6">
+                                <h2 className="text-3xl font-bold text-center mb-12">Why Choose Helionenergies?</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                                    <div className="p-6">
+                                        <div className="flex justify-center mb-4"><div className="bg-green-100 p-4 rounded-full"><Zap size={32} className="text-green-600" /></div></div>
+                                        <h3 className="text-xl font-semibold mb-2">Vetted Providers</h3>
+                                        <p className="text-slate-600">We connect you with trusted and certified solar installers and product suppliers.</p>
+                                    </div>
+                                    <div className="p-6">
+                                        <div className="flex justify-center mb-4"><div className="bg-green-100 p-4 rounded-full"><ShieldCheck size={32} className="text-green-600" /></div></div>
+                                        <h3 className="text-xl font-semibold mb-2">Transparent Marketplace</h3>
+                                        <p className="text-slate-600">Compare products, services, and prices openly to make informed decisions.</p>
+                                    </div>
+                                    <div className="p-6">
+                                        <div className="flex justify-center mb-4"><div className="bg-green-100 p-4 rounded-full"><Info size={32} className="text-green-600" /></div></div>
+                                        <h3 className="text-xl font-semibold mb-2">Expert Knowledge</h3>
+                                        <p className="text-slate-600">Our Solar 101 guide helps you understand the essentials of going solar.</p>
                                     </div>
                                 </div>
-                                <div className="text-left">
-                                    <label htmlFor="email" className="font-semibold">3. Where should we send your quotes?</label>
-                                     <div className="relative mt-2">
-                                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                                        <input type="email" id="email" name="email" placeholder="your.email@example.com" required className="w-full p-3 pl-10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
+                            </div>
+                        </section>
+
+                        <section className="py-16 bg-slate-100">
+                            <div className="container mx-auto px-6">
+                                <h2 className="text-3xl font-bold text-center mb-12">What Our Customers Are Saying</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    {reviews.map((review, index) => (
+                                        <div key={index} className="bg-white p-8 rounded-lg shadow-md flex flex-col">
+                                            <div className="flex items-center mb-4">{[...Array(review.rating)].map((_, i) => <Star key={i} size={20} className="text-amber-400" fill="currentColor" />)}</div>
+                                            <p className="text-slate-600 mb-6 flex-grow">"{review.quote}"</p>
+                                            <div>
+                                                <p className="font-bold text-slate-800">{review.name}</p>
+                                                <p className="text-sm text-slate-500">{review.location}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="bg-white py-16">
+                             <div className="container mx-auto px-6 text-center">
+                                <h2 className="text-3xl font-bold mb-4">Ready to Go Solar?</h2>
+                                <p className="text-slate-600 mb-8 max-w-2xl mx-auto">Join thousands of homeowners and businesses making the switch to clean, affordable energy.</p>
+                                <button onClick={() => navigateTo('marketplace')} className="bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-green-700 transition-colors duration-300">
+                                    Find Your Solution
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+                );
+            };
+
+            const MarketplacePage = () => {
+                const [products, setProducts] = useState([]);
+                const [loading, setLoading] = useState(true);
+                const [error, setError] = useState(null);
+                const [selectedProduct, setSelectedProduct] = useState(null);
+                const [isModalOpen, setModalOpen] = useState(false);
+
+                useEffect(() => {
+                    const fetchProducts = async () => {
+                        try {
+                            const productsCollectionRef = collection(db, `/artifacts/${appId}/public/data/products`);
+                            const productSnapshot = await getDocs(productsCollectionRef);
+                            const productList = productSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                            setProducts(productList);
+                        } catch (err) {
+                            console.error("Error fetching products:", err);
+                            setError("Failed to load products. Please try again later.");
+                        } finally {
+                            setLoading(false);
+                        }
+                    };
+                    fetchProducts();
+                }, []);
+
+                const handleViewDetails = (product) => {
+                    setSelectedProduct(product);
+                    setModalOpen(true);
+                };
+
+                const closeModal = () => {
+                    setModalOpen(false);
+                    setSelectedProduct(null);
+                };
+
+                if (loading) return <SolarLoadingSpinner />;
+                if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
+
+                return (
+                    <div className="container mx-auto px-6 py-12">
+                        <h1 className="text-4xl font-bold mb-2 text-center">Solar Marketplace</h1>
+                        <p className="text-slate-600 text-center mb-12 max-w-2xl mx-auto">Browse our curated selection of solar products and services from top-rated vendors.</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {products.map(product => <ProductCard key={product.id} product={product} onViewDetails={() => handleViewDetails(product)} />)}
+                        </div>
+                        {isModalOpen && selectedProduct && <VendorDetailModal product={selectedProduct} onClose={closeModal} />}
+                    </div>
+                );
+            };
+
+            const ProductCard = ({ product, onViewDetails }) => (
+                <div className="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 flex flex-col">
+                    <div className="p-6 flex-grow">
+                        <span className="text-sm bg-green-100 text-green-800 font-medium px-3 py-1 rounded-full">{product.type}</span>
+                        <h3 className="text-xl font-bold my-3">{product.name}</h3>
+                        <p className="text-slate-600 text-sm mb-4 flex-grow">{product.description}</p>
+                        <div className="flex items-center justify-between text-sm text-slate-500 mb-4">
+                            <div className="flex items-center"><MapPin size={16} className="mr-1 text-slate-400" />{product.location}</div>
+                            <div className="flex items-center font-bold text-amber-500"><Star size={16} className="mr-1" fill="currentColor" />{product.rating.toFixed(1)}</div>
+                        </div>
+                    </div>
+                    <div className="p-6 bg-slate-50">
+                        <button onClick={onViewDetails} className="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-300">
+                            View Vendor & Details
+                        </button>
+                    </div>
+                </div>
+            );
+
+            const VendorDetailModal = ({ product, onClose }) => {
+                const [unlocked, setUnlocked] = useState(false);
+                const [paying, setPaying] = useState(false);
+                const reportFee = 5;
+
+                const handleUnlock = () => {
+                    setPaying(true);
+                    setTimeout(() => {
+                        setUnlocked(true);
+                        setPaying(false);
+                    }, 1500);
+                };
+
+                return (
+                    <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4">
+                        <div className="bg-white rounded-lg shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+                            <div className="p-6 relative">
+                                <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><X size={24} /></button>
+                                <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
+                                <p className="text-slate-500 mb-6">{product.type} from {product.location}</p>
+                                <div className="border-t pt-6">
+                                    <h3 className="font-bold text-lg mb-4">Vendor Information</h3>
+                                    <div className="relative">
+                                        {!unlocked && (
+                                            <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex flex-col justify-center items-center z-10 rounded-md p-4 text-center">
+                                                <ShieldCheck size={40} className="text-green-500 mb-3" />
+                                                <h4 className="font-bold text-lg">Unlock Full Vendor Report</h4>
+                                                <p className="text-slate-600 text-sm mb-4">For a small fee of ${reportFee}, get instant access to verified contact details and our full vendor report.</p>
+                                                <button onClick={handleUnlock} disabled={paying} className="bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700 transition-colors duration-300 disabled:bg-slate-400 flex items-center justify-center">
+                                                    {paying ? <><div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>Processing...</> : `Pay $${reportFee} to Unlock`}
+                                                </button>
+                                            </div>
+                                        )}
+                                        <div className={`space-y-3 transition-opacity duration-500 ${!unlocked ? 'opacity-50' : 'opacity-100'}`}>
+                                            <div className="flex items-center"><User size={18} className="mr-3 text-slate-400" /><div><span className="font-semibold">Vendor Name: </span>{unlocked ? <span className="text-green-700 font-medium">{product.vendor.name}</span> : <span>******** Solutions</span>}</div></div>
+                                            <div className="flex items-center"><Mail size={18} className="mr-3 text-slate-400" /><div><span className="font-semibold">Email: </span>{unlocked ? <a href={`mailto:${product.vendor.contact}`} className="text-blue-600 hover:underline">{product.vendor.contact}</a> : <span>c********@********.com</span>}</div></div>
+                                            <div className="flex items-center"><Phone size={18} className="mr-3 text-slate-400" /><div><span className="font-semibold">Phone: </span>{unlocked ? <span className="text-green-700 font-medium">{product.vendor.phone}</span> : <span>(***) ***-**10</span>}</div></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <button type="submit" disabled={status.submitting} className="w-full bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-green-700 transition-colors duration-300 flex items-center justify-center disabled:bg-slate-400">
-                                    {status.submitting ? 'Submitting...' : <><Send size={20} className="mr-2" /> Generate My Quotes</>}
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            const AboutPage = () => (
+                <div className="bg-white">
+                    <div className="container mx-auto px-6 py-16">
+                        <div className="max-w-4xl mx-auto">
+                            <h1 className="text-4xl font-bold text-center mb-4">Empowering Your Switch to Clean Energy</h1>
+                            <p className="text-xl text-slate-600 text-center mb-12">Our mission is to make the transition to sustainable energy simple, transparent, and accessible for everyone.</p>
+                            <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+                                <div className="text-slate-700 space-y-4">
+                                    <h2 className="text-3xl font-bold">Who We Are</h2>
+                                    <p>Helionenergies was founded on a simple principle: everyone deserves access to clean, affordable energy. We saw a complex and often confusing market that made it difficult for homeowners and businesses to feel confident about going solar. Our goal is to change that.</p>
+                                    <p>We are a team of energy experts, technologists, and advocates passionate about creating a sustainable future. We believe that by providing unbiased information, transparent pricing, and access to a network of trusted professionals, we can empower you to make the right energy choices with confidence.</p>
+                                </div>
+                                <div><img src={`https://placehold.co/600x450/34d399/ffffff?text=Our+Team`} alt="A diverse team collaborating" className="rounded-lg shadow-lg" /></div>
+                            </div>
+                            <div className="text-center mb-16">
+                                <h2 className="text-3xl font-bold mb-8">Our Core Values</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    <div className="bg-slate-50 p-6 rounded-lg"><Eye size={32} className="mx-auto text-green-600 mb-4" /><h3 className="text-xl font-semibold mb-2">Transparency</h3><p className="text-slate-600">No hidden fees, no confusing jargon. We provide clear, straightforward information and pricing so you can make an informed decision.</p></div>
+                                    <div className="bg-slate-50 p-6 rounded-lg"><Zap size={32} className="mx-auto text-green-600 mb-4" /><h3 className="text-xl font-semibold mb-2">Empowerment</h3><p className="text-slate-600">We give you the tools and knowledge to take control of your energy future, from initial research to final installation.</p></div>
+                                    <div className="bg-slate-50 p-6 rounded-lg"><Heart size={32} className="mx-auto text-green-600 mb-4" /><h3 className="text-xl font-semibold mb-2">Integrity</h3><p className="text-slate-600">Your trust is our priority. We only partner with vetted, high-quality installers and stand behind the solutions offered on our marketplace.</p></div>
+                                </div>
+                            </div>
+                             <div className="grid md:grid-cols-2 gap-12 items-center">
+                                 <div><img src={`https://placehold.co/600x450/10b981/ffffff?text=Marketplace`} alt="Screenshot of the marketplace" className="rounded-lg shadow-lg" /></div>
+                                <div className="text-slate-700 space-y-4">
+                                    <h2 className="text-3xl font-bold">How We Help</h2>
+                                    <p>The traditional way of going solar involves endless research and high-pressure sales calls. The Helionenergies Marketplace changes that.</p>
+                                    <ul className="list-disc list-inside space-y-2">
+                                        <li><strong>Compare with Confidence:</strong> Receive multiple, standardized quotes from top-rated local installers.</li>
+                                        <li><strong>Expert Guidance:</strong> Our educational resources in Solar 101 and our support team are here to answer your questions without any sales pressure.</li>
+                                        <li><strong>Save Money:</strong> By having installers compete for your business, we help ensure you get a fair price for your system.</li>
+                                    </ul>
+                                     <p>We're not just a website; we're your partner in the journey toward energy independence.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const ForVendorsPage = () => {
+                const [status, setStatus] = useState({ submitting: false, success: false, error: null });
+
+                const handleSubmit = async (e) => {
+                    e.preventDefault();
+                    setStatus({ submitting: true, success: false, error: null });
+                    const formData = new FormData(e.target);
+                    const data = Object.fromEntries(formData.entries());
+
+                    try {
+                        const inquiriesCollectionRef = collection(db, `/artifacts/${appId}/public/data/inquiries`);
+                        await addDoc(inquiriesCollectionRef, { ...data, type: 'Vendor Inquiry', createdAt: new Date() });
+                        setStatus({ submitting: false, success: true, error: null });
+                        e.target.reset();
+                    } catch (error) {
+                        console.error("Error submitting vendor inquiry:", error);
+                        setStatus({ submitting: false, success: false, error: "Submission failed. Please try again." });
+                    }
+                };
+
+                return (
+                    <div className="container mx-auto px-6 py-16">
+                        {status.success && <ConfirmationModal message="Thank you for your interest! We've received your inquiry and will get back to you soon." onClose={() => setStatus({ submitting: false, success: false, error: null })} />}
+                        <div className="max-w-4xl mx-auto text-center">
+                            <h1 className="text-4xl font-bold mb-4">Partner with Helionenergies</h1>
+                            <p className="text-xl text-slate-600 mb-12">Join our marketplace to connect with qualified customers and grow your solar business.</p>
+                        </div>
+                        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto text-center">
+                            <div className="bg-white p-8 rounded-lg shadow-md"><Zap size={40} className="mx-auto text-green-600 mb-4" /><h3 className="text-xl font-semibold mb-2">High-Quality Leads</h3><p className="text-slate-600">Reach customers who are actively searching for solar solutions in your area.</p></div>
+                            <div className="bg-white p-8 rounded-lg shadow-md"><Briefcase size={40} className="mx-auto text-green-600 mb-4" /><h3 className="text-xl font-semibold mb-2">Showcase Your Business</h3><p className="text-slate-600">Feature your products and services on a trusted platform dedicated to renewable energy.</p></div>
+                            <div className="bg-white p-8 rounded-lg shadow-md"><DollarSign size={40} className="mx-auto text-green-600 mb-4" /><h3 className="text-xl font-semibold mb-2">Grow Your Revenue</h3><p className="text-slate-600">Expand your market reach and increase your sales with our performance-based model.</p></div>
+                        </div>
+                        <div className="max-w-2xl mx-auto mt-16 bg-white p-8 rounded-lg shadow-xl">
+                            <h2 className="text-2xl font-bold text-center mb-6">Become a Partner</h2>
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <input type="text" name="Company Name" placeholder="Company Name" required className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
+                                <input type="email" name="email" placeholder="Business Email" required className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
+                                <input type="text" name="Service Area" placeholder="Service Area (e.g., Mumbai, Bangalore)" required className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
+                                <button type="submit" disabled={status.submitting} className="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors disabled:bg-slate-400">
+                                    {status.submitting ? 'Submitting...' : 'Submit Inquiry'}
                                 </button>
                                 {status.error && <p className="text-red-500 text-sm mt-2">{status.error}</p>}
                             </form>
                         </div>
                     </div>
-                </div>
-            </section>
+                );
+            };
 
-            {/* Features Section */}
-            <section className="py-16">
-                <div className="container mx-auto px-6">
-                    <h2 className="text-3xl font-bold text-center mb-12">Why Choose Helionenergies?</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                        <div className="p-6">
-                            <div className="flex justify-center mb-4">
-                                <div className="bg-green-100 p-4 rounded-full">
-                                    <Zap size={32} className="text-green-600" />
-                                </div>
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Vetted Providers</h3>
-                            <p className="text-slate-600">We connect you with trusted and certified solar installers and product suppliers.</p>
-                        </div>
-                        <div className="p-6">
-                            <div className="flex justify-center mb-4">
-                                <div className="bg-green-100 p-4 rounded-full">
-                                    <ShieldCheck size={32} className="text-green-600" />
-                                </div>
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Transparent Marketplace</h3>
-                            <p className="text-slate-600">Compare products, services, and prices openly to make informed decisions.</p>
-                        </div>
-                        <div className="p-6">
-                            <div className="flex justify-center mb-4">
-                                <div className="bg-green-100 p-4 rounded-full">
-                                    <Info size={32} className="text-green-600" />
-                                </div>
-                            </div>
-                            <h3 className="text-xl font-semibold mb-2">Expert Knowledge</h3>
-                            <p className="text-slate-600">Our Solar 101 guide helps you understand the essentials of going solar.</p>
+            const AccordionItem = ({ title, children }) => {
+                const [isOpen, setIsOpen] = useState(false);
+                return (
+                    <div className="border-b">
+                        <button onClick={() => setIsOpen(!isOpen)} className="w-full flex justify-between items-center text-left py-5 px-2">
+                            <h3 className="text-lg font-semibold">{title}</h3>
+                            {isOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+                        </button>
+                        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-screen' : 'max-h-0'}`}>
+                            <div className="p-4 text-slate-600 bg-slate-50">{children}</div>
                         </div>
                     </div>
-                </div>
-            </section>
+                );
+            };
 
-            {/* Customer Reviews Section */}
-            <section className="py-16 bg-slate-100">
-                <div className="container mx-auto px-6">
-                    <h2 className="text-3xl font-bold text-center mb-12">What Our Customers Are Saying</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {reviews.map((review, index) => (
-                            <div key={index} className="bg-white p-8 rounded-lg shadow-md flex flex-col">
-                                <div className="flex items-center mb-4">
-                                    {[...Array(review.rating)].map((_, i) => (
-                                        <Star key={i} size={20} className="text-amber-400" fill="currentColor" />
-                                    ))}
-                                </div>
-                                <p className="text-slate-600 mb-6 flex-grow">"{review.quote}"</p>
+            const Solar101Page = () => {
+                const faqs = [
+                    { q: "How do solar panels work?", a: "Solar panels contain photovoltaic (PV) cells that convert sunlight into direct current (DC) electricity. An inverter then converts the DC electricity into alternating current (AC) electricity, which can be used to power your home." },
+                    { q: "What are the main benefits of going solar?", a: "The primary benefits include significant savings on your electricity bills, reducing your carbon footprint, increasing your property value, and gaining energy independence from the grid." },
+                    { q: "How much does a solar panel system cost?", a: "The cost varies depending on system size, equipment quality, and location. Our marketplace helps you compare prices from different vendors to find a system that fits your budget." },
+                    { q: "Do solar panels work on cloudy days?", a: "Yes, solar panels can still produce electricity on cloudy or overcast days, although their output will be lower than on a bright, sunny day. Modern panels are increasingly efficient in low-light conditions." },
+                    { q: "How long do solar panels last?", a: "Most solar panels come with a performance warranty of 25 years and can continue to produce electricity for 30-40 years or more, with a gradual decline in efficiency over time." },
+                    { q: "What is net metering?", a: "Net metering is a billing mechanism that credits solar energy system owners for the electricity they add to the grid. When your panels produce more electricity than you consume, the excess is sent to the grid, and you receive a credit on your bill." },
+                ];
+                return (
+                    <div className="container mx-auto px-6 py-16">
+                        <div className="max-w-4xl mx-auto">
+                            <h1 className="text-4xl font-bold text-center mb-4">Solar 101: Your Guide to Going Solar</h1>
+                            <p className="text-xl text-slate-600 text-center mb-12">We've answered the most common questions to help you start your solar journey with confidence.</p>
+                            <div className="bg-white rounded-lg shadow-lg">
+                                {faqs.map((faq, index) => <AccordionItem key={index} title={faq.q}><p>{faq.a}</p></AccordionItem>)}
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            const ContactPage = () => {
+                const [status, setStatus] = useState({ submitting: false, success: false, error: null });
+
+                const handleSubmit = async (e) => {
+                    e.preventDefault();
+                    setStatus({ submitting: true, success: false, error: null });
+                    const formData = new FormData(e.target);
+                    const data = Object.fromEntries(formData.entries());
+
+                    try {
+                        const inquiriesCollectionRef = collection(db, `/artifacts/${appId}/public/data/inquiries`);
+                        await addDoc(inquiriesCollectionRef, { ...data, type: 'Contact Message', createdAt: new Date() });
+                        setStatus({ submitting: false, success: true, error: null });
+                        e.target.reset();
+                    } catch (error) {
+                        console.error("Error submitting contact form:", error);
+                        setStatus({ submitting: false, success: false, error: "Submission failed. Please try again." });
+                    }
+                };
+
+                return (
+                    <div className="container mx-auto px-6 py-16">
+                        {status.success && <ConfirmationModal message="Your message has been sent! We'll get back to you as soon as possible." onClose={() => setStatus({ submitting: false, success: false, error: null })} />}
+                        <div className="max-w-2xl mx-auto text-center">
+                            <h1 className="text-4xl font-bold mb-4">Get In Touch</h1>
+                            <p className="text-xl text-slate-600 mb-12">Have questions? We're here to help. Send us a message, and we'll get back to you shortly.</p>
+                        </div>
+                        <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-xl">
+                            <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
-                                    <p className="font-bold text-slate-800">{review.name}</p>
-                                    <p className="text-sm text-slate-500">{review.location}</p>
+                                    <label htmlFor="name" className="font-medium text-slate-700">Full Name</label>
+                                    <input type="text" id="name" name="name" required className="mt-2 w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* CTA Section */}
-            <section className="bg-white py-16">
-                 <div className="container mx-auto px-6 text-center">
-                    <h2 className="text-3xl font-bold mb-4">Ready to Go Solar?</h2>
-                    <p className="text-slate-600 mb-8 max-w-2xl mx-auto">Join thousands of homeowners and businesses making the switch to clean, affordable energy.</p>
-                    <button 
-                        onClick={() => navigateTo('marketplace')}
-                        className="bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-green-700 transition-colors duration-300"
-                    >
-                        Find Your Solution
-                    </button>
-                </div>
-            </section>
-        </div>
-    );
-};
-
-const MarketplacePage = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [isModalOpen, setModalOpen] = useState(false);
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const productsCollectionRef = collection(db, `/artifacts/${appId}/public/data/products`);
-                const productSnapshot = await getDocs(productsCollectionRef);
-                const productList = productSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                setProducts(productList);
-            } catch (err) {
-                console.error("Error fetching products:", err);
-                setError("Failed to load products. Please try again later.");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchProducts();
-    }, []);
-
-    const handleViewDetails = (product) => {
-        setSelectedProduct(product);
-        setModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setModalOpen(false);
-        setSelectedProduct(null);
-    };
-
-    if (loading) return <SolarLoadingSpinner />;
-    if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
-
-    return (
-        <div className="container mx-auto px-6 py-12">
-            <h1 className="text-4xl font-bold mb-2 text-center">Solar Marketplace</h1>
-            <p className="text-slate-600 text-center mb-12 max-w-2xl mx-auto">Browse our curated selection of solar products and services from top-rated vendors.</p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {products.map(product => (
-                    <ProductCard key={product.id} product={product} onViewDetails={() => handleViewDetails(product)} />
-                ))}
-            </div>
-            {isModalOpen && selectedProduct && (
-                <VendorDetailModal product={selectedProduct} onClose={closeModal} />
-            )}
-        </div>
-    );
-};
-
-const ProductCard = ({ product, onViewDetails }) => {
-    return (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 flex flex-col">
-            <div className="p-6 flex-grow">
-                <span className="text-sm bg-green-100 text-green-800 font-medium px-3 py-1 rounded-full">{product.type}</span>
-                <h3 className="text-xl font-bold my-3">{product.name}</h3>
-                <p className="text-slate-600 text-sm mb-4 flex-grow">{product.description}</p>
-                
-                <div className="flex items-center justify-between text-sm text-slate-500 mb-4">
-                    <div className="flex items-center">
-                        <MapPin size={16} className="mr-1 text-slate-400" />
-                        {product.location}
-                    </div>
-                    <div className="flex items-center font-bold text-amber-500">
-                        <Star size={16} className="mr-1" fill="currentColor" />
-                        {product.rating.toFixed(1)}
-                    </div>
-                </div>
-            </div>
-            <div className="p-6 bg-slate-50">
-                <button onClick={onViewDetails} className="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-300">
-                    View Vendor & Details
-                </button>
-            </div>
-        </div>
-    );
-};
-
-const VendorDetailModal = ({ product, onClose }) => {
-    const [unlocked, setUnlocked] = useState(false);
-    const [paying, setPaying] = useState(false);
-    const reportFee = 5; // $5 fee for the report
-
-    const handleUnlock = () => {
-        setPaying(true);
-        // Simulate a payment process
-        setTimeout(() => {
-            setUnlocked(true);
-            setPaying(false);
-        }, 1500);
-    };
-
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
-                <div className="p-6 relative">
-                    <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
-                        <X size={24} />
-                    </button>
-                    <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
-                    <p className="text-slate-500 mb-6">{product.type} from {product.location}</p>
-                    
-                    <div className="border-t pt-6">
-                        <h3 className="font-bold text-lg mb-4">Vendor Information</h3>
-                        
-                        <div className="relative">
-                            {/* Locked Content */}
-                            {!unlocked && (
-                                <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex flex-col justify-center items-center z-10 rounded-md p-4 text-center">
-                                    <ShieldCheck size={40} className="text-green-500 mb-3" />
-                                    <h4 className="font-bold text-lg">Unlock Full Vendor Report</h4>
-                                    <p className="text-slate-600 text-sm mb-4">For a small fee of ${reportFee}, get instant access to verified contact details and our full vendor report.</p>
-                                    <button 
-                                        onClick={handleUnlock}
-                                        disabled={paying}
-                                        className="bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700 transition-colors duration-300 disabled:bg-slate-400 flex items-center justify-center"
-                                    >
-                                        {paying ? (
-                                            <>
-                                                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
-                                                Processing...
-                                            </>
-                                        ) : `Pay $${reportFee} to Unlock`}
+                                <div>
+                                    <label htmlFor="email" className="font-medium text-slate-700">Email Address</label>
+                                    <input type="email" id="email" name="email" required className="mt-2 w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
+                                </div>
+                                <div>
+                                    <label htmlFor="message" className="font-medium text-slate-700">Message</label>
+                                    <textarea id="message" name="message" rows="5" required className="mt-2 w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"></textarea>
+                                </div>
+                                <div>
+                                    <button type="submit" disabled={status.submitting} className="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors disabled:bg-slate-400">
+                                         {status.submitting ? 'Sending...' : 'Send Message'}
                                     </button>
                                 </div>
-                            )}
-
-                            {/* Content Area */}
-                            <div className={`space-y-3 transition-opacity duration-500 ${!unlocked ? 'opacity-50' : 'opacity-100'}`}>
-                                <div className="flex items-center">
-                                    <User size={18} className="mr-3 text-slate-400" />
-                                    <div>
-                                        <span className="font-semibold">Vendor Name: </span>
-                                        {unlocked ? <span className="text-green-700 font-medium">{product.vendor.name}</span> : <span>******** Solutions</span>}
-                                    </div>
-                                </div>
-                                <div className="flex items-center">
-                                    <Mail size={18} className="mr-3 text-slate-400" />
-                                    <div>
-                                        <span className="font-semibold">Email: </span>
-                                        {unlocked ? <a href={`mailto:${product.vendor.contact}`} className="text-blue-600 hover:underline">{product.vendor.contact}</a> : <span>c********@********.com</span>}
-                                    </div>
-                                </div>
-                                <div className="flex items-center">
-                                    <Phone size={18} className="mr-3 text-slate-400" />
-                                    <div>
-                                        <span className="font-semibold">Phone: </span>
-                                        {unlocked ? <span className="text-green-700 font-medium">{product.vendor.phone}</span> : <span>(***) ***-**10</span>}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-
-const AboutPage = () => {
-    return (
-        <div className="bg-white">
-            <div className="container mx-auto px-6 py-16">
-                <div className="max-w-4xl mx-auto">
-                    <h1 className="text-4xl font-bold text-center mb-4">Empowering Your Switch to Clean Energy</h1>
-                    <p className="text-xl text-slate-600 text-center mb-12">Our mission is to make the transition to sustainable energy simple, transparent, and accessible for everyone.</p>
-                    
-                    <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-                        <div className="text-slate-700 space-y-4">
-                            <h2 className="text-3xl font-bold">Who We Are</h2>
-                            <p>Helionenergies was founded on a simple principle: everyone deserves access to clean, affordable energy. We saw a complex and often confusing market that made it difficult for homeowners and businesses to feel confident about going solar. Our goal is to change that.</p>
-                            <p>We are a team of energy experts, technologists, and advocates passionate about creating a sustainable future. We believe that by providing unbiased information, transparent pricing, and access to a network of trusted professionals, we can empower you to make the right energy choices with confidence.</p>
-                        </div>
-                        <div>
-                             <img src={`https://placehold.co/600x450/34d399/ffffff?text=Our+Team`} alt="A diverse team collaborating" className="rounded-lg shadow-lg" />
+                                {status.error && <p className="text-red-500 text-sm mt-2">{status.error}</p>}
+                            </form>
                         </div>
                     </div>
+                );
+            };
 
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold mb-8">Our Core Values</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div className="bg-slate-50 p-6 rounded-lg">
-                                <Eye size={32} className="mx-auto text-green-600 mb-4" />
-                                <h3 className="text-xl font-semibold mb-2">Transparency</h3>
-                                <p className="text-slate-600">No hidden fees, no confusing jargon. We provide clear, straightforward information and pricing so you can make an informed decision.</p>
-                            </div>
-                            <div className="bg-slate-50 p-6 rounded-lg">
-                                <Zap size={32} className="mx-auto text-green-600 mb-4" />
-                                <h3 className="text-xl font-semibold mb-2">Empowerment</h3>
-                                <p className="text-slate-600">We give you the tools and knowledge to take control of your energy future, from initial research to final installation.</p>
-                            </div>
-                            <div className="bg-slate-50 p-6 rounded-lg">
-                                <Heart size={32} className="mx-auto text-green-600 mb-4" />
-                                <h3 className="text-xl font-semibold mb-2">Integrity</h3>
-                                <p className="text-slate-600">Your trust is our priority. We only partner with vetted, high-quality installers and stand behind the solutions offered on our marketplace.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                     <div className="grid md:grid-cols-2 gap-12 items-center">
-                         <div>
-                             <img src={`https://placehold.co/600x450/10b981/ffffff?text=Marketplace`} alt="Screenshot of the marketplace" className="rounded-lg shadow-lg" />
-                        </div>
-                        <div className="text-slate-700 space-y-4">
-                            <h2 className="text-3xl font-bold">How We Help</h2>
-                            <p>The traditional way of going solar involves endless research and high-pressure sales calls. The Helionenergies Marketplace changes that.</p>
-                            <ul className="list-disc list-inside space-y-2">
-                                <li><strong>Compare with Confidence:</strong> Receive multiple, standardized quotes from top-rated local installers.</li>
-                                <li><strong>Expert Guidance:</strong> Our educational resources in Solar 101 and our support team are here to answer your questions without any sales pressure.</li>
-                                <li><strong>Save Money:</strong> By having installers compete for your business, we help ensure you get a fair price for your system.</li>
-                            </ul>
-                             <p>We're not just a website; we're your partner in the journey toward energy independence.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const ForVendorsPage = () => {
-    const [status, setStatus] = useState({ submitting: false, success: false, error: null });
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setStatus({ submitting: true, success: false, error: null });
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
-
-        try {
-            const inquiriesCollectionRef = collection(db, `/artifacts/${appId}/public/data/inquiries`);
-            await addDoc(inquiriesCollectionRef, { ...data, type: 'Vendor Inquiry', createdAt: new Date() });
-            setStatus({ submitting: false, success: true, error: null });
-            e.target.reset();
-        } catch (error) {
-            console.error("Error submitting vendor inquiry:", error);
-            setStatus({ submitting: false, success: false, error: "Submission failed. Please try again." });
-        }
-    };
-
-    return (
-        <div className="container mx-auto px-6 py-16">
-            {status.success && <ConfirmationModal message="Thank you for your interest! We've received your inquiry and will get back to you soon." onClose={() => setStatus({ submitting: false, success: false, error: null })} />}
-            <div className="max-w-4xl mx-auto text-center">
-                <h1 className="text-4xl font-bold mb-4">Partner with Helionenergies</h1>
-                <p className="text-xl text-slate-600 mb-12">Join our marketplace to connect with qualified customers and grow your solar business.</p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto text-center">
-                <div className="bg-white p-8 rounded-lg shadow-md">
-                    <Zap size={40} className="mx-auto text-green-600 mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">High-Quality Leads</h3>
-                    <p className="text-slate-600">Reach customers who are actively searching for solar solutions in your area.</p>
-                </div>
-                <div className="bg-white p-8 rounded-lg shadow-md">
-                    <Briefcase size={40} className="mx-auto text-green-600 mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">Showcase Your Business</h3>
-                    <p className="text-slate-600">Feature your products and services on a trusted platform dedicated to renewable energy.</p>
-                </div>
-                <div className="bg-white p-8 rounded-lg shadow-md">
-                    <DollarSign size={40} className="mx-auto text-green-600 mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">Grow Your Revenue</h3>
-                    <p className="text-slate-600">Expand your market reach and increase your sales with our performance-based model.</p>
-                </div>
-            </div>
-            <div className="max-w-2xl mx-auto mt-16 bg-white p-8 rounded-lg shadow-xl">
-                <h2 className="text-2xl font-bold text-center mb-6">Become a Partner</h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <input type="text" name="Company Name" placeholder="Company Name" required className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
-                    <input type="email" name="email" placeholder="Business Email" required className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
-                    <input type="text" name="Service Area" placeholder="Service Area (e.g., Mumbai, Bangalore)" required className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
-                    <button type="submit" disabled={status.submitting} className="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors disabled:bg-slate-400">
-                        {status.submitting ? 'Submitting...' : 'Submit Inquiry'}
-                    </button>
-                    {status.error && <p className="text-red-500 text-sm mt-2">{status.error}</p>}
-                </form>
-            </div>
-        </div>
-    );
-};
-
-const AccordionItem = ({ title, children }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    return (
-        <div className="border-b">
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex justify-between items-center text-left py-5 px-2"
-            >
-                <h3 className="text-lg font-semibold">{title}</h3>
-                {isOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-            </button>
-            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-screen' : 'max-h-0'}`}>
-                <div className="p-4 text-slate-600 bg-slate-50">
-                    {children}
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const Solar101Page = () => {
-    const faqs = [
-        { q: "How do solar panels work?", a: "Solar panels contain photovoltaic (PV) cells that convert sunlight into direct current (DC) electricity. An inverter then converts the DC electricity into alternating current (AC) electricity, which can be used to power your home." },
-        { q: "What are the main benefits of going solar?", a: "The primary benefits include significant savings on your electricity bills, reducing your carbon footprint, increasing your property value, and gaining energy independence from the grid." },
-        { q: "How much does a solar panel system cost?", a: "The cost varies depending on system size, equipment quality, and location. Our marketplace helps you compare prices from different vendors to find a system that fits your budget." },
-        { q: "Do solar panels work on cloudy days?", a: "Yes, solar panels can still produce electricity on cloudy or overcast days, although their output will be lower than on a bright, sunny day. Modern panels are increasingly efficient in low-light conditions." },
-        { q: "How long do solar panels last?", a: "Most solar panels come with a performance warranty of 25 years and can continue to produce electricity for 30-40 years or more, with a gradual decline in efficiency over time." },
-        { q: "What is net metering?", a: "Net metering is a billing mechanism that credits solar energy system owners for the electricity they add to the grid. When your panels produce more electricity than you consume, the excess is sent to the grid, and you receive a credit on your bill." },
-    ];
-
-    return (
-        <div className="container mx-auto px-6 py-16">
-            <div className="max-w-4xl mx-auto">
-                <h1 className="text-4xl font-bold text-center mb-4">Solar 101: Your Guide to Going Solar</h1>
-                <p className="text-xl text-slate-600 text-center mb-12">We've answered the most common questions to help you start your solar journey with confidence.</p>
-                <div className="bg-white rounded-lg shadow-lg">
-                    {faqs.map((faq, index) => (
-                        <AccordionItem key={index} title={faq.q}>
-                            <p>{faq.a}</p>
-                        </AccordionItem>
-                    ))}
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const ContactPage = () => {
-    const [status, setStatus] = useState({ submitting: false, success: false, error: null });
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setStatus({ submitting: true, success: false, error: null });
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
-
-        try {
-            const inquiriesCollectionRef = collection(db, `/artifacts/${appId}/public/data/inquiries`);
-            await addDoc(inquiriesCollectionRef, { ...data, type: 'Contact Message', createdAt: new Date() });
-            setStatus({ submitting: false, success: true, error: null });
-            e.target.reset();
-        } catch (error) {
-            console.error("Error submitting contact form:", error);
-            setStatus({ submitting: false, success: false, error: "Submission failed. Please try again." });
-        }
-    };
-
-    return (
-        <div className="container mx-auto px-6 py-16">
-            {status.success && <ConfirmationModal message="Your message has been sent! We'll get back to you as soon as possible." onClose={() => setStatus({ submitting: false, success: false, error: null })} />}
-            <div className="max-w-2xl mx-auto text-center">
-                <h1 className="text-4xl font-bold mb-4">Get In Touch</h1>
-                <p className="text-xl text-slate-600 mb-12">Have questions? We're here to help. Send us a message, and we'll get back to you shortly.</p>
-            </div>
-            <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-xl">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label htmlFor="name" className="font-medium text-slate-700">Full Name</label>
-                        <input type="text" id="name" name="name" required className="mt-2 w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
-                    </div>
-                    <div>
-                        <label htmlFor="email" className="font-medium text-slate-700">Email Address</label>
-                        <input type="email" id="email" name="email" required className="mt-2 w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" />
-                    </div>
-                    <div>
-                        <label htmlFor="message" className="font-medium text-slate-700">Message</label>
-                        <textarea id="message" name="message" rows="5" required className="mt-2 w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"></textarea>
-                    </div>
-                    <div>
-                        <button type="submit" disabled={status.submitting} className="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors disabled:bg-slate-400">
-                             {status.submitting ? 'Sending...' : 'Send Message'}
-                        </button>
-                    </div>
-                    {status.error && <p className="text-red-500 text-sm mt-2">{status.error}</p>}
-                </form>
-            </div>
-        </div>
-    );
-};
+            // --- Render the App ---
+            const container = document.getElementById('root');
+            const root = ReactDOM.createRoot(container);
+            root.render(<App />);
+        };
+    </script>
+</body>
+</html>
